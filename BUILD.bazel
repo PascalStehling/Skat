@@ -1,0 +1,5 @@
+py_binary(
+    name = "firstTest",
+    srcs = ["main.py"],
+    main = "main.py"
+)
