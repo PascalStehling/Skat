@@ -1,0 +1,17 @@
+.vscode/settings.json
+bazel-bin/firstTest.exe
+bazel-bin/firstTest.exe.runfiles_manifest
+bazel-bin/firstTest.temp
+bazel-bin/firstTest.zip
+bazel-bin/firstTest.zip-0.params
+bazel-bin/firstTest.exe.runfiles/MANIFEST
+bazel-out/stable-status.txt
+bazel-out/volatile-status.txt
+bazel-out/_tmp/actions/stderr-6
+bazel-out/_tmp/actions/stdout-6
+bazel-out/x64_windows-fastbuild/bin/firstTest.exe
+bazel-out/x64_windows-fastbuild/bin/firstTest.exe.runfiles_manifest
+bazel-out/x64_windows-fastbuild/bin/firstTest.temp
+bazel-out/x64_windows-fastbuild/bin/firstTest.zip
+bazel-out/x64_windows-fastbuild/bin/firstTest.zip-0.params
+bazel-out/x64_windows-fastbuild/bin/firstTest.exe.runfiles/MANIFEST
