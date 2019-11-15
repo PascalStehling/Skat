@@ -15,3 +15,5 @@ bazel-out/x64_windows-fastbuild/bin/firstTest.temp
 bazel-out/x64_windows-fastbuild/bin/firstTest.zip
 bazel-out/x64_windows-fastbuild/bin/firstTest.zip-0.params
 bazel-out/x64_windows-fastbuild/bin/firstTest.exe.runfiles/MANIFEST
+__pycache__/main_test.cpython-37.pyc
+__pycache__/main.cpython-37.pyc
