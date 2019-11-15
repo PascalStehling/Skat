@@ -1,0 +1,7 @@
+language: python
+python: "3.7"
+notifications:
+  pushover:
+    api_key: "avnqooi7xho9z42utvsbtb3v72m2c7"
+    users:
+      - "u4cuujoickv1gpi7m1ot9ghzwqp1ve"
