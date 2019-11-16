@@ -20,3 +20,6 @@ __pycache__/main.cpython-37.pyc
 tests/__pycache__/main_test.cpython-37.pyc
 __pycache__/card.cpython-37.pyc
 tests/__pycache__/card_test.cpython-37.pyc
+.vscode/.ropeproject/objectdb
+__pycache__/setup_round.cpython-37.pyc
+.vscode/.ropeproject/config.py

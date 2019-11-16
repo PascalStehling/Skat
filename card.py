@@ -19,18 +19,16 @@ class Card:
         self.suit = '♣♠♥♦'[12-self.suit_val] # 0,1,2,3 = ♥♦♣♠
         self.suit_str = suit
         self.card_points = value_dict[value]
+    
+    def __repr__(self):
+        return f"{self.value} {self.suit_str}"
+
+    def get_ascii_card(self):
+        return ['┌───────┐',f'| {self.value:<2}    |','|       |',f'|   {self.suit}   |','|       |',f'|    {self.value:>2} |','└───────┘', f' {self.value:<2} {self.suit_str:>2}   ']
 
     def print(self):
-        print('┌───────┐')
-        print(f'| {self.value:<2}    |')
-        print('|       |')
-        print(f'|   {self.suit}   |')
-        print('|       |')
-        print(f'|    {self.value:>2} |')
-        print('└───────┘') 
-
-    def get_print_vals(self):
-        return ['┌───────┐',f'| {self.value:<2}    |','|       |',f'|   {self.suit}   |','|       |',f'|    {self.value:>2} |','└───────┘', f' {self.value:<2} {self.suit_str:>2}   ']
+        for e in self.get_ascii_card():
+            print(e)
 
 
 def print_multiple_cards(cards):
@@ -39,9 +37,9 @@ def print_multiple_cards(cards):
     elif not all(isinstance(c, Card) for c in cards):
         raise TypeError("All elements need to be of Type Card")
     
-    for i in range(len(cards[0].get_print_vals())):
+    for i in range(len(cards[0].get_ascii_card())):
         pr_str = ""
         for c in cards:
-            pr_str += c.get_print_vals()[i]+":"
+            pr_str += c.get_ascii_card()[i]+":"
         print(pr_str[:-1])
         
