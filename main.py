@@ -2,11 +2,16 @@
 This is the main File with starts the skat App
 """
 from setup_round import setup_round
+from bidding import make_bid
+from itertools import product
 
 def create_settings(language='en'):
     """
     Choose the settings for the game
     language: Change the Language in which you play the game
+
+    returns dict with:
+    TODO
     """
     if not isinstance(language, str):
         raise TypeError("language needs to be of type str")
@@ -14,14 +19,18 @@ def create_settings(language='en'):
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'J': 2, 'Q': 3, 'K': 4, 'A': 11}
         suit_dict = {"C": 12, "S": 11, "H": 10, "D": 9}
         position_dict = {0: "Forhand", 1: "Middlehand", 2: "Backhand"}
+        bidmessage = "{}: Do you want to bid {}? With Yes you accept the bid, with No you pass."
     elif language == 'de':
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'B': 2, 'D': 3, 'K': 4, 'A': 11}
         suit_dict = {"Kr": 12, "P": 11, "H": 10, "Ka": 9}
         position_dict = {0: "Vorhand", 1: "Mittelhand", 2: "Rückhand"}
+        bidmessage = "{}: Willst du {} bieten? Mit Yes akzeptierst du, mit No Passt du."
     else:
         raise ValueError("Please choose Between english (en) and german (de)")
 
-    return {"value_dict": value_dict, "suit_dict": suit_dict, "position_dict": position_dict}
+    bid_list = [x[0]*x[1] for x in product(suit_dict.values(), range(2, 6))]
+
+    return {"value_dict": value_dict, "suit_dict": suit_dict, "position_dict": position_dict, "bid_list": bid_list, "bidmessage": bidmessage}
 
 def create_player(player_name, player_num, player_position):
     """
@@ -31,9 +40,9 @@ def create_player(player_name, player_num, player_position):
     cards: the cards of the Player
     points: the Points of the Player
     position: the position in the game (0 For-, 1 middle-, 2 Backhand)
-    passed: if the player has passed by bidding
+    bid: the bid of the player. None if he hasn't bid yet, int if he bid, false if he passed
     """
-    return {"name": player_name,"num": player_num,"cards": [],"points": 0,"position": player_position, "passed": False}
+    return {"name": player_name,"num": player_num,"cards": [],"points": 0,"position": player_position}
 
 def create_players(player_names=None):
     """
@@ -75,22 +84,20 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
             "max_round": max_rounds,
             "settings": create_settings(language),
             "gamemode": None,
-            "turn": None}
-
-def create_function_dict():
-    return {1: setup_round}
+            "turn": None,
+            "bid": None}
 
 class StateMachine:
 
     def __init__(self, player_names=None, max_rounds=36, language='en'):
         self.game_dict = create_game_dict(player_names, max_rounds, language)
-        self.fun_dict = create_function_dict()
+        self.fun_dict = {1: setup_round, 2:make_bid}
 
     def run(self):
         while self.game_dict["game_round"] < self.game_dict["max_round"]:
             state_fun = self.fun_dict[self.game_dict["gamestate"]]
             self.game_dict = state_fun(self.game_dict)
-            break
+            
 
 if __name__ == "__main__":
     s = StateMachine(language='de')

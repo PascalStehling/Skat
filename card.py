@@ -24,12 +24,14 @@ class Card:
         return f"{self.value} {self.suit_str}"
 
     def get_ascii_card(self):
-        return ['┌───────┐',f'| {self.value:<2}    |','|       |',f'|   {self.suit}   |','|       |',f'|    {self.value:>2} |','└───────┘', f' {self.value:<2} {self.suit_str:>2}   ']
+        return ['┌───────┐',f'| {self.value:<2}    |','|       |',f'|   {self.suit}   |','|       |',f'|    {self.value:>2} |','└───────┘', f' {self.suit_str:<2} {self.value:>2}   ']
 
     def print(self):
         for e in self.get_ascii_card():
             print(e)
 
+    def get_card_tuple(self):
+        return (self.suit_val, self.value)
 
 def print_multiple_cards(cards):
     if not isinstance(cards, list):

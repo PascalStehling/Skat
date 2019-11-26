@@ -23,3 +23,6 @@ tests/__pycache__/card_test.cpython-37.pyc
 .vscode/.ropeproject/objectdb
 __pycache__/setup_round.cpython-37.pyc
 .vscode/.ropeproject/config.py
+__pycache__/bidding.cpython-37.pyc
+__pycache__/tools.cpython-37.pyc
+tests/__pycache__/bidding_test.cpython-37.pyc

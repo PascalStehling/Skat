@@ -20,16 +20,10 @@ class Test_create_players(unittest.TestCase):
             main.create_players(["hi", "test", {"1":"2"}])
 
     def test_none(self):
-        test_dict = {0:{"name": "Player 1","num": 0,"cards": [],"points": 0,"position": 0, "passed": False},
-                    1: {"name": "Player 2","num": 1,"cards": [],"points": 0,"position": 1, "passed": False},
-                    2: {"name": "Player 3","num": 2,"cards": [],"points": 0,"position": 2, "passed": False}}
-        self.assertDictEqual(main.create_players(), test_dict)
+        self.assertEqual(main.create_players()[0]["name"], "Player 1")
 
     def test_names(self):
-        test_dict = {0:{"name": "1","num": 0,"cards": [],"points": 0,"position": 0, "passed": False},
-                    1: {"name": "2","num": 1,"cards": [],"points": 0,"position": 1, "passed": False},
-                    2: {"name": "3","num": 2,"cards": [],"points": 0,"position": 2, "passed": False}}
-        self.assertDictEqual(main.create_players(["1", "2", "3"]), test_dict)
+        self.assertEqual(main.create_players(["1", "2", "3"])[1]["name"], "2")
 
 
 class Test_create_settings(unittest.TestCase):
@@ -43,10 +37,7 @@ class Test_create_settings(unittest.TestCase):
             main.create_settings('it')
     
     def test_right_values(self):
-        test_dict = {"value_dict": {'7': 0, '8': 0, '9': 0, '10': 10, 'B': 2, 'D': 3, 'K': 4, 'A': 11}, 
-                        "suit_dict": {"Kr": 12, "P": 11, "H": 10, "Ka": 9},
-                        "position_dict": {0: "Vorhand", 1: "Mittelhand", 2: "Rückhand"}}
-        self.assertDictEqual(main.create_settings('de'), test_dict)
+        self.assertDictEqual(main.create_settings('de')["suit_dict"], {"Kr": 12, "P": 11, "H": 10, "Ka": 9})
 
 if __name__ == "__main__":
     unittest.main()
