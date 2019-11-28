@@ -2,7 +2,7 @@
 In this file all Functions are located which are needed to setup a new round
 """
 from itertools import product
-from modules.card import Card, print_multiple_cards
+from modules.card import Card
 from random import shuffle
 from modules.tools import get_player_at_position
 import operator

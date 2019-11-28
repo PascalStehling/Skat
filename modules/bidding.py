@@ -1,5 +1,4 @@
-from modules.card import print_multiple_cards
-from modules.tools import get_player_at_position
+from modules.tools import get_user_true_false, print_multiple_cards, get_player_at_position
 
 def make_bid(game_dict):
     """
@@ -7,7 +6,11 @@ def make_bid(game_dict):
     """
     new_bid = game_dict["bidding"]["next_bid"]
 
-    if get_user_bid(new_bid, game_dict):
+    show_message = game_dict["settings"]["bidmessage"].format(game_dict["players"][game_dict["turn"]]["name"], new_bid)
+    error_message = game_dict["settings"]["yesno_errormessage"].format(game_dict["players"][game_dict["turn"]]["name"])
+    cards = game_dict["players"][game_dict["turn"]]["cards"]
+
+    if get_user_true_false(show_message, error_message, cards):
         if game_dict["players"][game_dict["turn"]]["position"] == 0: # Forhand can only listen
             game_dict = bid_hear(game_dict, new_bid)
         elif game_dict["players"][game_dict["turn"]]["position"] == 2: # Backhand can only say
@@ -27,6 +30,7 @@ def make_bid(game_dict):
             else:
                 # Ramsch not implemented, just new cards are given.
                 # TODO Ramsch
+                print("Everyone passed, cards get dealt again")
                 game_dict["gamestate"] = 1
             return game_dict
 

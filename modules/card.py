@@ -33,15 +33,13 @@ class Card:
     def get_card_tuple(self):
         return (self.suit_val, self.value)
 
-def print_multiple_cards(cards):
-    if not isinstance(cards, list):
-        raise TypeError("cards need to be of type list")
-    elif not all(isinstance(c, Card) for c in cards):
-        raise TypeError("All elements need to be of Type Card")
-    
-    for i in range(len(cards[0].get_ascii_card())):
-        pr_str = ""
-        for c in cards:
-            pr_str += c.get_ascii_card()[i]+":"
-        print(pr_str[:-1])
+    def __eq__(self, other_card):
+        if isinstance(other_card, Card):
+            if self.value == other_card.value and self.suit_val == other_card.suit_val:
+                return True
+            else:
+                return False
+        else:
+            raise TypeError("The other Object need to be of Type Card")
+
         
