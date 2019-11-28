@@ -28,19 +28,3 @@ class Test_card(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             c = card.Card('7', '23', self.value_dict, self.suit_dict)
-
-    def test_print_multiple_cards_type(self):
-        c1 = card.Card('7', 'Kr', self.value_dict, self.suit_dict)
-        c2 = card.Card('K', 'H', self.value_dict, self.suit_dict)
-        c3 = card.Card('A', 'P', self.value_dict, self.suit_dict)
-        c4 = card.Card('10', 'Ka', self.value_dict, self.suit_dict)
-        cards = [c1,c2,c3,c4]
-        with self.assertRaises(TypeError):
-            card.print_multiple_cards("cards")
-        with self.assertRaises(TypeError):
-            card.print_multiple_cards(cards+["asd"])
-
-        print()
-        card.print_multiple_cards(cards) # Test if its looks right
-
-    

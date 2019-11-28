@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
 
-import main
+from modules import create_settings as main
 import unittest
 
 

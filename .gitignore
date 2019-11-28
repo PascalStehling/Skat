@@ -35,3 +35,4 @@ modules/__pycache__/create_settings.cpython-37.pyc
 modules/__pycache__/setup_single_play.cpython-37.pyc
 bazel-skat
 .gitignore
+tests/__pycache__/tools_test.cpython-37.pyc
