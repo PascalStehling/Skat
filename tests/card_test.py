@@ -2,7 +2,7 @@ import unittest
 import sys
 
 sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
-import card
+from modules import card
 
 class Test_card(unittest.TestCase):
 

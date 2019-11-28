@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
 
-import bidding
+from modules import bidding
 import unittest
 
 class Test_get_player_turn(unittest.TestCase):

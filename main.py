@@ -1,8 +1,8 @@
 """
 This is the main File with starts the skat App
 """
-from setup_round import setup_round
-from bidding import make_bid
+from modules.setup_round import setup_round
+from modules.bidding import make_bid
 from itertools import product
 
 def create_settings(language='en'):

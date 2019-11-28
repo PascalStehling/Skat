@@ -1,6 +1,5 @@
-
-from card import print_multiple_cards
-from tools import get_player_at_position
+from modules.card import print_multiple_cards
+from modules.tools import get_player_at_position
 
 def make_bid(game_dict):
     """
