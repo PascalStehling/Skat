@@ -4,7 +4,7 @@ In this file all Functions are located which are needed to setup a new round
 from itertools import product
 from modules.card import Card
 from random import shuffle
-from modules.tools import get_player_at_position
+from modules.tools import get_player_at_position, sort_cards
 import operator
 
 def setup_round(game_dict):
@@ -12,9 +12,12 @@ def setup_round(game_dict):
     Gives every Player his cards and resets all Settings to start a new round
     """
     cards = give_cards_shuffled(game_dict["settings"])
+    order_dict = game_dict["settings"]["standart_order_dict"]
+    sort_trumpf = [x[0] for x in game_dict["settings"]["suit_dict"].items() if x[1]==12][0]
+
     for i in range(3):
         # TODO better sorting algorithm, maybe use anywhere where cards get added
-        game_dict["players"][i]["cards"] = sorted(cards[10*i:10*(i+1)], key=lambda tmp_card: tmp_card.get_card_tuple()) # save cards sorted
+        game_dict["players"][i]["cards"] = sort_cards(cards[10*i:10*(i+1)], order_dict, sort_trumpf) # save cards sorted
         game_dict["players"][i]["passed"] = False
     game_dict["skat"] = cards[-2:]
     game_dict["turn"] = get_player_at_position(game_dict, 1) # Player at middle Hand starts with bidding

@@ -2,7 +2,7 @@
 The single Player needs to decide if he wants to take the skat and which gametype he wants to play
 """
 
-from modules.tools import get_user_true_false, user_select_card, print_multiple_cards, get_player_at_position
+from modules.tools import get_user_true_false, user_select_card, print_multiple_cards, get_player_at_position, sort_cards
 
 def setup_single_play(game_dict):
     
@@ -11,7 +11,11 @@ def setup_single_play(game_dict):
     cards = game_dict["players"][game_dict["turn"]]["cards"]
 
     if get_user_true_false(show_message, error_message, cards):
+        order_dict = game_dict["settings"]["standart_order_dict"]
+        sort_trumpf = [x[0] for x in game_dict["settings"]["suit_dict"].items() if x[1]==12][0]
+
         game_dict["players"][game_dict["turn"]]["cards"] += game_dict["skat"]
+        game_dict["players"][game_dict["turn"]]["cards"] = sort_cards(game_dict["players"][game_dict["turn"]]["cards"], order_dict, sort_trumpf)
         game_dict["skat"] = []
 
         show_message = game_dict["settings"]["cardmessage"].format(game_dict["players"][game_dict["turn"]]["name"])
@@ -31,6 +35,9 @@ def setup_single_play(game_dict):
 
     game_dict["gamemode"] = get_play_type(show_message, error_message, gamemode_dict, cards)
     game_dict["order_dict"] = game_dict["settings"][game_dict["gamemode"]["order_dict"]]
+
+    for player in game_dict["players"]:
+        game_dict["players"][player]["cards"] = sort_cards(game_dict["players"][player]["cards"], game_dict["order_dict"], game_dict["gamemode"]["trumpf"])
     game_dict["gamestate"] = 4
     game_dict["turn"] = get_player_at_position(game_dict, 0)
 

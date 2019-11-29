@@ -43,7 +43,6 @@ class Card:
             raise TypeError("The other Object need to be of Type Card")
 
     def equal_suit(self, other_card):
-        # TODO Test
         if isinstance(other_card, Card):
             if self.suit_val == other_card.suit_val:
                 return True
@@ -53,7 +52,6 @@ class Card:
             raise TypeError("The other Object need to be of Type Card")
 
     def istrumpf(self, trumpf):
-        # TODO Test
         if trumpf is not None and not isinstance(trumpf, str):
             raise TypeError("Trumpf need to be of Type None or String")
 
@@ -65,10 +63,7 @@ class Card:
             
         return False
 
-    def ishigher(self, smaller_card, trumpf, order_dict):
-        # TODO Test
-        if not(trumpf is None or isinstance(trumpf, str)):
-            raise TypeError("Trumpf need to be of Type None or String")
+    def ishigher(self, smaller_card, trumpf, order_dict, check_suit_val=False):
         if not isinstance(smaller_card, Card):
             raise TypeError("Other Card needs to be of Type Card")
 
@@ -92,12 +87,21 @@ class Card:
             else:
                 return self.has_higher_value(smaller_card, order_dict)
         elif self.suit_val != smaller_card.suit_val: # If none is Trumpf and they have diffrent suits, the first Card is Higher
-            return True
+            if check_suit_val:
+                if self.suit_val > smaller_card.suit_val:
+                    return True
+                else:
+                    return False
+            else:
+                return True
         else:
             return self.has_higher_value(smaller_card, order_dict)
 
     def has_higher_value(self, smaller_card, order_dict):
-        # TODO Test
+        if not isinstance(order_dict, dict):
+            raise TypeError("order_dict needs to be of Type dict")
+        if not isinstance(smaller_card, Card):
+            raise TypeError("smaller card needs to be of Type Card")
         if order_dict[self.value] > order_dict[smaller_card.value]:
             return True
         else:

@@ -66,7 +66,7 @@ def create_settings(language='en'):
         raise ValueError("Please choose Between english (en) and german (de)")
 
     bid_list = [x[0]*x[1] for x in product(suit_dict.values(), range(2, 6))]
-
+    bid_list.sort()
     return {"value_dict": value_dict,
             "suit_dict": suit_dict,
             "position_dict": position_dict,

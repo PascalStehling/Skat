@@ -75,3 +75,22 @@ def user_select_card(show_message, error_message, user_cards, value_dict, suit_d
     else:
         print(error_message)
         return user_select_card(show_message, error_message, user_cards, value_dict, suit_dict)
+
+def sort_cards(cards, order_dict, trumpf):
+    # TODO
+    if not isinstance(cards, list):
+        raise TypeError("Cards need to be of Type List")
+    if not all(isinstance(card, Card) for card in cards):
+        raise TypeError("All Elements in Cards need to be of the same Type")
+    i = 0
+    while i < len(cards):
+        k = 0
+        while k < len(cards)-i-1:
+            if not cards[k].ishigher(cards[k+1], trumpf, order_dict, True):
+                tmp = cards[k]
+                cards[k] = cards[k+1]
+                cards[k+1] = tmp
+            k += 1
+        i += 1
+        print_multiple_cards(cards)
+    return cards
