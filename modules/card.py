@@ -42,4 +42,21 @@ class Card:
         else:
             raise TypeError("The other Object need to be of Type Card")
 
-        
+    def equal_suit(self, other_card):
+        if isinstance(other_card, Card):
+            if self.suit_val == other_card.suit_val:
+                return True
+            else:
+                return False
+        else:
+            raise TypeError("The other Object need to be of Type Card")
+
+
+class EmptyCard(Card):
+
+    def __init__(self):
+        self.value = " "
+        self.suit_val = " "
+        self.suit = " "
+        self.suit_str = " "
+        self.card_points = " "

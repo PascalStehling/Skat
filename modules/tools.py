@@ -66,7 +66,7 @@ def get_user_card(show_message, error_message, user_cards, value_dict, suit_dict
     
     return user_card
                 
-def user_play_card(show_message, error_message, user_cards, value_dict, suit_dict):
+def user_select_card(show_message, error_message, user_cards, value_dict, suit_dict):
     card = get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
 
     if card in user_cards:
@@ -74,4 +74,4 @@ def user_play_card(show_message, error_message, user_cards, value_dict, suit_dic
         return user_cards, card
     else:
         print(error_message)
-        return user_play_card(show_message, error_message, user_cards, value_dict, suit_dict)
+        return user_select_card(show_message, error_message, user_cards, value_dict, suit_dict)

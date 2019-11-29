@@ -5,12 +5,13 @@ from modules.setup_round import setup_round
 from modules.bidding import make_bid
 from modules.setup_single_play import setup_single_play
 from modules.create_settings import create_game_dict
+from modules.play_round import play_card_user
 
 class StateMachine:
 
     def __init__(self, player_names=None, max_rounds=36, language='en'):
         self.game_dict = create_game_dict(player_names, max_rounds, language)
-        self.fun_dict = {1: setup_round, 2:make_bid, 3:setup_single_play}
+        self.fun_dict = {1: setup_round, 2:make_bid, 3:setup_single_play, 4:play_card_user}
 
     def run(self):
         while self.game_dict["game_round"] < self.game_dict["max_round"]:

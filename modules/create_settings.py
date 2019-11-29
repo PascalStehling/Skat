@@ -15,30 +15,44 @@ def create_settings(language='en'):
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'J': 2, 'Q': 3, 'K': 4, 'A': 11}
         suit_dict = {"C": 12, "S": 11, "H": 10, "D": 9}
         position_dict = {0: "Forhand", 1: "Middlehand", 2: "Backhand"}
-        gamemode_dict = {0: "Color Game: Clubs", 1: "Color Game: Spade", 2: "Color Game: Hearts", 3: "Color Game: Diamonds"}
+        gamemode_dict = {0: {"name": "Color Game: Clubs", "trumpf": "C"},
+                         1: {"name": "Color Game: Spade", "trumpf": "S"},
+                         2: {"name": "Color Game: Hearts", "trumpf": "H"}, 
+                         3: {"name": "Color Game: Diamonds", "trumpf": "D"},
+                         4: {"name": "Grand", "trumpf": "J"},
+                         5: {"name": "Zero", "trumpf": None}}
 
         bidmessage = "{}: Do you want to bid {}? With Yes you accept the bid, with No you pass."
         skatmessage = "{} Do you want to take the Skat? Yes or No"
         cardmessage = "{} Please Play a Card from your Cards. Please write the Cards as written under the Cards"
         gamemode_message = "{} Please choose a Gamemode from the ones beneeth. Just enter the Number"
+        tablecard_message = "Cards on the Table"
 
         yesno_errormessage = "{}: Please enter Yes or No!"
         card_errormessage = "{} Please enter a Real Card which is in your Cards!"
         gamemode_errormessage = "{}Please Enter a valid number of the Gamemode"
+        play_errormessage = "{} Play a Card with the same Suit as the first that was Played"
     elif language == 'de':
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'B': 2, 'D': 3, 'K': 4, 'A': 11}
         suit_dict = {"Kr": 12, "P": 11, "H": 10, "Ka": 9}
         position_dict = {0: "Vorhand", 1: "Mittelhand", 2: "Rückhand"}
-        gamemode_dict = {0: "Farbspiel: Kreuz", 1: "Farbspiel: Pik", 2: "Farbspiel: Herz", 3: "Farbspiel: Karo"}
+        gamemode_dict = {0: {"name": "Farbspiel: Kreuz", "trumpf": "Kr"},
+                         1: {"name": "Farbspiel: Pik", "trumpf": "P"},
+                         2: {"name": "Farbspiel: Herz", "trumpf": "H"}, 
+                         3: {"name": "Farbspiel: Karo", "trumpf": "Ka"},
+                         4: {"name": "Grand", "trumpf": "B"},
+                         5: {"name": "Null", "trumpf": None}}
 
         bidmessage = "{}: Willst du {} bieten? Mit Yes akzeptierst du, mit No Passt du."
         skatmessage = "{} Willst du den Skat aufnehmen? Yes(ja)/No(Nein)"
         cardmessage = "{} Spiele eine Karte aus deinem Blatt. Bitte Schreib die Karte so, wie unter den oben angezeigten Karten zu sehen"
         gamemode_message = "{} Wähle einen Spielart von den darunterligenden aus. Bitte gebe nur die Nummer ein"
+        tablecard_message = "Karten auf dem Tisch"
 
         yesno_errormessage = "{}: Bitte geb Yes(ja) oder No(nein) ein!"
         card_errormessage = "{} Bitte geben sie eine echte Karte ein, die sich auch in ihrem Blatt befindet!"
         gamemode_errormessage = "{} Bitte gebe nur eine Zahl der Spielarten ein."
+        play_errormessage = "{} Spiele eine Karte mit der selben Farbe wie der ersten"
     else:
         raise ValueError("Please choose Between english (en) and german (de)")
 
@@ -55,7 +69,9 @@ def create_settings(language='en'):
             "card_errormessage": card_errormessage, 
             "gamemode_dict": gamemode_dict,
             "gamemode_message": gamemode_message,
-            "gamemode_errormessage": gamemode_errormessage}
+            "gamemode_errormessage": gamemode_errormessage,
+            "tablecard_message": tablecard_message,
+            "play_errormessage": play_errormessage}
 
 def create_player(player_name, player_num, player_position):
     """
@@ -104,7 +120,8 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
     return {"players": create_players(player_names), 
             "gamestate": 1, 
             "skat": [], 
-            "single_player_stack": [], 
+            "single_player_stack": [],
+            "table_cards": [],
             "game_round": 1, 
             "max_round": max_rounds,
             "settings": create_settings(language),
