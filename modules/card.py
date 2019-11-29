@@ -67,7 +67,7 @@ class Card:
 
     def ishigher(self, smaller_card, trumpf, order_dict):
         # TODO Test
-        if trumpf is not None and not isinstance(trumpf, str):
+        if not(trumpf is None or isinstance(trumpf, str)):
             raise TypeError("Trumpf need to be of Type None or String")
         if not isinstance(smaller_card, Card):
             raise TypeError("Other Card needs to be of Type Card")

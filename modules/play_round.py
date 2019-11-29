@@ -13,7 +13,7 @@ def play_card_user(game_dict):
     print_multiple_cards(table_cards)
     game_dict = user_play_card(game_dict)
 
-    if game_dict["players"][game_dict["turn"]]["position"] != 2:
+    if len(game_dict["table_cards"]) < 3:
         game_dict["turn"] =  (game_dict["turn"] + 1)%3
         return game_dict
     
