@@ -13,12 +13,15 @@ def setup_round(game_dict):
     """
     cards = give_cards_shuffled(game_dict["settings"])
     for i in range(3):
+        # TODO better sorting algorithm, maybe use anywhere where cards get added
         game_dict["players"][i]["cards"] = sorted(cards[10*i:10*(i+1)], key=lambda tmp_card: tmp_card.get_card_tuple()) # save cards sorted
         game_dict["players"][i]["passed"] = False
     game_dict["skat"] = cards[-2:]
     game_dict["turn"] = get_player_at_position(game_dict, 1) # Player at middle Hand starts with bidding
     game_dict["bidding"] = {"bid": None, "bid_player": None, "passed": [], "next_bid": 18} # Bid dict for bidding
     game_dict["gamestate"] = 2
+    game_dict["order_dict"] = None
+    game_dict["single_player_stack"] = []
     return game_dict
 
 def give_cards_shuffled(settings):

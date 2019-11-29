@@ -30,6 +30,7 @@ def setup_single_play(game_dict):
     gamemode_dict = game_dict["settings"]["gamemode_dict"]
 
     game_dict["gamemode"] = get_play_type(show_message, error_message, gamemode_dict, cards)
+    game_dict["order_dict"] = game_dict["settings"][game_dict["gamemode"]["order_dict"]]
     game_dict["gamestate"] = 4
     game_dict["turn"] = get_player_at_position(game_dict, 0)
 

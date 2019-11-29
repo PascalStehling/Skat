@@ -1,6 +1,6 @@
 
 from modules.card import EmptyCard, Card
-from modules.tools import print_multiple_cards, user_select_card
+from modules.tools import print_multiple_cards, user_select_card, get_player_at_position
 from copy import copy
 
 def play_card_user(game_dict):
@@ -16,10 +16,21 @@ def play_card_user(game_dict):
     if game_dict["players"][game_dict["turn"]]["position"] != 2:
         game_dict["turn"] =  (game_dict["turn"] + 1)%3
         return game_dict
-
-
     
-    
+    winner = get_player_at_position(game_dict, get_winner(game_dict["table_cards"], game_dict["gamemode"]["trumpf"], game_dict["order_dict"]))
+    game_dict["turn"] = winner
+
+    print_multiple_cards(game_dict["table_cards"])
+    print(game_dict["settings"]["winner_message"].format(game_dict["players"][winner]["name"]))
+
+    if winner == game_dict["bidding"]["bid_player"]:
+        game_dict["single_player_stack"] += copy(game_dict["table_cards"])
+    game_dict["table_cards"] = []
+
+    if len(game_dict["players"][winner]["cards"]) == 0:
+        game_dict["gamestate"] = 5
+
+    return game_dict
 
 def user_play_card(game_dict):
     show_message = game_dict["settings"]["cardmessage"].format(game_dict["players"][game_dict["turn"]]["name"])
@@ -63,3 +74,24 @@ def same_suit_or_trumpf(card1, card2, trumpf, suit_dict):
             if (card1.card_points == 2 and card2.suit_str == trumpf) or (card2.card_points == 2 and card1.suit_str == trumpf):
                 return True
     return False
+
+def get_winner(table_cards, trumpf, order_dict):
+    if not isinstance(table_cards, list):
+        raise TypeError("table_cards need to be of Type List")
+    if trumpf is not None and not isinstance(trumpf, str):
+        raise TypeError("Trumpf need to be of Type None or String")
+    if not isinstance(order_dict, dict):
+        raise TypeError("Order Dict need to be of Type dict")
+
+    if not table_cards:
+        raise ValueError("There need to be atleast one card to find the winner")
+    if not all([isinstance(card, Card) for card in table_cards]):
+        raise ValueError("Table Cards should only contain Cards")
+
+
+    winner = table_cards[0]
+    for card in table_cards[1:]:
+        if not winner.ishigher(card, trumpf, order_dict):
+            winner = card
+    
+    return table_cards.index(winner)

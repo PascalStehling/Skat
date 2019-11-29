@@ -7,26 +7,31 @@ def create_settings(language='en'):
     language: Change the Language in which you play the game
 
     returns dict with:
-    TODO
+    TODO Put everything in JSON files with "settings_DE.json" name (DE or EN or other language) and load Dynamically so that new files can be created
+        Mybe Checksum by standart, so that no errors occure or other kind of Check
     """
     if not isinstance(language, str):
         raise TypeError("language needs to be of type str")
     if language == 'en':
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'J': 2, 'Q': 3, 'K': 4, 'A': 11}
         suit_dict = {"C": 12, "S": 11, "H": 10, "D": 9}
+        standart_order_dict = {'7': 0, '8': 1, '9': 2, '10': 5, 'J': 7, 'Q': 3, 'K': 4, 'A': 6}
+        null_order_dict = {'7': 0, '8': 1, '9': 2, '10': 3, 'J': 4, 'Q': 5, 'K': 6, 'A': 7}
+
         position_dict = {0: "Forhand", 1: "Middlehand", 2: "Backhand"}
-        gamemode_dict = {0: {"name": "Color Game: Clubs", "trumpf": "C"},
-                         1: {"name": "Color Game: Spade", "trumpf": "S"},
-                         2: {"name": "Color Game: Hearts", "trumpf": "H"}, 
-                         3: {"name": "Color Game: Diamonds", "trumpf": "D"},
-                         4: {"name": "Grand", "trumpf": "J"},
-                         5: {"name": "Zero", "trumpf": None}}
+        gamemode_dict = {0: {"name": "Color Game: Clubs", "trumpf": "C", "order_dict": "standart_order_dict"},
+                         1: {"name": "Color Game: Spade", "trumpf": "S", "order_dict": "standart_order_dict"},
+                         2: {"name": "Color Game: Hearts", "trumpf": "H", "order_dict": "standart_order_dict"}, 
+                         3: {"name": "Color Game: Diamonds", "trumpf": "D", "order_dict": "standart_order_dict"},
+                         4: {"name": "Grand", "trumpf": "J", "order_dict": "standart_order_dict"},
+                         5: {"name": "Zero", "trumpf": None, "order_dict": "null_order_dict"}}
 
         bidmessage = "{}: Do you want to bid {}? With Yes you accept the bid, with No you pass."
         skatmessage = "{} Do you want to take the Skat? Yes or No"
         cardmessage = "{} Please Play a Card from your Cards. Please write the Cards as written under the Cards"
         gamemode_message = "{} Please choose a Gamemode from the ones beneeth. Just enter the Number"
         tablecard_message = "Cards on the Table"
+        winner_message = "{} won this round"
 
         yesno_errormessage = "{}: Please enter Yes or No!"
         card_errormessage = "{} Please enter a Real Card which is in your Cards!"
@@ -35,19 +40,23 @@ def create_settings(language='en'):
     elif language == 'de':
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'B': 2, 'D': 3, 'K': 4, 'A': 11}
         suit_dict = {"Kr": 12, "P": 11, "H": 10, "Ka": 9}
+        standart_order_dict = {'7': 0, '8': 1, '9': 2, '10': 5, 'B': 7, 'D': 3, 'K': 4, 'A': 6}
+        null_order_dict = {'7': 0, '8': 1, '9': 2, '10': 3, 'B': 4, 'D': 5, 'K': 6, 'A': 7}
+
         position_dict = {0: "Vorhand", 1: "Mittelhand", 2: "Rückhand"}
-        gamemode_dict = {0: {"name": "Farbspiel: Kreuz", "trumpf": "Kr"},
-                         1: {"name": "Farbspiel: Pik", "trumpf": "P"},
-                         2: {"name": "Farbspiel: Herz", "trumpf": "H"}, 
-                         3: {"name": "Farbspiel: Karo", "trumpf": "Ka"},
-                         4: {"name": "Grand", "trumpf": "B"},
-                         5: {"name": "Null", "trumpf": None}}
+        gamemode_dict = {0: {"name": "Farbspiel: Kreuz", "trumpf": "Kr", "order_dict": "standart_order_dict"},
+                         1: {"name": "Farbspiel: Pik", "trumpf": "P", "order_dict": "standart_order_dict"},
+                         2: {"name": "Farbspiel: Herz", "trumpf": "H", "order_dict": "standart_order_dict"}, 
+                         3: {"name": "Farbspiel: Karo", "trumpf": "Ka", "order_dict": "standart_order_dict"},
+                         4: {"name": "Grand", "trumpf": "B", "order_dict": "standart_order_dict"},
+                         5: {"name": "Null", "trumpf": None, "order_dict": "null_order_dict"}}
 
         bidmessage = "{}: Willst du {} bieten? Mit Yes akzeptierst du, mit No Passt du."
         skatmessage = "{} Willst du den Skat aufnehmen? Yes(ja)/No(Nein)"
         cardmessage = "{} Spiele eine Karte aus deinem Blatt. Bitte Schreib die Karte so, wie unter den oben angezeigten Karten zu sehen"
         gamemode_message = "{} Wähle einen Spielart von den darunterligenden aus. Bitte gebe nur die Nummer ein"
         tablecard_message = "Karten auf dem Tisch"
+        winner_message = "{} hat die Runde gewonnen"
 
         yesno_errormessage = "{}: Bitte geb Yes(ja) oder No(nein) ein!"
         card_errormessage = "{} Bitte geben sie eine echte Karte ein, die sich auch in ihrem Blatt befindet!"
@@ -71,7 +80,10 @@ def create_settings(language='en'):
             "gamemode_message": gamemode_message,
             "gamemode_errormessage": gamemode_errormessage,
             "tablecard_message": tablecard_message,
-            "play_errormessage": play_errormessage}
+            "play_errormessage": play_errormessage,
+            "standart_order_dict": standart_order_dict,
+            "null_order_dict": null_order_dict,
+            "winner_message": winner_message}
 
 def create_player(player_name, player_num, player_position):
     """
@@ -116,6 +128,7 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
     max_rounds: maximum amount of rounds which are played
     gamemode: the gamemode which is played for the round
     turn: the player, who has its turn
+    order_dict: The dictionary with the order of witch card is is higher than the other
     """
     return {"players": create_players(player_names), 
             "gamestate": 1, 
@@ -127,4 +140,5 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
             "settings": create_settings(language),
             "gamemode": None,
             "turn": None,
-            "bid": None}
+            "bidding": None,
+            "order_dict": None}
