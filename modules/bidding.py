@@ -23,16 +23,16 @@ def make_bid(game_dict):
     else:
         game_dict["bidding"]["passed"].append(game_dict["turn"])
         
-        if check_end_bidding(game_dict):
-            if game_dict["bidding"]["bid_player"] is not None:
-                game_dict["turn"] = game_dict["bidding"]["bid_player"]
-                game_dict["gamestate"] = 3
-            else:
-                # Ramsch not implemented, just new cards are given.
-                # TODO Ramsch
-                print("Everyone passed, cards get dealt again")
-                game_dict["gamestate"] = 1
-            return game_dict
+    if check_end_bidding(game_dict):
+        if game_dict["bidding"]["bid_player"] is not None:
+            game_dict["turn"] = game_dict["bidding"]["bid_player"]
+            game_dict["gamestate"] = 3
+        else:
+            # Ramsch not implemented, just new cards are given.
+            # TODO Ramsch
+            print("Everyone passed, cards get dealt again")
+            game_dict["gamestate"] = 1
+        return game_dict
 
     game_dict["turn"] = get_player_turn(game_dict)
 

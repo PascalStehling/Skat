@@ -1,6 +1,6 @@
 
 from modules.card import EmptyCard, Card
-from modules.tools import print_multiple_cards, user_select_card, get_player_at_position
+from modules.tools import print_multiple_cards, user_select_card, get_player_at_position, sort_cards
 from copy import copy
 
 def play_card_user(game_dict):
@@ -17,7 +17,7 @@ def play_card_user(game_dict):
         game_dict["turn"] =  (game_dict["turn"] + 1)%3
         return game_dict
     
-    winner = get_player_at_position(game_dict, get_winner(game_dict["table_cards"], game_dict["gamemode"]["trumpf"], game_dict["order_dict"]))
+    winner = (game_dict["turn"]+1+get_winner(game_dict["table_cards"], game_dict["gamemode"]["trumpf"], game_dict["order_dict"]))%3
     game_dict["turn"] = winner
 
     print_multiple_cards(game_dict["table_cards"])
@@ -46,6 +46,7 @@ def user_play_card(game_dict):
         if not same_suit_or_trumpf(game_dict["table_cards"][0], table_card, trumpf, suit_dict):
             if any(same_suit_or_trumpf(game_dict["table_cards"][0], card, trumpf, suit_dict) for card in cards):
                 game_dict["players"][game_dict["turn"]]["cards"].append(table_card)
+                game_dict["players"][game_dict["turn"]]["cards"] = sort_cards(game_dict["players"][game_dict["turn"]]["cards"], game_dict["order_dict"], trumpf)
                 print(game_dict["settings"]["play_errormessage"].format(game_dict["players"][game_dict["turn"]]["name"]))
                 return user_play_card(game_dict)
     
