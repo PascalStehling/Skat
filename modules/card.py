@@ -70,7 +70,7 @@ class Card:
         card_trumpf = self.istrumpf(trumpf)
         smaller_card_trumpf = smaller_card.istrumpf(trumpf)
 
-        if card_trumpf and not smaller_card:
+        if card_trumpf and not smaller_card_trumpf:
             return True
         elif smaller_card_trumpf and not card_trumpf:
             return False

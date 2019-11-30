@@ -75,6 +75,9 @@ class Test_card(unittest.TestCase):
         self.assertTrue(b.ishigher(c, "P", order_dict, True)) # 2 Cards not Trumpf, suit_val check
         self.assertFalse(c.ishigher(b, "P", order_dict, True)) # 2 Cards not Trumpf, suit_val check
 
+        self.assertTrue(d.ishigher(b, "P", order_dict, True)) # Jack and not Trumpf, suit_val check
+        self.assertFalse(b.ishigher(d, "P", order_dict, True)) # not Trumpf and Jack, suit_val check
+
         self.assertTrue(d.ishigher(a, "P", order_dict))
         self.assertFalse(a.ishigher(d, "P", order_dict))
 
