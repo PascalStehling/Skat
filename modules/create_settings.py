@@ -19,12 +19,12 @@ def create_settings(language='en'):
         null_order_dict = {'7': 0, '8': 1, '9': 2, '10': 3, 'J': 4, 'Q': 5, 'K': 6, 'A': 7}
 
         position_dict = {0: "Forhand", 1: "Middlehand", 2: "Backhand"}
-        gamemode_dict = {0: {"name": "Color Game: Clubs", "trumpf": "C", "order_dict": "standart_order_dict"},
-                         1: {"name": "Color Game: Spade", "trumpf": "S", "order_dict": "standart_order_dict"},
-                         2: {"name": "Color Game: Hearts", "trumpf": "H", "order_dict": "standart_order_dict"}, 
-                         3: {"name": "Color Game: Diamonds", "trumpf": "D", "order_dict": "standart_order_dict"},
-                         4: {"name": "Grand", "trumpf": "J", "order_dict": "standart_order_dict"},
-                         5: {"name": "Zero", "trumpf": None, "order_dict": "null_order_dict"}}
+        gamemode_dict = {0: {"name": "Color Game: Clubs", "trumpf": "C", "order_dict": "standart_order_dict", "points": 12},
+                         1: {"name": "Color Game: Spade", "trumpf": "S", "order_dict": "standart_order_dict", "points": 11},
+                         2: {"name": "Color Game: Hearts", "trumpf": "H", "order_dict": "standart_order_dict", "points": 10}, 
+                         3: {"name": "Color Game: Diamonds", "trumpf": "D", "order_dict": "standart_order_dict", "points": 9},
+                         4: {"name": "Grand", "trumpf": "J", "order_dict": "standart_order_dict", "points": 24},
+                         5: {"name": "Zero", "trumpf": None, "order_dict": "null_order_dict", "points": 23}}
 
         bidmessage = "{}: Do you want to bid {}? With Yes you accept the bid, with No you pass."
         skatmessage = "{} Do you want to take the Skat? Yes or No"
@@ -44,12 +44,12 @@ def create_settings(language='en'):
         null_order_dict = {'7': 0, '8': 1, '9': 2, '10': 3, 'B': 4, 'D': 5, 'K': 6, 'A': 7}
 
         position_dict = {0: "Vorhand", 1: "Mittelhand", 2: "Rückhand"}
-        gamemode_dict = {0: {"name": "Farbspiel: Kreuz", "trumpf": "Kr", "order_dict": "standart_order_dict"},
-                         1: {"name": "Farbspiel: Pik", "trumpf": "P", "order_dict": "standart_order_dict"},
-                         2: {"name": "Farbspiel: Herz", "trumpf": "H", "order_dict": "standart_order_dict"}, 
-                         3: {"name": "Farbspiel: Karo", "trumpf": "Ka", "order_dict": "standart_order_dict"},
-                         4: {"name": "Grand", "trumpf": "B", "order_dict": "standart_order_dict"},
-                         5: {"name": "Null", "trumpf": None, "order_dict": "null_order_dict"}}
+        gamemode_dict = {0: {"name": "Farbspiel: Kreuz", "trumpf": "Kr", "order_dict": "standart_order_dict", "points": 12},
+                         1: {"name": "Farbspiel: Pik", "trumpf": "P", "order_dict": "standart_order_dict", "points": 11},
+                         2: {"name": "Farbspiel: Herz", "trumpf": "H", "order_dict": "standart_order_dict", "points": 10}, 
+                         3: {"name": "Farbspiel: Karo", "trumpf": "Ka", "order_dict": "standart_order_dict", "points": 9},
+                         4: {"name": "Grand", "trumpf": "B", "order_dict": "standart_order_dict", "points": 24},
+                         5: {"name": "Null", "trumpf": None, "order_dict": "null_order_dict", "points": 23}}
 
         bidmessage = "{}: Willst du {} bieten? Mit Yes akzeptierst du, mit No Passt du."
         skatmessage = "{} Willst du den Skat aufnehmen? Yes(ja)/No(Nein)"
@@ -64,8 +64,12 @@ def create_settings(language='en'):
         play_errormessage = "{} Spiele eine Karte mit der selben Farbe wie der ersten"
     else:
         raise ValueError("Please choose Between english (en) and german (de)")
-
-    bid_list = [x[0]*x[1] for x in product(suit_dict.values(), range(2, 6))]
+    
+    # Create Bid list
+    # Get all Values except Null for bidding, Null is added afterwards, the Number of Jacks dont care for that
+    point_list = [mode["points"] for mode in gamemode_dict.values() if mode["trumpf"] is not None]
+    bid_list = [x[0]*x[1] for x in product(point_list, range(2, 6))]
+    bid_list.append(23) # Add Null Value
     bid_list.sort()
     return {"value_dict": value_dict,
             "suit_dict": suit_dict,
@@ -134,6 +138,7 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
             "gamestate": 1, 
             "skat": [], 
             "single_player_stack": [],
+            "jack_multiplicator": None,
             "table_cards": [],
             "game_round": 1, 
             "max_round": max_rounds,

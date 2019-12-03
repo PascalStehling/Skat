@@ -16,7 +16,6 @@ def setup_round(game_dict):
     sort_trumpf = [x[0] for x in game_dict["settings"]["suit_dict"].items() if x[1]==12][0]
 
     for i in range(3):
-        # TODO better sorting algorithm, maybe use anywhere where cards get added
         game_dict["players"][i]["cards"] = sort_cards(cards[10*i:10*(i+1)], order_dict, sort_trumpf) # save cards sorted
         game_dict["players"][i]["passed"] = False
     game_dict["skat"] = cards[-2:]
@@ -25,6 +24,7 @@ def setup_round(game_dict):
     game_dict["gamestate"] = 2
     game_dict["order_dict"] = None
     game_dict["single_player_stack"] = []
+    game_dict["jack_multiplicator"] =  None
     return game_dict
 
 def give_cards_shuffled(settings):
