@@ -32,11 +32,14 @@ def create_settings(language='en'):
         gamemode_message = "{} Please choose a Gamemode from the ones beneeth. Just enter the Number"
         tablecard_message = "Cards on the Table"
         winner_message = "{} won this round"
+        end_round_message="{} scored {} Points. {} get added to his Score Board"
+        point_message = "{}| Points: {}"
 
         yesno_errormessage = "{}: Please enter Yes or No!"
         card_errormessage = "{} Please enter a Real Card which is in your Cards!"
         gamemode_errormessage = "{}Please Enter a valid number of the Gamemode"
         play_errormessage = "{} Play a Card with the same Suit as the first that was Played"
+        
     elif language == 'de':
         value_dict = {'7': 0, '8': 0, '9': 0, '10': 10, 'B': 2, 'D': 3, 'K': 4, 'A': 11}
         suit_dict = {"Kr": 12, "P": 11, "H": 10, "Ka": 9}
@@ -57,6 +60,8 @@ def create_settings(language='en'):
         gamemode_message = "{} Wähle einen Spielart von den darunterligenden aus. Bitte gebe nur die Nummer ein"
         tablecard_message = "Karten auf dem Tisch"
         winner_message = "{} hat die Runde gewonnen"
+        point_message = "{}| Punkte: {}"
+        end_round_message="{} hat {} Punkte. {} werden zu seinen Punktewerte dazugerechnet"
 
         yesno_errormessage = "{}: Bitte geb Yes(ja) oder No(nein) ein!"
         card_errormessage = "{} Bitte geben sie eine echte Karte ein, die sich auch in ihrem Blatt befindet!"
@@ -87,7 +92,9 @@ def create_settings(language='en'):
             "play_errormessage": play_errormessage,
             "standart_order_dict": standart_order_dict,
             "null_order_dict": null_order_dict,
-            "winner_message": winner_message}
+            "winner_message": winner_message,
+            "point_message": point_message,
+            "end_round_message":end_round_message}
 
 def create_player(player_name, player_num, player_position):
     """

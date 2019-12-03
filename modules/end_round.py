@@ -2,13 +2,25 @@
 from modules.card import Card
 
 def end_round(game_dict):
-    won, play_multiplicator = has_won_round(game_dict["single_player_stack"])
+    won, play_multiplicator, card_points = has_won_round(game_dict["single_player_stack"])
 
-    if over_bidded(game_dict["game_mode"], game_dict["bidding"]["bid"], game_dict["jack_multipicato"]):
-        
+    if over_bidded(game_dict["gamemode"], game_dict["bidding"]["bid"], game_dict["jack_multiplicator"]) or not won:
+        if won:
+            play_multiplicator += 1
+        points = game_dict["gamemode"]["points"]*play_multiplicator*-1
+    else:
+        points = game_dict["gamemode"]["points"]*play_multiplicator
 
+    game_dict["players"][game_dict["bidding"]["bid_player"]]["points"] += points
 
-    pass
+    print(game_dict["settings"]["end_round_message"].format(game_dict["players"][game_dict["bidding"]["bid_player"]]["name"], card_points, points))
+    for p in game_dict["players"]:
+        print(game_dict["settings"]["point_message"].format(game_dict["players"][p]["name"], game_dict["players"][p]["points"]))
+
+    game_dict["gamestate"] = 1
+    game_dict["game_round"] += 1
+
+    return game_dict
 
 def calc_card_points(cards):
     if not isinstance(cards, list):
@@ -23,17 +35,17 @@ def calc_card_points(cards):
 def has_won_round(cards):
     points = calc_card_points(cards)
     if points == 120:
-        return True, 3 #won, Schneider, Schwarz
+        return True, 3, points #won, Schneider, Schwarz
     elif points > 90:
-        return True, 2 # Won, schneider
+        return True, 2, points # Won, schneider
     elif points > 60:
-        return True, 1 # Won
+        return True, 1, points # Won
     elif points > 30:
-        return False, 2 # loose
+        return False, 2, points # loose
     elif points > 0:
-        return False, 3 # loose, schneider
+        return False, 3, points # loose, schneider
     else:
-        return False, 4 # loose, schneider, schwarz
+        return False, 4, points # loose, schneider, schwarz
 
 def calc_user_points():
     pass
