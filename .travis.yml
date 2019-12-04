@@ -22,3 +22,4 @@ script:
   - coverage run tests.py
   - coverage xml
   - sonar-scanner
+  - python-codacy-coverage -r coverage.xml
