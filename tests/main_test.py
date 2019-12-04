@@ -38,6 +38,3 @@ class Test_create_settings(unittest.TestCase):
     
     def test_right_values(self):
         self.assertDictEqual(main.create_settings('de')["suit_dict"], {"Kr": 12, "P": 11, "H": 10, "Ka": 9})
-
-if __name__ == "__main__":
-    unittest.main()

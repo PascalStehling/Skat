@@ -92,3 +92,19 @@ def sort_cards(cards, order_dict, trumpf):
             k += 1
         i += 1
     return cards
+
+def get_user_true_false_duplicate_test(show_message, error_message, user_cards):
+    """
+    Get True or False if user wants to take the bid
+    """
+    print_multiple_cards(user_cards)
+    print("\n", show_message)
+    inp = input()
+
+    if inp.lower() == "yes" or inp.lower() == "y":
+        return True
+    elif inp.lower() == "no" or inp.lower() == "n":
+        return False
+    else:
+        print(error_message)
+        return get_user_true_false(show_message, error_message, user_cards)
