@@ -21,4 +21,5 @@ script:
   - python tests.py
   - coverage run tests.py
   - coverage xml
+  - pylint modules -r n --msg-template='{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}' > pylint_report.txt
   - sonar-scanner
