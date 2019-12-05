@@ -15,4 +15,4 @@
 |[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=PascalStehling_Skat&metric=sqale_index)](https://sonarcloud.io/dashboard?id=PascalStehling_Skat)||
 # Skat
 
-This is my little Skat Project, it can be build with bazel and is connectetd to Travis-CI for Continous Integration.
+This is my little Skat Project, it can be build with bazel and is connectetd to Travis-CI for Continous Integration.It uses SOnarCloud and Codacy to Check the Code.
