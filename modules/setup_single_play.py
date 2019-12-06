@@ -40,7 +40,7 @@ def setup_single_play(game_dict):
     for player in game_dict["players"]:
         game_dict["players"][player]["cards"] = sort_cards(game_dict["players"][player]["cards"], game_dict["order_dict"], game_dict["gamemode"]["trumpf"])
     game_dict["gamestate"] = 4
-    game_dict["turn"] = get_player_at_position(game_dict, 0)
+    game_dict["turn"] = get_player_at_position(game_dict["players"], 0)
 
     return game_dict
 

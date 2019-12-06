@@ -15,12 +15,12 @@ def print_multiple_cards(cards):
             pr_str += c.get_ascii_card()[i]+":"
         print(pr_str[:-1])
 
-def get_player_at_position(game_dict, position):
+def get_player_at_position(player_dict, position):
     """
     Returns the number of the player who is Playing forehand
     """
-    for player_num in game_dict["players"]:
-        if  game_dict["players"][player_num]["position"] == position:
+    for player_num in player_dict:
+        if  player_dict[player_num]["position"] == position:
             return player_num
     raise Exception("No Player at this position")
 

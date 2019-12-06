@@ -1,6 +1,6 @@
 
 from modules.card import EmptyCard, Card
-from modules.tools import print_multiple_cards, user_select_card, get_player_at_position, sort_cards
+from modules.tools import print_multiple_cards, user_select_card, sort_cards
 from copy import copy
 
 def play_card_user(game_dict):
