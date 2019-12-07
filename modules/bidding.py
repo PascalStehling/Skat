@@ -18,7 +18,7 @@ def make_bid(game_dict):
 
     user_bid = get_user_true_false(show_message, error_message, cards)
     bid_list = game_dict["settings"]["bid_list"]
-    game_dict["bidding"] = update_bid_dict(user_bid, new_bid, game_dict["bidding"], bid_list, turn, game_dict["players"])
+    game_dict["bidding"] = update_bid_dict(user_bid, new_bid, game_dict["bidding"], bid_list, turn, game_dict["players"][turn]["position"], get_player_at_position(game_dict["players"], 0))
     
     passed_players = game_dict["bidding"]["passed"]
 
@@ -32,7 +32,7 @@ def make_bid(game_dict):
                                                                     get_player_at_position(game_dict["players"], 2))
     return game_dict
 
-def update_bid_dict(user_bid, new_bid, bid_dict, bid_list, turn, player_dict):
+def update_bid_dict(user_bid, new_bid, bid_dict, bid_list, turn, old_turn_position, forhand_player):
     r"""Check what the user has bidden and update the bidding Dictionary (bid_dict).
     
     Args:
@@ -41,7 +41,8 @@ def update_bid_dict(user_bid, new_bid, bid_dict, bid_list, turn, player_dict):
         bid_dict (dict): The Dictionary with all relevant information for bidding
         bid_list (list): List with all possible bids
         turn (int): The number of the player who is playing now
-        player_dict (dict): the dictionary with all player Information
+        old_turn_position (int): The position of the Player who is playing now
+        forhand_player (int): Number of the Player who Plays Forhand
     
     Returns:
         dict: The Updated bid_dict
@@ -49,10 +50,9 @@ def update_bid_dict(user_bid, new_bid, bid_dict, bid_list, turn, player_dict):
     if not user_bid:
         bid_dict["passed"].append(turn)
         return bid_dict
-    old_turn_position = player_dict[turn]["position"]
-    return update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, player_dict,bid_dict)
+    return update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, forhand_player ,bid_dict)
 
-def update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, player_dict, bid_dict):
+def update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, forhand_player, bid_dict):
     """Updates the bid Dict if the user said Yes to the new Bid
     
     Args:
@@ -60,7 +60,7 @@ def update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, play
         new_bid (int): The Bid the user had to decide to Play or pass
         bid_list (list): List with all possible bids
         turn (int): The number of the player who is playing now
-        player_dict (dict): the dictionary with all player Information
+        forhand_player (int): Number of the Player who Plays Forhand
         bid_dict (dict): The Dictionary with all relevant information for bidding
     
     Returns:
@@ -71,22 +71,22 @@ def update_bid_dict_positiv_bid(old_turn_position, new_bid, bid_list, turn, play
     elif old_turn_position == 2: # Backhand can only say
         return bid_say(bid_dict, new_bid, turn)
     else: # Middlehand is playing
-        return update_bid_dict_middlehand_player(new_bid, turn, bid_list, player_dict, bid_dict)
+        return update_bid_dict_middlehand_player(new_bid, turn, bid_list, forhand_player, bid_dict)
 
-def update_bid_dict_middlehand_player(new_bid, turn, bid_list, player_dict, bid_dict):
+def update_bid_dict_middlehand_player(new_bid, turn, bid_list, forhand_player, bid_dict):
     """Updates the bid Dict if the user said Yes to the new Bid and was playing middlehand
     
     Args:
         new_bid (int): The Bid the user had to decide to Play or pass
         turn (int): The number of the player who is playing now
         bid_list (list): List with all possible bids
-        player_dict (dict): the dictionary with all player Information
+        forhand_player (int): Number of the Player who Plays Forhand
         bid_dict (dict): The Dictionary with all relevant information for bidding
     
     Returns:
         dict: The Updated bid_dict
     """
-    if get_player_at_position(player_dict, 0) in bid_dict["passed"]: # If Forhand has passed, Middlehand is hearing
+    if forhand_player in bid_dict["passed"]: # If Forhand has passed, Middlehand is hearing
         return bid_hear(bid_dict, new_bid, turn, bid_list)
     else:  # Else middle hand is saying
         return bid_say(bid_dict, new_bid, turn)
@@ -118,6 +118,8 @@ def bid_hear(bid_dict, new_bid, turn, bid_list):
     Returns:
         dict: The Updated bid_dict
     """
+    if bid_list[-1] == new_bid:
+        raise ValueError("Cant bid any higher") 
     bid_dict["bid_player"] = turn
     bid_dict["next_bid"] = bid_list[bid_list.index(new_bid)+1]
     return bid_dict

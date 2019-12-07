@@ -1,105 +1,93 @@
 import sys
 sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
 
-from modules import bidding
+from modules.bidding import *
 import unittest
 
-class Test_get_player_turn(unittest.TestCase):
+class Test_bidding(unittest.TestCase):
 
-    def reset_game_dict(self, turn=1, passed=[]):
-        self.game_dict = {"turn": turn, "bidding":{}, "players":{}}
-        self.game_dict["bidding"]["passed"] = passed
-        self.game_dict["players"][0] = {}
-        self.game_dict["players"][0]["position"] = 0
-        self.game_dict["players"][1] = {}
-        self.game_dict["players"][1]["position"] = 1
-        self.game_dict["players"][2] = {}
-        self.game_dict["players"][2]["position"] = 2
+    def test_is_end_bidding(self):
+        self.assertFalse(is_end_bidding([], None))
+        self.assertFalse(is_end_bidding([], 1))
 
-    # No One passed, Only Forhand and middlehand can make plays/pass
-    def test_no_passed_middlehand_made_play(self):
-        self.reset_game_dict()
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 0) # After middlehand played, forhand needs to play next
+        self.assertFalse(is_end_bidding([0], None))
+        self.assertFalse(is_end_bidding([0], 1))
 
-    def test_no_passed_forhand_made_play(self):
-        self.reset_game_dict(turn=0)
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 1) # After forhand played, middlehand needs to play next
+        self.assertFalse(is_end_bidding([0,1], None))
+        self.assertTrue(is_end_bidding([0,1], 1))
 
-    def test_no_passed_middlehand_passed(self):
-        self.reset_game_dict(passed=[1])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After middlehand passed, backhand needs to play next
+        self.assertTrue(is_end_bidding([0,1,2], None))
+        self.assertTrue(is_end_bidding([0,1,2], 1))
 
-    def test_no_passed_forhand_passed(self):
-        self.reset_game_dict(turn=0, passed=[0])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After forhand passed, backhand needs to play next
+    def test_end_bidding(self):
+        self.assertTupleEqual(end_bidding(None, 2), (2,1))
+        self.assertTupleEqual(end_bidding(0, 1), (0,3))
 
+    def test_check_end_bidding(self):
+        self.assertTupleEqual(check_end_bidding(1, [0], 2, 1, 2, 0, 1, 2), (1, 2))
+        self.assertTupleEqual(check_end_bidding(1, [0,2], 2, 1, 2, 1, 2, 0), (1, 3))
 
-    # One Forhand or Middlehand passed --> backhand plays with the other one
-    def test_middlehand_passed_backhand_play(self):
-        self.reset_game_dict(turn=2, passed=[1])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 0) # After middlehand passed and backhand played, forhand needs to play next
+    def test_turn_if_not_passed_backhand(self):
+        self.assertEqual(turn_if_not_passed_backhand(2, 1, [0]), 2)
+        self.assertEqual(turn_if_not_passed_backhand(2, 1, [2]), 1)
 
-    def test_middlehand_passed_forhand_play(self):
-        self.reset_game_dict(turn=0, passed=[1])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After middlehand passed and forhand played, backhand needs to play next
+    def test_turn_if_not_passed_forhand(self):
+        self.assertEqual(turn_if_not_passed_forhand(2,0, [1]), 2)
+        self.assertEqual(turn_if_not_passed_forhand(2,0, [2]), 0)
 
-    def test_forhand_passed_backhand_play(self):
-        self.reset_game_dict(turn=2, passed=[0])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 1) # After forhand passed and backhand played, middlehand needs to play next
+    def test_turn_if_not_passed_middlehand(self):
+        self.assertEqual(turn_if_not_passed_middlehand(1,0, [2]), 1)
+        self.assertEqual(turn_if_not_passed_middlehand(1,0, [1]), 0)
 
-    def test_forhand_passed_middlehand_play(self):
-        self.reset_game_dict(turn=1, passed=[0])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After forhand passed and middlehand played, backhand needs to play next
-
-
-    # One Forhand or Middlehand passed --> backhand or other one passes (only possible if no one bidded yet, otherwise this function would not be called)
-    def test_middlehand_passed_backhand_passes(self):
-        self.reset_game_dict(turn=2, passed=[1,2])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 0) # After middlehand and backhand passed, forhand needs to play next
-
-    def test_middlehand_passed_forhand_passes(self):
-        self.reset_game_dict(turn=0, passed=[1,0])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After middlehand and forhand passed, backhand needs to play next
-
-    def test_forhand_passed_backhand_passes(self):
-        self.reset_game_dict(turn=2, passed=[0,2])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 1) # After forhand and backhand passed, middlehand needs to play next
-
-    def test_forhand_passed_middlehand_passes(self):
-        self.reset_game_dict(turn=1, passed=[0,1])
-        self.assertEqual(bidding.get_new_turn(self.game_dict), 2) # After forhand and middlehand passed, backhand needs to play next
-
+    def test_turn_if_not_passed(self):
+        self.assertEqual(turn_if_not_passed(0, 1, 2, 0, [2]), 0)
+        self.assertEqual(turn_if_not_passed(1, 1, 2, 0, [1]), 0)
+        self.assertEqual(turn_if_not_passed(2, 1, 2, 0, [1]), 2)
+        with self.assertRaises(Exception):
+            turn_if_not_passed(4, 1, 2, 0, [0])
     
-class Test_check_end_bidding(unittest.TestCase):
+    def test_turn_if_passed(self):
+        self.assertEqual(turn_if_passed(1, 2, 0, 1, [0]), 1)
+        self.assertEqual(turn_if_passed(2, 2, 0, 1, [1,0]), 2)
+        self.assertEqual(turn_if_passed(2, 2, 0, 1, [1,2]), 0)
 
-    def reset_game_dict(self, passed=[], player=None):
-        self.game_dict = {"bidding":{}}
-        self.game_dict["bidding"]["passed"] = passed
-        self.game_dict["bidding"]["bid_player"] = player
+    def test_get_new_turn(self):
+        self.assertEqual(get_new_turn(2,1,1,2,0,[]), 1)
+        self.assertEqual(get_new_turn(2,1,1,2,0,[2]), 0)
 
-    def test_no_one_passes(self):
-        self.reset_game_dict()
-        self.assertFalse(bidding.is_end_bidding(self.game_dict))
+    def test_bid_hear(self):
+        self.assertDictEqual(bid_hear({}, 24, 2, [22,23,24,26,28]), {"bid_player":2, "next_bid": 26})
+        with self.assertRaises(ValueError):
+            bid_hear({}, 28, 2, [22,23,24,26,28])
 
-    def test_one_passes(self):
-        self.reset_game_dict(passed=[1])
-        self.assertFalse(bidding.is_end_bidding(self.game_dict))
+    def test_bid_say(self):
+        self.assertDictEqual(bid_say({"bid_player":None, "bid": None}, 24,2), {"bid_player":2, "bid": 24})
 
-    def test_two_passes(self):
-        self.reset_game_dict(passed=[1,2])
-        self.assertFalse(bidding.is_end_bidding(self.game_dict))
+    def test_update_bid_dict_middlehand_player(self):
+        self.assertDictEqual(update_bid_dict_middlehand_player(24,2,[22,23,24,26,28], 1, {"passed": [1], "bid_player": None, "bid": None, "next_bid": None}),
+                                {"passed": [1], "bid_player": 2, "bid": None, "next_bid": 26})
 
-    def test_three_passes(self):
-        self.reset_game_dict(passed=[1,2,0])
-        self.assertTrue(bidding.is_end_bidding(self.game_dict))
+        self.assertDictEqual(update_bid_dict_middlehand_player(24,2,[22,23,24,26,28], 1, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
+                                {"passed": [], "bid_player": 2, "bid": 24, "next_bid": None})
 
-    def test_one_passes_one_plays(self):
-        self.reset_game_dict(passed=[1], player=0)
-        self.assertFalse(bidding.is_end_bidding(self.game_dict))
+    def test_update_bid_dict_positiv_bid(self):
+        self.assertDictEqual(update_bid_dict_positiv_bid(0, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
+                                {"passed": [], "bid_player": 0, "bid": None, "next_bid": 26})
+        
+        self.assertDictEqual(update_bid_dict_positiv_bid(1, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
+                                {"passed": [], "bid_player": 0, "bid": 24, "next_bid": None})
+
+        self.assertDictEqual(update_bid_dict_positiv_bid(2, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
+                                {"passed": [], "bid_player": 0, "bid": 24, "next_bid": None})
+
+    def test_update_bid_dict(self):
+        self.assertDictEqual(update_bid_dict(False, 24, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}, [23,24,26], 0, 0, 0),
+                                {"passed": [0], "bid_player": None, "bid": None, "next_bid": None})
+        self.assertDictEqual(update_bid_dict(True, 24, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}, [23,24,26], 0, 0, 0),
+                                {"passed": [], "bid_player": 0, "bid": None, "next_bid": 26})
+
+                
     
-    def test_two_passes_one_plays(self):
-        self.reset_game_dict(passed=[1,2], player=0)
-        self.assertTrue(bidding.is_end_bidding(self.game_dict))
 
 if __name__ == "__main__":
     unittest.main()
