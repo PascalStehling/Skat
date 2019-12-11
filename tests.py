@@ -1,8 +1,8 @@
 
-from tests import bidding_test, card_test, main_test, play_round_test,tools_test
+from tests import bidding_test, card_test, main_test, play_round_test,tools_test, end_round_test
 import unittest
 
-test_classes = [bidding_test, card_test, main_test, play_round_test, tools_test]
+test_classes = [bidding_test, card_test, main_test, play_round_test, tools_test, end_round_test]
 
 suit_list = []
 loader = unittest.TestLoader()

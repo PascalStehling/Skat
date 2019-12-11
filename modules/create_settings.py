@@ -1,10 +1,11 @@
 
 from itertools import product
 import json
+import os
 
 def create_settings_from_file(language="en"):
     try:
-        with open(r"language-settings/Settings-"+language+".json", "r", encoding="utf-8") as f:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "language-settings","Settings-"+language+".json"), "r", encoding="utf-8") as f:
             set_dict = json.loads(f.read())
     except FileNotFoundError:
         raise Exception("This language does not exists!")
