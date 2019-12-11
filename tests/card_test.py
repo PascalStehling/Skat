@@ -1,7 +1,7 @@
 import unittest
 import sys
 
-sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
+sys.path.append('../')
 from modules.card import *
 
 class Test_card(unittest.TestCase):

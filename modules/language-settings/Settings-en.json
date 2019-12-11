@@ -88,6 +88,6 @@
         "A": 7
     },
     "winner_message": "{} won this round",
-    "point_message": "{}| Points: {}",
-    "end_round_message": "{} scored {} Points. {} get added to his Score Board"
+    "point_message": "{}| Score: {}",
+    "end_round_message": "{} got {} Points. {} are added to his Score Board"
 }

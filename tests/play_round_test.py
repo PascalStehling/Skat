@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
+sys.path.append('../')
 
 from modules.play_round import same_suit_or_trumpf
 from modules.card import Card

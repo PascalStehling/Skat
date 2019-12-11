@@ -2,7 +2,7 @@
 import unittest
 import sys
 
-sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
+sys.path.append('../')
 from modules import card
 from modules.tools import print_multiple_cards, sort_cards
 from random import sample
