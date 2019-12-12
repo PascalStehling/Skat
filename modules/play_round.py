@@ -1,5 +1,5 @@
 
-from modules.card import EmptyCard, Card
+from modules.card import EmptyCard
 from modules.tools import print_multiple_cards, user_select_card, sort_cards
 from copy import copy
 

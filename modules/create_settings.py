@@ -7,10 +7,10 @@ def create_settings_from_file(language="en"):
     try:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "language-settings","Settings-"+language+".json"), "r", encoding="utf-8") as f:
             set_dict = json.loads(f.read())
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         raise Exception("This language does not exists!")
 
-     # Create Bid list
+    # Create Bid list
     # Get all Values except Null for bidding, Null is added afterwards, the Number of Jacks dont care for that
     point_list = [mode["points"] for mode in set_dict["gamemode_dict"].values() if mode["trumpf"] is not None]
     bid_list = [x[0]*x[1] for x in product(point_list, range(2, 6))]
@@ -18,7 +18,7 @@ def create_settings_from_file(language="en"):
     bid_list.sort()
 
     set_dict["bid_list"] = bid_list
-    
+
     return set_dict
 
 def create_player(player_name, player_num, player_position):
@@ -62,13 +62,13 @@ def create_game_dict(player_names=None, max_rounds=36, language='en'):
     turn: the player, who has its turn
     order_dict: The dictionary with the order of witch card is is higher than the other
     """
-    return {"players": create_players(player_names), 
-            "gamestate": 1, 
-            "skat": [], 
+    return {"players": create_players(player_names),
+            "gamestate": 1,
+            "skat": [],
             "single_player_stack": [],
             "jack_multiplicator": None,
             "table_cards": [],
-            "game_round": 1, 
+            "game_round": 1,
             "max_round": max_rounds,
             "settings": create_settings_from_file(language),
             "gamemode": None,
