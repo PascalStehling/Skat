@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, r"C:/Users/Pascal/Desktop/Skat")
+sys.path.append('../')
 
 from modules.bidding import *
 import unittest
