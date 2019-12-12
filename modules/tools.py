@@ -3,7 +3,7 @@ Here are functions witch are needed in diffrent states of this programm
 """
 from modules.card import Card
 
-def print_multiple_cards(cards):
+def print_multiple_cards(cards, card_delimiter=":"):
     if not isinstance(cards, list):
         raise TypeError("cards need to be of type list")
     elif not all(isinstance(c, Card) for c in cards):
@@ -12,7 +12,7 @@ def print_multiple_cards(cards):
     for i in range(len(cards[0].get_ascii_card())):
         pr_str = ""
         for c in cards:
-            pr_str += c.get_ascii_card()[i]+":"
+            pr_str += c.get_ascii_card()[i]+card_delimiter
         print(pr_str[:-1])
 
 def get_player_at_position(player_dict, position):
@@ -34,11 +34,11 @@ def get_user_true_false(show_message, error_message, user_cards):
 
     if inp.lower() == "yes" or inp.lower() == "y":
         return True
-    elif inp.lower() == "no" or inp.lower() == "n":
+    if inp.lower() == "no" or inp.lower() == "n":
         return False
-    else:
-        print(error_message)
-        return get_user_true_false(show_message, error_message, user_cards)
+    
+    print(error_message)
+    return get_user_true_false(show_message, error_message, user_cards)
 
 def get_user_card(show_message, error_message, user_cards, value_dict, suit_dict):
     """
@@ -53,18 +53,12 @@ def get_user_card(show_message, error_message, user_cards, value_dict, suit_dict
     
     if isinstance(inp, list) and len(inp) == 2:
         try:
-            user_card = Card(inp[0], inp[1], value_dict, suit_dict)
+            return Card(inp[0], inp[1], value_dict, suit_dict)
         except (TypeError, ValueError):
-            try:
-                user_card = Card(inp[1], inp[0], value_dict, suit_dict)
-            except (TypeError, ValueError):
-                print(error_message)
-                return get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
-    else:
-        print(error_message)
-        return get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
+            pass
     
-    return user_card
+    print(error_message)
+    return get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
                 
 def user_select_card(show_message, error_message, user_cards, value_dict, suit_dict):
     card = get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)

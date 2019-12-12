@@ -65,3 +65,6 @@ class Test_tools(unittest.TestCase):
         self.assertListEqual(sort_list_p, sort_cards(sort_list_p[::-1], self.standart_order_dict, "P"))
         self.assertListEqual(sort_list_h, sort_cards(sort_list_h[::-1], self.standart_order_dict, "H"))
         self.assertListEqual(sort_list_ka, sort_cards(sort_list_ka[::-1], self.standart_order_dict, "Ka"))
+
+if __name__ == "__main__":
+    unittest.main()

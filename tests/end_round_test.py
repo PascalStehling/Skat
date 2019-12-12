@@ -45,12 +45,12 @@ class Test_end_round(unittest.TestCase):
         self.assertEqual(get_win_level(80), 0)
     
     def test_calc_points_lost(self):
-        self.assertEqual(calc_points_lost(40, 2, 12), -48)
-        self.assertEqual(calc_points_lost(0, 2, 12), -96)
+        self.assertEqual(calc_score_points_lost(40, 2, 12), -48)
+        self.assertEqual(calc_score_points_lost(0, 2, 12), -96)
 
     def test_calc_points_won(self):
-        self.assertEqual(calc_points_won(65, 3, 10), 30)
-        self.assertEqual(calc_points_won(95, 4, 11), 55)
+        self.assertEqual(calc_score_points_won(65, 3, 10), 30)
+        self.assertEqual(calc_score_points_won(95, 4, 11), 55)
 
     def test_calculate_score(self):
         self.assertEqual(calculate_score(65, "Kr", 22, 3, 12), 36)
