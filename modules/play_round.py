@@ -44,7 +44,7 @@ def user_play_card(cards, previous_played_cards, trumpf, value_dict, suit_dict, 
 
     cards, played_card = user_select_card(card_message, card_errormessage, cards, value_dict, suit_dict)
 
-    if not is_valid_card():
+    if not is_valid_card(previous_played_cards, played_card, trumpf, cards):
         cards.append(played_card)
         cards = sort_cards(cards, order_dict, trumpf)
         print(play_errormessage)
@@ -54,13 +54,38 @@ def user_play_card(cards, previous_played_cards, trumpf, value_dict, suit_dict, 
     return previous_played_cards, cards
 
 def is_valid_card(previous_played_cards, played_card, trumpf, user_cards):
-    if previous_played_cards:
-        if not same_suit_or_trumpf(previous_played_cards[0], played_card, trumpf):
-            if same_suit_in_cards(previous_played_cards[0], trumpf, user_cards):
-                return False
-    return True
+    """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card. 
+    If this isnt the case it checks if any of the user card has the same suit or trumpf as the first played card. If this is true the its not a valid card.
+    
+    Args:
+        previous_played_cards (list): List with cards that were previous played.
+        played_card (Card): the Card the user wants to play
+        trumpf (str): the trumpf at the moment
+        user_cards (list): a list of Cards the user has in his hands
+    
+    Returns:
+        bool: True if the play was valid, else False
+    """
+    if not previous_played_cards:
+        return True
+    if same_suit_or_trumpf(previous_played_cards[0], played_card, trumpf):
+        return True
+    if not same_suit_in_cards(previous_played_cards[0], trumpf, user_cards):
+        return True
+
+    return False
 
 def same_suit_in_cards(check_card, trumpf, user_cards):
+    """Checks if there is an card with the same suit or trumpf in an list of cards.
+    
+    Args:
+        check_card (Card): Card to check for in the list
+        trumpf (str): the trumpf witch is played
+        user_cards (list): List of cards whitch will be checked
+    
+    Returns:
+        bool: True if there if a card in the list has the same suit or both are trumpf in user_cards, else False
+    """
     return any(same_suit_or_trumpf(check_card, card, trumpf) for card in user_cards)
 
 

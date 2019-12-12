@@ -300,7 +300,4 @@ def is_end_bidding(passed_player_list, bid_player):
     Returns:
         bool: True if the bidding is finished, else False
     """
-    if (len(passed_player_list) == 2 and bid_player is not None) or (len(passed_player_list) == 3):
-        return True
-    else:
-        return False
+    return (len(passed_player_list) == 2 and bid_player is not None) or (len(passed_player_list) == 3)
