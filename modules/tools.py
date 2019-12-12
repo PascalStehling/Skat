@@ -66,12 +66,15 @@ def get_user_card(show_message, error_message, user_cards, value_dict, suit_dict
     
     return user_card
                 
+def remove_user_card(user_cards, card_to_remove):
+    del user_cards[user_cards.index(card_to_remove)]
+    return user_cards
+            
 def user_select_card(show_message, error_message, user_cards, value_dict, suit_dict):
     card = get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
 
     if card in user_cards:
-        del user_cards[user_cards.index(card)]
-        return user_cards, card
+        return remove_user_card(user_cards, card)
     else:
         print(error_message)
         return user_select_card(show_message, error_message, user_cards, value_dict, suit_dict)

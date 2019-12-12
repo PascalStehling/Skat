@@ -181,22 +181,9 @@ class Card:
             bool: True if the main Card (self) is higher, False if other_card is higher
         """
         if check_suit_val:
-            return self._ishigher_no_trumpf_check_suit_val(other_card)
+            return self.has_higher_suit_val(other_card)
         else:
             return True
-
-    def _ishigher_no_trumpf_check_suit_val(self, other_card):
-        """Checks if the card is higher than other_card, if both cards are not trumpf and the higher suit value wins
-        Args:
-            other_card (Card): Card to check with
-        
-        Returns:
-            bool: True if the main Card (self) is higher, False if other_card is higher
-        """
-        if self.suit_val > other_card.suit_val:
-            return True
-        else:
-            return False
 
     def _ishigher_both_trumpf(self, other_card, order_dict):
         """Checks if the card is higher than other_card, if both cards are trumpf
@@ -239,10 +226,10 @@ class Card:
         """
         if other_card.card_points != 2: # If smaller Card is not Jack
             return True
-        return self._ishigher_both_trump_both_jack(other_card)
+        return self.has_higher_suit_val(other_card)# Both Jack, higher suit_value wins
 
-    def _ishigher_both_trump_both_jack(self, other_card):
-        """Checks if the card is higher than other_card, if both cards are trumpf and both cards are Jacks
+    def has_higher_suit_val(self, other_card):
+        """Checks if the card is higher than other_card
         
         Args:
             other_card (Card): Card to check with
@@ -250,10 +237,7 @@ class Card:
         Returns:
             bool: True if the main Card (self) is higher, False if other_card is higher
         """
-        if self.suit_val > other_card.suit_val: # Jack with higher Suit value is Higher
-            return True
-        else: # Normally there cant bee 2 Times the same Card, so the vals cant be equal
-            return False
+        return self.suit_val > other_card.suit_val
 
     def has_higher_value(self, other_card, order_dict):
         """Checks if the main card (self) has an higher value than other_card
@@ -265,10 +249,7 @@ class Card:
         Returns:
             bool: True if the main card (self) is higher
         """
-        if order_dict[self.value] > order_dict[other_card.value]:
-            return True
-        else:
-            return False
+        return order_dict[self.value] > order_dict[other_card.value]
 
 class EmptyCard(Card):
     """Creates an Empty card, with no text

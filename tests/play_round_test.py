@@ -15,22 +15,6 @@ class Test_same_suit_or_trumpf(unittest.TestCase):
     c = Card("7", 'H', value_dict, suit_dict)
     d = Card("B", 'H', value_dict, suit_dict)
     e = Card("9", 'Kr', value_dict, suit_dict)
-    
-    def test_wrong_card1_type(self):
-        with self.assertRaises(TypeError):
-            same_suit_or_trumpf("a", self.a, None, self.suit_dict)
-
-    def test_wrong_card2_type(self):
-        with self.assertRaises(TypeError):
-            same_suit_or_trumpf(self.a, "self.a", None, self.suit_dict)
-
-    def test_wrong_trumpf_type(self):
-        with self.assertRaises(TypeError):
-            same_suit_or_trumpf(self.b, self.a, 1, self.suit_dict)
-
-    def test_wrong_suit_dict_type(self):
-        with self.assertRaises(TypeError):
-            same_suit_or_trumpf(self.a, "self.a", None, "self.suit_dict")
 
     def test_cards_are_equal(self): # 2 Cards have the same Suit and none is a Jack
         self.assertTrue(same_suit_or_trumpf(self.a,self.e, "P",self.suit_dict))
@@ -58,3 +42,7 @@ class Test_same_suit_or_trumpf(unittest.TestCase):
 
     def test_cards_are_equal_trumpf_J_card_jack(self): # 2 Cards dont have the same suit and trumpf is Jack and only one is Jack
         self.assertFalse(same_suit_or_trumpf(self.b,self.c,"B", self.suit_dict))
+
+
+if __name__ == "__main__":
+    unittest.main()
