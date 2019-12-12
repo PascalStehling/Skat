@@ -2,18 +2,25 @@
 from modules.card import Card
 
 def end_round(game_dict):
-    won, play_multiplicator, card_points = has_won_round(game_dict["single_player_stack"])
+    """The main function to end the round
+    
+    Args:
+        game_dict (dict): Dictionary with all game Infos
+    
+    Returns:
+        game_dict (dict): updated Dictionary with all game Infos
+    """
+    won_cards = game_dict["single_player_stack"]
+    jack_multiplicator = game_dict["jack_multiplicator"]
+    gamemode_points = game_dict["gamemode"]["points"]
+    trumpf = game_dict["gamemode"]["trumpf"]
+    bid = game_dict["bidding"]["bid"]
 
-    if over_bidded(game_dict["gamemode"], game_dict["bidding"]["bid"], game_dict["jack_multiplicator"]) or not won:
-        if won:
-            play_multiplicator += 1
-        points = game_dict["gamemode"]["points"]*play_multiplicator*-1
-    else:
-        points = game_dict["gamemode"]["points"]*play_multiplicator
+    single_player_card_points = calc_card_points(won_cards)
+    score = calculate_score(single_player_card_points, trumpf, bid, jack_multiplicator, gamemode_points)
+    game_dict["players"][game_dict["bidding"]["bid_player"]]["points"] += score
 
-    game_dict["players"][game_dict["bidding"]["bid_player"]]["points"] += points
-
-    print(game_dict["settings"]["end_round_message"].format(game_dict["players"][game_dict["bidding"]["bid_player"]]["name"], card_points, points))
+    print(game_dict["settings"]["end_round_message"].format(game_dict["players"][game_dict["bidding"]["bid_player"]]["name"], single_player_card_points, score))
     for p in game_dict["players"]:
         print(game_dict["settings"]["point_message"].format(game_dict["players"][p]["name"], game_dict["players"][p]["points"]))
 
@@ -22,41 +29,116 @@ def end_round(game_dict):
 
     return game_dict
 
+def calculate_score(single_player_card_points, trumpf, bid, jack_multiplicator, gamemode_points):
+    """Calculate the score points of the single_player
+    
+    Args:
+        single_player_card_points (int): number of Card-Points the single_player got
+        trumpf (str): None or String of the trumpf thatz is played
+        bid (int): the bid of the single player
+        jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+        gamemode_points (int): points of the gamemode
+    
+    Returns:
+        int: the score points the player achieved
+    """
+    if has_won_round(single_player_card_points, trumpf, bid, jack_multiplicator, gamemode_points):
+        return calc_score_points_won(single_player_card_points, jack_multiplicator, gamemode_points)
+    else:
+        return calc_score_points_lost(single_player_card_points, jack_multiplicator, gamemode_points)
+
+def calc_score_points_won(single_player_card_points, jack_multiplicator, gamemode_points):
+    """Get the Score points if the player won
+    
+    Args:
+        single_player_card_points (int): number of Card-Points the single_player got
+        jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+        gamemode_points (int): points of the gamemode
+    
+    Returns:
+        int: the score points the player achieved
+    """
+    return (get_win_level(single_player_card_points)+jack_multiplicator)*gamemode_points
+
+def calc_score_points_lost(single_player_card_points, jack_multiplicator, gamemode_points):
+    """Get the Score points if the player Lost
+    
+    Args:
+        single_player_card_points (int): number of Card-Points the single_player got
+        jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+        gamemode_points (int): points of the gamemode
+    
+    Returns:
+        int: the score points the player achieved
+    """
+    return (get_win_level(120-single_player_card_points)+jack_multiplicator)*gamemode_points*-2
+
+
+def get_win_level(card_points):
+    """Get the win states the Player has.
+    
+    Args:
+        card_points (int): number of Points the single_player got
+    
+    Returns:
+        int: 0 for playing, 1 for Schneider and 2 for Schwarz
+    """
+    if card_points == 120:
+        return 2
+    if card_points > 90:
+        return 1
+    
+    return 0
+
 def calc_card_points(cards):
-    if not isinstance(cards, list):
-        raise TypeError("Crads need to be of Type List")
-    if not all([isinstance(card, Card) for card in cards]):
-        raise TypeError("All elements in Cards need to be of Type Card")
+    """Calculate the points from a list of Cards
+    
+    Args:
+        cards (list): A List of Card Objects
+    
+    Returns:
+        int: number of points the Player got
+    """
     points = 0
     for card in cards:
         points += card.card_points
     return points
 
-def has_won_round(cards):
-    points = calc_card_points(cards)
-    if points == 120:
-        return True, 3, points #won, Schneider, Schwarz
-    elif points > 90:
-        return True, 2, points # Won, schneider
-    elif points > 60:
-        return True, 1, points # Won
-    elif points > 30:
-        return False, 2, points # loose
-    elif points > 0:
-        return False, 3, points # loose, schneider
-    else:
-        return False, 4, points # loose, schneider, schwarz
-
-def calc_user_points():
-    pass
-
-def over_bidded(game_mode, bid, jack_multipicator):
-    if game_mode["trumpf"] is not None:
-        points =  game_mode["points"]*jack_multipicator
-    else:
-        points = game_mode["points"]
-
-    if points < bid:
+def has_won_round(card_points, trumpf, bid, jack_multipicator, gamemode_points):
+    """Checks if the Player has won this round. If he has over 90 he always wins, under 60 allways loose and between 60 and 90 it depends if he overbidded
+    
+    Args:
+        card_points (int): number of Points the single_player got
+        trumpf (str): None or String of the trumpf thatz is played
+        bid (int): the bid of the single player
+        jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+        gamemode_points (int): points of the gamemode
+    
+    Returns:
+        bool: True if the Player won, else False
+    """
+    if card_points >= 90:
         return True
-    else:
+
+    if card_points <= 60:
         return False
+
+    return not has_over_bidded(trumpf, bid, jack_multipicator, gamemode_points)
+    
+
+def has_over_bidded(trumpf, bid, jack_multiplicator, gamemode_points):
+    """Checks is the Player has overbidden
+    
+    Args:
+        trumpf (str): None or String of the trumpf thatz is played
+        bid (int): the bid of the single player
+        jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+        gamemode_points (int): points of the gamemode
+    
+    Returns:
+        bool: True if the player has overbidded, else False
+    """
+    if trumpf is not None:
+        return (gamemode_points*jack_multiplicator) < bid
+    else:
+        return gamemode_points < bid

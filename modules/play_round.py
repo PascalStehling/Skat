@@ -1,30 +1,38 @@
 
-from modules.card import EmptyCard, Card
-from modules.tools import print_multiple_cards, user_select_card, get_player_at_position, sort_cards
+from modules.card import EmptyCard
+from modules.tools import print_multiple_cards, user_select_card, sort_cards
 from copy import copy
 
 def play_card_user(game_dict):
 
-    table_cards = copy(game_dict["table_cards"])
-    while len(table_cards) < 3:
-        table_cards.append(EmptyCard())
+    player_name = game_dict["players"][game_dict["turn"]]["name"]
+    card_message = game_dict["settings"]["cardmessage"].format(player_name)
+    card_errormessage = game_dict["settings"]["card_errormessage"].format(player_name)
+    play_errormessage = game_dict["settings"]["play_errormessage"].format(player_name)
+    table_card_message = game_dict["settings"]["tablecard_message"]
+    cards = game_dict["players"][game_dict["turn"]]["cards"]
+    value_dict = game_dict["settings"]["value_dict"]
+    suit_dict = game_dict["settings"]["suit_dict"]
+    trumpf = game_dict["gamemode"]["trumpf"]
+    previous_played_cards = game_dict["table_cards"]
+    order_dict = game_dict["order_dict"]
+    turn = game_dict["turn"]
 
-    print(game_dict["settings"]["tablecard_message"])
-    print_multiple_cards(table_cards)
-    game_dict = user_play_card(game_dict)
+    print_card_table(previous_played_cards, table_card_message)
+
+    game_dict["table_cards"], game_dict["players"][turn]["cards"] = user_play_card(cards, previous_played_cards, trumpf, value_dict, suit_dict, order_dict, card_message, card_errormessage, play_errormessage)
 
     if len(game_dict["table_cards"]) < 3:
-        game_dict["turn"] =  (game_dict["turn"] + 1)%3
+        game_dict["turn"] =  update_turn(turn)
         return game_dict
     
-    winner = (game_dict["turn"]+1+get_winner(game_dict["table_cards"], game_dict["gamemode"]["trumpf"], game_dict["order_dict"]))%3
+    winner = get_winner(game_dict["table_cards"], trumpf, order_dict, turn)
     game_dict["turn"] = winner
 
     print_multiple_cards(game_dict["table_cards"])
     print(game_dict["settings"]["winner_message"].format(game_dict["players"][winner]["name"]))
 
-    if winner == game_dict["bidding"]["bid_player"]:
-        game_dict["single_player_stack"] += copy(game_dict["table_cards"])
+    game_dict["single_player_stack"] += update_single_player_stack(winner, game_dict["bidding"]["bid_player"], game_dict["table_cards"])
     game_dict["table_cards"] = []
 
     if len(game_dict["players"][winner]["cards"]) == 0:
@@ -32,63 +40,90 @@ def play_card_user(game_dict):
 
     return game_dict
 
-def user_play_card(game_dict):
-    show_message = game_dict["settings"]["cardmessage"].format(game_dict["players"][game_dict["turn"]]["name"])
-    error_message = game_dict["settings"]["card_errormessage"].format(game_dict["players"][game_dict["turn"]]["name"])
-    cards = game_dict["players"][game_dict["turn"]]["cards"]
-    value_dict = game_dict["settings"]["value_dict"]
-    suit_dict = game_dict["settings"]["suit_dict"]
-    trumpf = game_dict["gamemode"]["trumpf"]
+def user_play_card(cards, previous_played_cards, trumpf, value_dict, suit_dict, order_dict, card_message, card_errormessage, play_errormessage):
 
-    game_dict["players"][game_dict["turn"]]["cards"], table_card = user_select_card(show_message, error_message, cards, value_dict, suit_dict)
+    cards, played_card = user_select_card(card_message, card_errormessage, cards, value_dict, suit_dict)
 
-    if game_dict["table_cards"]:
-        if not same_suit_or_trumpf(game_dict["table_cards"][0], table_card, trumpf, suit_dict):
-            if any(same_suit_or_trumpf(game_dict["table_cards"][0], card, trumpf, suit_dict) for card in cards):
-                game_dict["players"][game_dict["turn"]]["cards"].append(table_card)
-                game_dict["players"][game_dict["turn"]]["cards"] = sort_cards(game_dict["players"][game_dict["turn"]]["cards"], game_dict["order_dict"], trumpf)
-                print(game_dict["settings"]["play_errormessage"].format(game_dict["players"][game_dict["turn"]]["name"]))
-                return user_play_card(game_dict)
+    if not is_valid_card(previous_played_cards, played_card, trumpf, cards):
+        cards.append(played_card)
+        cards = sort_cards(cards, order_dict, trumpf)
+        print(play_errormessage)
+        return user_play_card(cards, previous_played_cards, trumpf, value_dict, suit_dict, order_dict, card_message, card_errormessage, play_errormessage)
     
-    game_dict["table_cards"].append(table_card)
-    return game_dict
+    previous_played_cards.append(played_card)
+    return previous_played_cards, cards
 
-def same_suit_or_trumpf(card1, card2, trumpf, suit_dict):
+def is_valid_card(previous_played_cards, played_card, trumpf, user_cards):
+    """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card. 
+    If this isnt the case it checks if any of the user card has the same suit or trumpf as the first played card. If this is true the its not a valid card.
+    
+    Args:
+        previous_played_cards (list): List with cards that were previous played.
+        played_card (Card): the Card the user wants to play
+        trumpf (str): the trumpf at the moment
+        user_cards (list): a list of Cards the user has in his hands
+    
+    Returns:
+        bool: True if the play was valid, else False
     """
-    Check if 2 Cards have the same Suit or both are trumpf. 
-    """
-    if not isinstance(card1, Card) or not isinstance(card2, Card):
-        raise TypeError("Both Cards need to be of type Card")
-    if not isinstance(suit_dict, dict):
-        raise TypeError("Please Enter a Valid game_dict")
-    if (not trumpf is None) and (not isinstance(trumpf, str)):
-        raise TypeError("Trumpf needs to be string or None")
-
-    if trumpf is None and card1.equal_suit(card2):
+    if not previous_played_cards:
         return True
-    elif trumpf is not None: # If not None, there is a Trumpf, else the cards are not equal, so false
-        if card1.equal_suit(card2) and not (card1.card_points == 2 or card2.card_points == 2):
-            return True # If they have the Same suit but none of the cards is a jack. If one is a Jack, the trumpf matters, not the color
-        elif card1.card_points == 2 and card2.card_points == 2: # If there is an Trumpf, Jacks are allwys Trumpf so 2 Jacks are equal
-            return True
-        elif trumpf in suit_dict: # If its an Color Game, if the card is an Jack and the other card is Trumpf its equal
-            if (card1.card_points == 2 and card2.suit_str == trumpf) or (card2.card_points == 2 and card1.suit_str == trumpf):
-                return True
+    if same_suit_or_trumpf(previous_played_cards[0], played_card, trumpf):
+        return True
+    if not same_suit_in_cards(previous_played_cards[0], trumpf, user_cards):
+        return True
+
     return False
 
-def get_winner(table_cards, trumpf, order_dict):
-    if not isinstance(table_cards, list):
-        raise TypeError("table_cards need to be of Type List")
-    if trumpf is not None and not isinstance(trumpf, str):
-        raise TypeError("Trumpf need to be of Type None or String")
-    if not isinstance(order_dict, dict):
-        raise TypeError("Order Dict need to be of Type dict")
+def same_suit_in_cards(check_card, trumpf, user_cards):
+    """Checks if there is an card with the same suit or trumpf in an list of cards.
+    
+    Args:
+        check_card (Card): Card to check for in the list
+        trumpf (str): the trumpf witch is played
+        user_cards (list): List of cards whitch will be checked
+    
+    Returns:
+        bool: True if there if a card in the list has the same suit or both are trumpf in user_cards, else False
+    """
+    return any(same_suit_or_trumpf(check_card, card, trumpf) for card in user_cards)
 
-    if not table_cards:
-        raise ValueError("There need to be atleast one card to find the winner")
-    if not all([isinstance(card, Card) for card in table_cards]):
-        raise ValueError("Table Cards should only contain Cards")
 
+def same_suit_or_trumpf(card1, card2, trumpf):
+    """Check if 2 Cards have the same Suit or both are trumpf. 
+    
+    Args:
+        card1 (Card): First Card to Compare
+        card2 (Card): Second Card to Compare
+        trumpf (str): the trumpf which is played
+    
+    Returns:
+        boolean: True If the 2 Cards have the same suit or are both trumpf, else False
+    """
+
+    if trumpf is None:
+        return card1.equal_suit(card2) # if there is no trumpf, just the coller matters
+    
+    # If there is an Trumpf, it need to be checked if the card is trumpf, because the jacks are diffrent color but are trumpf
+    if card1.istrumpf(trumpf):
+        return card2.istrumpf(trumpf) # If Both ar Trumpf they are equal, if card 1 is trumpf and card2 not its not equal
+    
+    if card2.istrumpf(trumpf): # if card2 is trumpf and card1 not, its not equal
+        return False
+
+    return card1.equal_suit(card2) # if they are both not trumpf, just the suit matters
+
+def get_winning_card(table_cards, trumpf, order_dict):
+    """Checks which is the winning card, from all Cards that were played
+    
+    Args:
+        table_cards (list): List of Cards that were Played
+        trumpf (str): the trumpf at the moment
+        order_dict (dict): the dictionary with the ranking for all cards
+    
+    Returns:
+        int: the number of that card that won
+    """
 
     winner = table_cards[0]
     for card in table_cards[1:]:
@@ -96,3 +131,58 @@ def get_winner(table_cards, trumpf, order_dict):
             winner = card
     
     return table_cards.index(winner)
+
+def get_winner(table_cards, trumpf, order_dict, turn):
+    """Gets the cards that were Played and returns the number of the Player who won
+    
+    Args:
+        table_cards (list): List of Cards that were Played
+        trumpf (str): the trumpf at the moment
+        order_dict (dict): the dictionary with the ranking for all cards
+        turn (int): The Number of the Player who is playing
+    
+    Returns:
+        int: number of the player who won
+    """
+    return (turn+1+get_winning_card(table_cards, trumpf, order_dict))%3
+
+def print_card_table(table_cards, table_card_message):
+    """Prints the Cards that were Played plus empty cards to show how many need to be played
+    
+    Args:
+        table_cards (list): List of Cards that were played
+        table_card_message (str): MessAGE that will be printed befor the cards
+    """
+    cards_on_table = copy(table_cards)
+    while len(cards_on_table) < 3:
+        cards_on_table.append(EmptyCard())
+
+    print(table_card_message)
+    print_multiple_cards(cards_on_table)
+
+def update_turn(turn):
+    """updates the turn to the next player
+    
+    Args:
+        turn (int): Number of the Player which has his turn
+    
+    Returns:
+        int: Number of the Player who has next round his turn
+    """
+    return (turn + 1)%3
+
+def update_single_player_stack(winner, single_player, table_cards):
+    """Checks if the single_player has won, if so returns a list with the cards, else an empty list
+    
+    Args:
+        winner (int): number of the player who won
+        single_player (int): number of the single Player
+        table_cards (list): [List of Cards that were Played
+    
+    Returns:
+        list: empty list, if the winner is not the single player, else table cards
+    """
+    if winner == single_player:
+        return copy(table_cards)
+    
+    return []

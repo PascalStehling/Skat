@@ -1,0 +1,93 @@
+{
+    "value_dict": {
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 10,
+        "B": 2,
+        "D": 3,
+        "K": 4,
+        "A": 11
+    },
+    "suit_dict": {
+        "Kr": 12,
+        "P": 11,
+        "H": 10,
+        "Ka": 9
+    },
+    "position_dict": {
+        "0": "Vorhand",
+        "1": "Mittelhand",
+        "2": "R\u00fcckhand"
+    },
+    "bidmessage": "{}: Willst du {} bieten? Mit Yes akzeptierst du, mit No Passt du.",
+    "yesno_errormessage": "{}: Bitte geb Yes(ja) oder No(nein) ein!",
+    "skatmessage": "{} Willst du den Skat aufnehmen? Yes(ja)/No(Nein)",
+    "cardmessage": "{} Spiele eine Karte aus deinem Blatt. Bitte Schreib die Karte so, wie unter den oben angezeigten Karten zu sehen",
+    "card_errormessage": "{} Bitte geben sie eine echte Karte ein, die sich auch in ihrem Blatt befindet!",
+    "gamemode_dict": {
+        "0": {
+            "name": "Farbspiel: Kreuz",
+            "trumpf": "Kr",
+            "order_dict": "standart_order_dict",
+            "points": 12
+        },
+        "1": {
+            "name": "Farbspiel: Pik",
+            "trumpf": "P",
+            "order_dict": "standart_order_dict",
+            "points": 11
+        },
+        "2": {
+            "name": "Farbspiel: Herz",
+            "trumpf": "H",
+            "order_dict": "standart_order_dict",
+            "points": 10
+        },
+        "3": {
+            "name": "Farbspiel: Karo",
+            "trumpf": "Ka",
+            "order_dict": "standart_order_dict",
+            "points": 9
+        },
+        "4": {
+            "name": "Grand",
+            "trumpf": "B",
+            "order_dict": "standart_order_dict",
+            "points": 24
+        },
+        "5": {
+            "name": "Null",
+            "trumpf": null,
+            "order_dict": "null_order_dict",
+            "points": 23
+        }
+    },
+    "gamemode_message": "{} W\u00e4hle einen Spielart von den darunterligenden aus. Bitte gebe nur die Nummer ein",
+    "gamemode_errormessage": "{} Bitte gebe nur eine Zahl der Spielarten ein.",
+    "tablecard_message": "Karten auf dem Tisch",
+    "play_errormessage": "{} Spiele eine Karte mit der selben Farbe wie der ersten",
+    "standart_order_dict": {
+        "7": 0,
+        "8": 1,
+        "9": 2,
+        "10": 5,
+        "B": 7,
+        "D": 3,
+        "K": 4,
+        "A": 6
+    },
+    "null_order_dict": {
+        "7": 0,
+        "8": 1,
+        "9": 2,
+        "10": 3,
+        "B": 4,
+        "D": 5,
+        "K": 6,
+        "A": 7
+    },
+    "winner_message": "{} hat die Runde gewonnen",
+    "point_message": "{}| Punkte: {}",
+    "end_round_message": "{} hat {} Punkte. {} werden zu seinen Punktewerte dazugerechnet"
+}
