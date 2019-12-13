@@ -41,3 +41,11 @@ tests/__pycache__/play_round_test.cpython-37.pyc
 modules/__pycache__/end_round.cpython-37.pyc
 tests/__pycache__/__init__.cpython-37.pyc
 tests/__pycache__/end_round_test.cpython-37.pyc
+classes/__pycache__/__init__.cpython-37.pyc
+classes/__pycache__/bidding_class.cpython-37.pyc
+classes/__pycache__/player_class.cpython-37.pyc
+classes/__pycache__/cards.cpython-37.pyc
+classes/__pycache__/setting_container.cpython-37.pyc
+classes/__pycache__/round.cpython-37.pyc
+classes/__pycache__/game.cpython-37.pyc
+classes/__pycache__/tools.cpython-37.pyc

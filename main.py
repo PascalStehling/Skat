@@ -8,6 +8,8 @@ from modules.create_settings import create_game_dict
 from modules.play_round import play_card_user
 from modules.end_round import end_round
 
+from classes.game import Game
+
 class StateMachine:
 
     def __init__(self, player_names=None, max_rounds=36, language='en'):
@@ -21,5 +23,8 @@ class StateMachine:
             
 
 if __name__ == "__main__":
-    s = StateMachine(language='de', max_rounds=2)
-    s.run()
+    # s = StateMachine(language='de', max_rounds=2)
+    # s.run()
+
+    game = Game()
+    game.play_round()
