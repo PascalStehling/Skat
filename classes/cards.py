@@ -1,4 +1,4 @@
-from modules.card import Card
+from classes.card import Card
 from itertools import product
 from random import shuffle
 
@@ -12,21 +12,26 @@ class Cards():
         else:
             self.cards = self.create_shuffled_cards()
 
+    def __add__(self, other_cards):
+        self.cards += other_cards.cards
+        self.sort_cards()
+        return self
+
     def create_shuffled_cards(self):
         """ 
         Creates 32 cards and returns them shuffled
         """
         card_nums = product(self.settings.value_dict.keys(), self.settings.suit_dict.keys()) # cartesian Product to get all possible card values
-        cards = [Card(card[0], card[1], self.settings.value_dict,  self.settings.suit_dict) for card in card_nums]
+        cards = [Card(card[0], card[1]) for card in card_nums]
         shuffle(cards)
         return cards
 
-    def sort_cards(self, order_dict, trumpf):
+    def sort_cards(self):
         i = 0
         while i < len(self.cards)-1:
             k = 0
             while k < len(self.cards)-i-1:
-                if not self.cards[k].ishigher(self.cards[k+1], trumpf, order_dict, True):
+                if not self.cards[k].ishigher(self.cards[k+1], True):
                     tmp = self.cards[k]
                     self.cards[k] = self.cards[k+1]
                     self.cards[k+1] = tmp
@@ -39,3 +44,16 @@ class Cards():
             for c in self.cards:
                 pr_str += c.get_ascii_card()[i]+card_delimiter
             print(pr_str[:-1])
+
+    def remove(self, card_to_remove):
+        self.cards.remove(card_to_remove)
+
+    def add_card_and_sort(self, card):
+        self.cards.append(card)
+        self.sort_cards()
+
+    def empty_cards(self):
+        self.cards = []
+
+    def __iter__(self):
+        return iter(self.cards)

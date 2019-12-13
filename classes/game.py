@@ -16,6 +16,7 @@ class Game():
     def play_round(self):
         game_round = Round(self.players, self.settings)
         game_round.start_bidding()
+        game_round.single_player_setup()
 
     def create_settings_from_file(self, language="en"):
         try:

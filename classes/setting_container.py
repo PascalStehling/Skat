@@ -8,6 +8,8 @@ class SettingContainer():
         self.gamemode_dict = setting_dict["gamemode_dict"]
         self.standart_order_dict = setting_dict["standart_order_dict"]
         self.null_order_dict = setting_dict["null_order_dict"]
+        self.order_dicts = {"standart_order_dict": self.standart_order_dict,
+                            "null_order_dict": self.null_order_dict}
         self.bid_list = setting_dict["bid_list"]
 
         self.bidmessage = setting_dict["bidmessage"]
