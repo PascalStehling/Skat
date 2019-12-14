@@ -2,6 +2,8 @@ from classes.cards import Cards
 from classes.bidding_class import Bidding
 from classes.tools import get_user_true_false, user_select_card
 from classes.card import Card
+from classes.single_player_setup import single_player_setup
+from classes.play_round import PlayRound
 
 class Round():
 
@@ -9,13 +11,11 @@ class Round():
         self.players = players
         self.settings = settingContainer
         self.skat = []
-        self.single_player_stack = []
         self.jack_multiplicator = None
-        self.cards_on_table = []
         self.gamemode = None
-        self.turn = self.players.middlehand
+        self.turn = players.middlehand
         self.bidding = None
-        self.order_dict = None
+        self.play_round = None
 
         Card.set_value_dict(Card, self.settings.value_dict)
         Card.set_suit_dict(Card, self.settings.suit_dict)
@@ -26,6 +26,7 @@ class Round():
 
     def give_cards(self):
         cards = Cards(self.settings)
+        cards.create_shuffled_cards()
         for i, player in enumerate(self.players):
             player.cards = Cards(self.settings, cards.cards[10*i:10*(i+1)])
             player.cards.sort_cards()
@@ -39,93 +40,138 @@ class Round():
         raise Exception("No Clubs found")
 
     def start_bidding(self):
-        bidding = Bidding(self.settings)
+        self.bidding = Bidding(self.settings)
         while True:
-            bidding.make_bid(self.turn)
-            if bidding.is_end_bidding():
-                self.turn, gamestate = bidding.end_bidding(self.players.forhand)
+            self.bidding.make_bid(self.turn)
+            if self.bidding.is_end_bidding():
+                self.turn, gamestate = self.bidding.end_bidding(self.players.forhand)
                 return gamestate
-            self.turn = bidding.get_new_turn(self.turn, self.players)
+            self.turn = self.bidding.get_new_turn(self.turn, self.players)
 
-    def single_player_setup(self):
-        show_message = self.settings.skatmessage.format(self.turn.name)
-        error_message = self.settings.yesno_errormessage.format(self.turn.name)
-        if get_user_true_false(show_message, error_message, self.turn.cards):
-            show_message = self.settings.cardmessage.format(self.turn.name)
-            error_message = self.settings.card_errormessage.format(self.turn.name)
-            self.turn.cards += self.skat
-            self.skat.empty_cards()
-            self.turn.cards.sort_cards()
+    def start_single_player_setup(self):
+        self = single_player_setup(self)
 
-            for _ in range(2):
-                self.turn.cards, skat_card = user_select_card(show_message, error_message, self.turn.cards)
-                self.skat.add_card_and_sort(skat_card)
+    def start_play_cards(self):
+        self.play_round = PlayRound(self.settings, self.players, self.bidding)
+        self.play_round.play_round()
 
-        show_message = self.settings.gamemode_message.format(self.turn.name)
-        error_message = self.settings.gamemode_errormessage.format(self.turn.name)
-        self.gamemode = self.get_play_type(show_message, error_message, self.turn.cards)
-        Card.set_order_dict(Card,self.settings.order_dicts[self.gamemode.get("order_dict")])
-        Card.set_trumpf(Card,self.gamemode.get("trumpf"))
+    def finish_round(self):
+        card_points = self.calc_card_points()
+        score = self.calculate_score(card_points)
+        self.bidding.bid_player.points += score
 
-        self.jack_multiplicator = self.get_jack_multiplicator(self.turn.cards)
-
+        print(self.settings.end_round_message.format(self.bidding.bid_player.name, card_points, score))
         for player in self.players:
-            player.cards.sort_cards()
+            print(self.settings.point_message.format(player.name, player.points))
 
-        self.turn = self.players.forhand
-    
-    def get_play_type(self, show_message, error_message, user_cards):
-        user_cards.print_cards_ascii()
-        print(show_message)
-        for key in self.settings.gamemode_dict:
-            print(f"{key}: {self.settings.gamemode_dict[key]['name']}")
+    def play(self):
+        self.start_bidding()
+        self.start_single_player_setup()
+        self.start_play_cards()
+        self.finish_round()
 
-        inp = input()
-        if inp in self.settings.gamemode_dict:
-            return self.settings.gamemode_dict[inp]
-        else:
-            print(error_message)
-            return self.get_play_type(show_message, error_message, user_cards)
-
-    def get_jack_multiplicator(self, cards):
-        """
-        Get the jack multiplicator for the play
-        """
-        if not isinstance(cards, Cards):
-            raise TypeError("table_cards need to be of Type List")
-        if not all([isinstance(card, Card) for card in cards]):
-            raise ValueError("Table Cards should only contain Cards")
-
-        jacks = [card for card in cards if card.card_points == 2]
-        if len(jacks) == 4 or len(jacks) == 0:
-            return 5
+    def calculate_score(self, single_player_card_points):
+        """Calculate the score points of the single_player
         
-        suit_list = [x[0] for x in sorted(self.settings.suit_dict.items(), key=lambda x: x[1], reverse=True)]
-        jack_name = [x[0] for x in self.settings.value_dict.items() if x[1] == 2][0]
-        multi = 2
-        if self.has_card_with_suit(jacks, suit_list[0]):
-            for suit in suit_list[1:]:
-                if self.has_card_with_suit(jacks, suit):
-                    multi += 1
-                else:
-                    break
+        Args:
+            single_player_card_points (int): number of Card-Points the single_player got
+            trumpf (str): None or String of the trumpf thatz is played
+            bid (int): the bid of the single player
+            jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+            gamemode_points (int): points of the gamemode
+        
+        Returns:
+            int: the score points the player achieved
+        """
+        if self.has_won_round(single_player_card_points):
+            return self.calc_score_points_won(single_player_card_points)
         else:
-            for suit in suit_list[1:]:
-                if not has_card_with_suit(jacks, suit):
-                    multi += 1
-                else:
-                    break
-        return multi
+            return self.calc_score_points_lost(single_player_card_points)
 
-    def has_card_with_suit(self, cards, suit):
-        if not isinstance(cards, list):
-            raise TypeError("table_cards need to be of Type List")
-        if not all([isinstance(card, Card) for card in cards]):
-            raise ValueError("Table Cards should only contain Cards")
-        if not isinstance(suit, str):
-            raise TypeError("Suit needs to be of Type String")
+    def calc_score_points_won(self, single_player_card_points):
+        """Get the Score points if the player won
+        
+        Args:
+            single_player_card_points (int): number of Card-Points the single_player got
+        
+        Returns:
+            int: the score points the player achieved
+        """
+        return (self.get_win_level(single_player_card_points)+self.jack_multiplicator)*self.gamemode.get("points")
 
-        for card in cards:
-            if card.suit_str == suit:
-                return True
-        return False
+    def calc_score_points_lost(self, single_player_card_points):
+        """Get the Score points if the player Lost
+        
+        Args:
+            single_player_card_points (int): number of Card-Points the single_player got
+        
+        Returns:
+            int: the score points the player achieved
+        """
+        return (self.get_win_level(120-single_player_card_points)+self.jack_multiplicator)*self.gamemode.get("points")*-2
+
+
+    def get_win_level(self, card_points):
+        """Get the win states the Player has.
+        
+        Args:
+            card_points (int): number of Points the single_player got
+        
+        Returns:
+            int: 0 for playing, 1 for Schneider and 2 for Schwarz
+        """
+        if card_points == 120:
+            return 2
+        if card_points > 90:
+            return 1
+        
+        return 0
+
+    def calc_card_points(self):
+        """Calculate the points from a list of Cards
+        
+        Args:
+            cards (list): A List of Card Objects
+        
+        Returns:
+            int: number of points the Player got
+        """
+        points = 0
+        for card in self.play_round.single_player_stack:
+            points += card.card_points
+        return points
+
+    def has_won_round(self, card_points):
+        """Checks if the Player has won this round. If he has over 90 he always wins, under 60 allways loose and between 60 and 90 it depends if he overbidded
+        
+        Args:
+            card_points (int): number of Points the single_player got
+        
+        Returns:
+            bool: True if the Player won, else False
+        """
+        if card_points >= 90:
+            return True
+
+        if card_points <= 60:
+            return False
+
+        return not self.has_over_bidded()
+        
+
+    def has_over_bidded(self):
+        """Checks is the Player has overbidden
+        
+        Args:
+            trumpf (str): None or String of the trumpf thatz is played
+            bid (int): the bid of the single player
+            jack_multiplicator (int): the multiplicator of the jacks (play with/without jacks plus 1 (take game))
+            gamemode_points (int): points of the gamemode
+        
+        Returns:
+            bool: True if the player has overbidded, else False
+        """
+        if Card.trumpf is not None:
+            return (self.gamemode.get("points")*self.jack_multiplicator) < self.bidding.bid
+        else:
+            return self.gamemode.get("points") < self.bidding.bid

@@ -10,7 +10,7 @@ class Cards():
         if cards:
             self.cards = cards
         else:
-            self.cards = self.create_shuffled_cards()
+            self.cards = []
 
     def __add__(self, other_cards):
         self.cards += other_cards.cards
@@ -22,9 +22,8 @@ class Cards():
         Creates 32 cards and returns them shuffled
         """
         card_nums = product(self.settings.value_dict.keys(), self.settings.suit_dict.keys()) # cartesian Product to get all possible card values
-        cards = [Card(card[0], card[1]) for card in card_nums]
-        shuffle(cards)
-        return cards
+        self.cards = [Card(card[0], card[1]) for card in card_nums]
+        shuffle(self.cards)
 
     def sort_cards(self):
         i = 0
@@ -49,11 +48,24 @@ class Cards():
         self.cards.remove(card_to_remove)
 
     def add_card_and_sort(self, card):
-        self.cards.append(card)
+        self.add_card(card)
         self.sort_cards()
+
+    def add_card(self, card):
+        self.cards.append(card)
 
     def empty_cards(self):
         self.cards = []
 
     def __iter__(self):
         return iter(self.cards)
+
+    def __len__(self):
+        return len(self.cards)
+
+    def __getitem__(self, indieces):
+        return self.cards[indieces]
+
+    def __repr__(self):
+        self.print_cards_ascii()
+        return ""

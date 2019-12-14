@@ -27,4 +27,4 @@ if __name__ == "__main__":
     # s.run()
 
     game = Game()
-    game.play_round()
+    game.play_game()

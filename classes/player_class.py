@@ -18,6 +18,9 @@ class Player():
     def __repr__(self):
         return f"{self.num}: {self.name}"
 
+    def has_cards(self):
+        return bool(self.cards)
+
 
 class Players():
 
@@ -30,3 +33,14 @@ class Players():
 
     def __iter__(self):
         return iter(self.players)
+
+    def get_next_player(self, player):
+        index = self.players.index(player)
+        index = (index+1)%3
+        return self.players[index]
+
+    def players_on_next_position(self):
+        tmp = self.forhand
+        self.forhand = self.middlehand
+        self.middlehand = self.backhand
+        self.backhand = tmp

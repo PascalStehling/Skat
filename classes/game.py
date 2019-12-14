@@ -13,10 +13,12 @@ class Game():
         self.max_round = kwargs.get("max_rounds", 36)
         self.settings = SettingContainer(self.create_settings_from_file(kwargs.get("language", "en")))
 
-    def play_round(self):
-        game_round = Round(self.players, self.settings)
-        game_round.start_bidding()
-        game_round.single_player_setup()
+    def play_game(self):
+        while self.game_round <= self.max_round:
+            game_round = Round(self.players, self.settings)
+            game_round.play()
+            self.players.players_on_next_position()
+            self.game_round += 1
 
     def create_settings_from_file(self, language="en"):
         try:
