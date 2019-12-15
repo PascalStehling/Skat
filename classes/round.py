@@ -13,14 +13,15 @@ class Round():
         self.skat = []
         self.jack_multiplicator = None
         self.gamemode = None
+        self.gamestate = 1
         self.turn = players.middlehand
         self.bidding = None
         self.play_round = None
 
-        Card.set_value_dict(Card, self.settings.value_dict)
-        Card.set_suit_dict(Card, self.settings.suit_dict)
-        Card.set_order_dict(Card, self.settings.standart_order_dict)
-        Card.set_trumpf(Card, self.get_clubs_string())
+        Card.value_dict = self.settings.value_dict
+        Card.suit_dict = self.settings.suit_dict
+        Card.order_dict = self.settings.standart_order_dict
+        Card.trumpf = self.get_clubs_string()
 
         self.give_cards()
 
@@ -44,9 +45,10 @@ class Round():
         while True:
             self.bidding.make_bid(self.turn)
             if self.bidding.is_end_bidding():
-                self.turn, gamestate = self.bidding.end_bidding(self.players.forhand)
-                return gamestate
-            self.turn = self.bidding.get_new_turn(self.turn, self.players)
+                self.turn, self.gamestate = self.bidding.end_bidding(self.players.forhand)
+                break
+            else:
+                self.turn = self.bidding.get_new_turn(self.turn, self.players)
 
     def start_single_player_setup(self):
         self = single_player_setup(self)
@@ -66,9 +68,10 @@ class Round():
 
     def play(self):
         self.start_bidding()
-        self.start_single_player_setup()
-        self.start_play_cards()
-        self.finish_round()
+        if self.gamestate == 2:
+            self.start_single_player_setup()
+            self.start_play_cards()
+            self.finish_round()
 
     def calculate_score(self, single_player_card_points):
         """Calculate the score points of the single_player

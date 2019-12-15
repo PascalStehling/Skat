@@ -27,13 +27,15 @@ class Game():
         except FileNotFoundError as e:
             raise Exception("This language does not exists!")
 
+        set_dict["bid_list"] = self.create_bid_list(set_dict["gamemode_dict"])
+
+        return set_dict
+
+    def create_bid_list(self, gamemode_dict):
         # Create Bid list
         # Get all Values except Null for bidding, Null is added afterwards, the Number of Jacks dont care for that
-        point_list = [mode["points"] for mode in set_dict["gamemode_dict"].values() if mode["trumpf"] is not None]
+        point_list = [mode["points"] for mode in gamemode_dict.values() if mode["trumpf"] is not None]
         bid_list = [x[0]*x[1] for x in product(point_list, range(2, 6))]
         bid_list.append(23) # Add Null Value
         bid_list.sort()
-
-        set_dict["bid_list"] = bid_list
-
-        return set_dict
+        return bid_list

@@ -9,7 +9,7 @@ class Card:
     suit_dict = None
     trumpf = None
     order_dict = None
-    def __init__(self,value, suit, value_dict=None, suit_dict=None):
+    def __init__(self,value, suit):
         if not isinstance(suit, str):
             raise TypeError("suit needs to be an str between 0 and 3")
         if not isinstance(value, str):
@@ -23,16 +23,6 @@ class Card:
             raise ValueError("Enter a Valid suit")
         if value not in Card.value_dict:
             raise ValueError("Enter a Valid Card Value")
-
-        if value_dict is not None:
-            if not isinstance(value_dict, dict):
-                raise Exception("value_dict needs to be of Type dict")
-            Card.value_dict = value_dict
-        
-        if suit_dict is not None:
-            if not isinstance(suit_dict, dict):
-                raise Exception("value_dict needs to be of Type dict")
-            Card.suit_dict = suit_dict
 
         self.value = value
         self.suit_val = self.suit_dict[suit] # The Suit Value for skat
@@ -261,18 +251,6 @@ class Card:
             bool: True if the main card (self) is higher
         """
         return Card.order_dict[self.value] > Card.order_dict[other_card.value]
-
-    def set_trumpf(self, trumpf):
-        Card.trumpf = trumpf
-    
-    def set_order_dict(self, order_dict):
-        Card.order_dict = order_dict
-
-    def set_value_dict(self, value_dict):
-        Card.value_dict = value_dict
-
-    def set_suit_dict(self, suit_dict):
-        Card.suit_dict = suit_dict
 
 class EmptyCard(Card):
     """Creates an Empty card, with no text

@@ -20,8 +20,8 @@ def single_player_setup(round_object):
     error_message = round_object.settings.gamemode_errormessage.format(round_object.turn.name)
     round_object.gamemode = get_play_type(round_object, show_message, error_message)
     
-    Card.set_order_dict(Card,round_object.settings.order_dicts[round_object.gamemode.get("order_dict")])
-    Card.set_trumpf(Card,round_object.gamemode.get("trumpf"))
+    Card.order_dict = round_object.settings.order_dicts[round_object.gamemode.get("order_dict")]
+    Card.trumpf = round_object.gamemode.get("trumpf")
 
     round_object.jack_multiplicator = get_jack_multiplicator(round_object)
 

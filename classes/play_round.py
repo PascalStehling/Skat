@@ -23,7 +23,13 @@ class PlayRound():
         move.cards_on_table.print_cards_ascii()
         print(self.settings.winner_message.format(self.turn.name))
         
-        if self.turn == self.bidding.bid_player:
+        self.add_cards_single_player_stack(move)
+    
+    def has_single_player_won(self):
+        return self.turn == self.bidding.bid_player
+
+    def add_cards_single_player_stack(self, move):
+        if self.has_single_player_won():
             self.single_player_stack += move.cards_on_table
             print(self.single_player_stack)
         
