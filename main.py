@@ -6,7 +6,8 @@ from modules.bidding import make_bid
 from modules.setup_single_play import setup_single_play
 from modules.create_settings import create_game_objects
 from modules.play_round import play_card_user
-#from modules.end_round import end_round
+from modules.end_round import end_round
+from modules.card import Card
 
 class StateMachine:
 
@@ -30,9 +31,14 @@ class StateMachine:
                 self.round = setup_single_play(self.round, self.settings, self.players)
                 self.gamestate += 1
             elif self.gamestate == 4:
+                print("trumpf:", Card.trumpf)
                 self.round, self.gamestate = play_card_user(self.round, self.settings, self.players)
+            elif self.gamestate == 5:
+                self.round = end_round(self.round, self.settings, self.players)
+                self.game_round += 1
+                self.gamestate = 1
             
 
 if __name__ == "__main__":
-    s = StateMachine(language='de', max_rounds=2)
+    s = StateMachine(language='de', max_rounds=2, auto_play_cards=True)
     s.run()

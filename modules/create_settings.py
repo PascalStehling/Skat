@@ -24,6 +24,6 @@ def create_settings_from_file(language="en"):
     return set_dict
 
 def create_game_objects(settings):
-    players = Players(settings.get("player_names", ["Player 1", "Player 2", "Player 3"]))
-    settings = SettingContainer(create_settings_from_file(settings.get("language", "en")))
+    players = Players(settings=settings)
+    settings = SettingContainer(create_settings_from_file(settings.get("language", "en")), settings=settings)
     return players, settings

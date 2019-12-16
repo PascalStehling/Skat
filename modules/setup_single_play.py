@@ -27,6 +27,8 @@ def setup_single_play(game_round, settings, players):
 
     game_round.gamemode = get_play_type(show_message, error_message, settings.gamemode_dict, game_round.turn.cards)
     Card.order_dict = settings.order_dicts[game_round.gamemode["order_dict"]]
+    Card.trumpf = game_round.gamemode["trumpf"]
+
     game_round.jack_multiplicator = get_jack_multiplicator(game_round.turn.cards, settings)
 
     for player in players:

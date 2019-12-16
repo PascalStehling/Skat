@@ -2,7 +2,7 @@
 class Player():
 
     player_count = 0
-    def __init__(self, player_name):
+    def __init__(self, player_name, **settings):
 
         self.name = player_name
         self.num = self.player_count
@@ -10,7 +10,8 @@ class Player():
         Player.player_count += 1
 
         self.cards = []
-        self.points = 0
+        self.score = 0
+        self.auto_play = settings["settings"].get("auto_play_cards", False)
 
     def __eq__(self, other_player):
         return self.num == other_player.num
@@ -24,8 +25,9 @@ class Player():
 
 class Players():
 
-    def __init__(self, player_name_list):
-        self.players = [Player(name) for name in player_name_list]
+    def __init__(self, **settings):
+        player_name_list = settings.get("player_names", ["Player 1", "Player 2", "Player 3"])
+        self.players = [Player(name, settings=settings["settings"]) for name in player_name_list]
 
         self.forhand = self.players[0]
         self.middlehand = self.players[1]

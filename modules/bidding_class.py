@@ -1,4 +1,4 @@
-from classes.tools import get_user_true_false
+from modules.tools import get_user_true_false
 
 class Bidding():
 

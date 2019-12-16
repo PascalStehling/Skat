@@ -15,7 +15,10 @@ def play_card_user(game_round, settings, players):
 
     print_card_table(game_round.cards_on_table, table_card_message)
 
-    game_round, game_round.turn.cards = user_play_card(game_round, card_message, card_errormessage, play_errormessage)
+    if not game_round.turn.auto_play:
+        game_round = user_play_card(game_round, card_message, card_errormessage, play_errormessage)
+    else:
+        game_round = auto_play_card(game_round)
 
     if len(game_round.cards_on_table) < 3:
         game_round.turn = players.get_next_player(game_round.turn)
@@ -35,6 +38,13 @@ def play_card_user(game_round, settings, players):
 
     return game_round, gamestate
 
+def auto_play_card(game_round):
+    for card in game_round.turn.cards:
+        if is_valid_card(game_round, card):
+            game_round.turn.cards.remove(card)
+            game_round.cards_on_table.add_card(card)
+            return game_round
+
 def user_play_card(game_round, card_message, card_errormessage, play_errormessage):
 
     cards, played_card = user_select_card(card_message, card_errormessage, game_round.turn.cards)
@@ -46,7 +56,8 @@ def user_play_card(game_round, card_message, card_errormessage, play_errormessag
         return user_play_card(game_round, card_message, card_errormessage, play_errormessage)
     
     game_round.cards_on_table.add_card(played_card)
-    return game_round, cards
+    game_round.turn.cards = cards
+    return game_round
 
 def is_valid_card(game_round, played_card):
     """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card. 
@@ -139,17 +150,6 @@ def print_card_table(table_cards, table_card_message):
 
     print(table_card_message)
     cards_on_table.print_cards_ascii()
-
-def update_turn(turn):
-    """updates the turn to the next player
-    
-    Args:
-        turn (int): Number of the Player which has his turn
-    
-    Returns:
-        int: Number of the Player who has next round his turn
-    """
-    return (turn + 1)%3
 
 def update_single_player_stack(winner, game_round, settings):
     """Checks if the single_player has won, if so returns a list with the cards, else an empty list

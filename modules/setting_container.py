@@ -1,7 +1,7 @@
 
 class SettingContainer():
 
-    def __init__(self, setting_dict):
+    def __init__(self, setting_dict, **settings):
         self.value_dict = setting_dict["value_dict"]
         self.suit_dict = setting_dict["suit_dict"]
         self.position_dict = setting_dict["position_dict"]

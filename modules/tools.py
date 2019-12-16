@@ -51,3 +51,7 @@ def user_select_card(show_message, error_message, user_cards):
     else:
         print(error_message)
         return user_select_card(show_message, error_message, user_cards)
+
+def print_infomations(turn_player, game_round):
+    print("trumpf:", Card.trumpf)
+    game_round.cards_on_table.print_cards_ascii()

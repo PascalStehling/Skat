@@ -44,6 +44,9 @@ class Cards():
                 pr_str += c.get_ascii_card()[i]+card_delimiter
             print(pr_str[:-1])
 
+    def index(self, card):
+        return self.cards.index(card)
+
     def remove(self, card_to_remove):
         self.cards.remove(card_to_remove)
 
