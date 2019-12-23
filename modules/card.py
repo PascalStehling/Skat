@@ -251,6 +251,24 @@ class Card:
         """
         return Card.order_dict[self.value] > Card.order_dict[other_card.value]
 
+    def same_suit_or_trumpf(self, other_card):
+        """Check if 2 Cards have the same Suit or both are trumpf.        
+        Returns:
+            boolean: True If the 2 Cards have the same suit or are both trumpf, else False
+        """
+
+        if Card.trumpf is None:
+            return self.equal_suit(other_card) # if there is no trumpf, just the coller matters
+        
+        # If there is an Trumpf, it need to be checked if the card is trumpf, because the jacks are diffrent color but are trumpf
+        if self.istrumpf():
+            return other_card.istrumpf() # If Both ar Trumpf they are equal, if card 1 is trumpf and other_card not its not equal
+        
+        if other_card.istrumpf(): # if other_card is trumpf and card1 not, its not equal
+            return False
+
+        return self.equal_suit(other_card) # if they are both not trumpf, just the suit matters
+
 class EmptyCard(Card):
     """Creates an Empty card, with no text
     """

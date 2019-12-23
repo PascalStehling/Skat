@@ -1,4 +1,4 @@
-
+from modules.cards import Cards
 class Player():
 
     player_count = 0
@@ -9,9 +9,10 @@ class Player():
         self.position = self.player_count
         Player.player_count += 1
 
-        self.cards = []
+        self.cards = None
         self.score = 0
         self.auto_play = settings["settings"].get("auto_play_cards", False)
+        self.won_cards = None
 
     def __eq__(self, other_player):
         return self.num == other_player.num
@@ -25,13 +26,15 @@ class Player():
 
 class Players():
 
-    def __init__(self, **settings):
-        player_name_list = settings.get("player_names", ["Player 1", "Player 2", "Player 3"])
-        self.players = [Player(name, settings=settings["settings"]) for name in player_name_list]
+    def __init__(self, settingContainer, **kwargs):
+        player_name_list = kwargs.get("player_names", ["Player 1", "Player 2", "Player 3"])
+        self.players = [Player(name, settings=kwargs["kwargs"]) for name in player_name_list]
 
         self.forhand = self.players[0]
         self.middlehand = self.players[1]
         self.backhand = self.players[2]
+
+        self.settings = settingContainer
 
     def __iter__(self):
         return iter(self.players)
@@ -52,3 +55,12 @@ class Players():
             if player.num == num:
                 return player
         raise Exception("No Player with this num")
+
+    def sort_cards(self):
+        for player in self.players:
+            player.cards.sort_cards()
+
+    def reset(self):
+        for player in self.players:
+            player.won_cards = Cards(self.settings)
+            player.cards = Cards(self.settings)

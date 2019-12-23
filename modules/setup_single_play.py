@@ -5,38 +5,43 @@ from modules.card import Card
 from modules.cards import Cards
 from modules.tools import get_user_true_false, user_select_card
 
-def setup_single_play(game_round, settings, players):
+def setup_single_play(turn, skat, settings):
     
-    show_message = settings.skatmessage.format(game_round.turn.name)
-    error_message = settings.yesno_errormessage.format(game_round.turn.name)
+    if check_play_skat(settings, turn):
+        turn, skat = take_skat(turn, skat, settings)
 
-    if get_user_true_false(show_message, error_message, game_round.turn.cards):
-        game_round.turn.cards += game_round.skat
-        game_round.turn.cards.sort_cards()
-        game_round.skat.empty_cards()
+    gamemode = set_gamemode(turn, settings)
+    jack_multiplicator = get_jack_multiplicator(turn.cards, settings)
 
-        show_message = settings.cardmessage.format(game_round.turn.name)
-        error_message = settings.card_errormessage.format(game_round.turn.name)
+    return gamemode, jack_multiplicator, skat
 
-        for _ in range(2):
-            game_round.turn.cards, skat_card = user_select_card(show_message, error_message, game_round.turn.cards)
-            game_round.skat.add_card(skat_card)
+def check_play_skat(settings, turn):
+    show_message = settings.skatmessage.format(turn.name)
+    error_message = settings.yesno_errormessage.format(turn.name)
+    return get_user_true_false(show_message, error_message, turn.cards)
 
-    show_message = settings.gamemode_message.format(game_round.turn.name)
-    error_message = settings.gamemode_errormessage.format(game_round.turn.name)
+def take_skat(turn, skat, settings):
+    turn.cards += skat
+    turn.cards.sort_cards()
+    skat.empty_cards()
 
-    game_round.gamemode = get_play_type(show_message, error_message, settings.gamemode_dict, game_round.turn.cards)
-    Card.order_dict = settings.order_dicts[game_round.gamemode["order_dict"]]
-    Card.trumpf = game_round.gamemode["trumpf"]
+    show_message = settings.cardmessage.format(turn.name)
+    error_message = settings.card_errormessage.format(turn.name)
 
-    game_round.jack_multiplicator = get_jack_multiplicator(game_round.turn.cards, settings)
+    for _ in range(2):
+        turn.cards, skat_card = user_select_card(show_message, error_message, turn.cards)
+        skat.add_card(skat_card)
 
-    for player in players:
-        player.cards.sort_cards()
-    game_round.turn = players.forhand
+    return turn, skat
 
-    return game_round
+def set_gamemode(turn, settings):
+    show_message = settings.gamemode_message.format(turn.name)
+    error_message = settings.gamemode_errormessage.format(turn.name)
 
+    gamemode = get_play_type(show_message, error_message, settings.gamemode_dict, turn.cards)
+    Card.order_dict = settings.order_dicts[gamemode["order_dict"]]
+    Card.trumpf = gamemode["trumpf"]
+    return gamemode
     
 def get_play_type(show_message, error_message, gamemode_dict, user_cards):
     user_cards.print_cards_ascii()

@@ -37,7 +37,7 @@ class Cards():
                 k += 1
             i += 1
 
-    def print_cards_ascii(self, card_delimiter=":"):        
+    def print_cards_ascii(self, card_delimiter=":"):    
         for i in range(len(self.cards[0].get_ascii_card())):
             pr_str = ""
             for c in self.cards:
