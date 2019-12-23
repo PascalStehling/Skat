@@ -6,7 +6,6 @@ from modules.bidding_class import Bidding
 from modules.round_class import Round
 from modules.setup_single_play import setup_single_play
 from modules.create_settings import create_game_objects
-from modules.play_round import play_card_user
 from modules.card import Card
 
 class StateMachine:
