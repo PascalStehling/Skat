@@ -1,7 +1,7 @@
 """
 Here are functions witch are needed in diffrent states of this programm
 """
-from modules.card import Card
+from modules.Card import Card
 
 def get_user_true_false(show_message, error_message, cards):
     """

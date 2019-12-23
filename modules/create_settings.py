@@ -1,9 +1,8 @@
-
 from itertools import product
 import json
 import os
-from modules.player_class import Players
-from modules.setting_container import SettingContainer
+from modules.Players import Players
+from modules.SettingContainer import SettingContainer
 
 def create_settings_from_file(language="en"):
     try:

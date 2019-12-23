@@ -1,7 +1,14 @@
 
 class SettingContainer():
+    key_list = ["value_dict", "suit_dict", "position_dict", "gamemode_dict", "standart_order_dict",
+                "standart_order_dict", "null_order_dict", "bid_list", "bidmessage", "skatmessage",
+                "yesno_errormessage", "cardmessage", "card_errormessage", "gamemode_message",
+                "gamemode_errormessage", "tablecard_message", "play_errormessage", "winner_message",
+                "point_message", "end_round_message"]
 
     def __init__(self, setting_dict, **settings):
+        self.check_keys(setting_dict)
+
         self.value_dict = setting_dict["value_dict"]
         self.suit_dict = setting_dict["suit_dict"]
         self.position_dict = setting_dict["position_dict"]
@@ -24,3 +31,8 @@ class SettingContainer():
         self.winner_message = setting_dict["winner_message"]
         self.point_message = setting_dict["point_message"]
         self.end_round_message = setting_dict["end_round_message"]
+
+    def check_keys(self, setting_dict):
+        for key in self.key_list:
+            if not key in setting_dict:
+                raise Exception(f"No value for {key} found in language-settings")

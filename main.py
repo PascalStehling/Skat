@@ -2,11 +2,11 @@
 This is the main File with starts the skat App
 """
 from modules.setup_round import start_new_round
-from modules.bidding_class import Bidding
-from modules.round_class import Round
+from modules.Bidding import Bidding
+from modules.Round import Round
 from modules.setup_single_play import setup_single_play
 from modules.create_settings import create_game_objects
-from modules.card import Card
+from modules.Card import Card
 
 class StateMachine:
 
@@ -31,7 +31,7 @@ class StateMachine:
                 self.round.play_round()
                 self.round.end_round()
                 self.gamestate = 1
-                self.max_rounds += 1
+                self.game_round += 1
             
 
 if __name__ == "__main__":

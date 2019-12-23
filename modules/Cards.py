@@ -1,4 +1,4 @@
-from modules.card import Card
+from modules.Card import Card
 from itertools import product
 from random import shuffle
 

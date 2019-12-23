@@ -1,8 +1,8 @@
 """
 The single Player needs to decide if he wants to take the skat and which gametype he wants to play
 """
-from modules.card import Card
-from modules.cards import Cards
+from modules.Card import Card
+from modules.Cards import Cards
 from modules.tools import get_user_true_false, user_select_card
 
 def setup_single_play(turn, skat, settings):

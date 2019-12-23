@@ -1,7 +1,7 @@
 from modules.tools import user_select_card
-from modules.card import EmptyCard
+from modules.Card import EmptyCard
 from copy import deepcopy
-from modules.cards import Cards
+from modules.Cards import Cards
 
 class Stich():
 

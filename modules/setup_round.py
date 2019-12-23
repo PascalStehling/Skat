@@ -1,9 +1,9 @@
 """
 In this file all Functions are located which are needed to setup a new round
 """
-from modules.cards import Cards
-from modules.card import Card
-from modules.round_class import Round
+from modules.Cards import Cards
+from modules.Card import Card
+from modules.Round import Round
 
 def start_new_round(players, settings):
     set_card_default_values(settings)
