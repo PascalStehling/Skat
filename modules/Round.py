@@ -1,25 +1,33 @@
 from modules.Card import Card
 from modules.Cards import Cards
 from modules.Bidding import Bidding
-from modules.tools import user_select_card
+from modules.tools import get_user_true_false, user_select_card
 from modules.Stich import Stich
 from copy import deepcopy
 
 class Round():
 
-    def __init__(self, players, settingContainer, bidding, jack_multiplicator, gamemode):
-        self.turn = players.forhand
+    def __init__(self, players, settingContainer):
+        self.turn = None
         self.settings = settingContainer
         self.players = players
-        self.bidding = bidding
-        self.jack_multiplicator = jack_multiplicator
-        self.gamemode = gamemode
+        self.bidding = None
+        self.jack_multiplicator = None
+        self.gamemode = None
+        self.skat = None
 
+        self.start_new_round()
+
+    def start_bidding(self):
+        self.bidding = Bidding(self.settings, self.players)
+        self.turn, gamestate = self.bidding.play_bidding()
+        return gamestate
 
     def play_round(self):
         while len(self.turn.cards) != 0:
             self.turn = Stich(self.players, self.turn, self.settings).play_stich().assign_stich_to_winner().get_winner()
             print(self.settings.winner_message.format(self.turn.name))
+        return self
 
     def end_round(self):
         """The main function to end the round   
@@ -33,7 +41,7 @@ class Round():
         for p in self.players:
             print(self.settings.point_message.format(p.name, p.score))
 
-        self.players.players_on_next_position()
+        self.players.set_players_on_next_position()
 
         return self
 
@@ -113,3 +121,104 @@ class Round():
             return (self.gamemode["points"]*self.jack_multiplicator) < self.bidding.bid
         else:
             return self.gamemode["points"] < self.bidding.bid
+
+    def setup(self):
+        self.turn = self.bidding.bid_player
+        if self.check_play_skat():
+            self.take_skat()
+        self.set_gamemode()
+        self.jack_multiplicator = self.get_jack_multiplicator()
+        self.turn = self.players.forhand
+        return self
+    
+    def check_play_skat(self):
+        show_message = self.settings.skatmessage.format(self.turn.name)
+        error_message = self.settings.yesno_errormessage.format(self.turn.name)
+        return get_user_true_false(show_message, error_message, self.turn.cards)
+
+    def take_skat(self):
+        self.turn.cards += self.skat
+        self.turn.cards.sort_cards()
+        self.skat.empty_cards()
+
+        show_message = self.settings.cardmessage.format(self.turn.name)
+        error_message = self.settings.card_errormessage.format(self.turn.name)
+
+        for _ in range(2):
+            self.turn.cards, skat_card = user_select_card(show_message, error_message, self.turn.cards)
+            self.skat.add_card(skat_card)
+
+    def set_gamemode(self):
+        self.gamemode = self.get_play_type()
+        Card.order_dict = self.settings.order_dicts[self.gamemode["order_dict"]]
+        Card.trumpf = self.gamemode["trumpf"]
+        
+    def get_play_type(self):
+        self.turn.cards.print_cards_ascii()
+        print(self.settings.gamemode_message.format(self.turn.name))
+        for key in self.settings.gamemode_dict:
+            print(f"{key}: {self.settings.gamemode_dict[key]['name']}")
+
+        inp = input()
+        if inp.isdigit() and inp in self.settings.gamemode_dict:
+            return self.settings.gamemode_dict[inp]
+        else:
+            print(self.settings.gamemode_errormessage.format(self.turn.name))
+            return get_play_type()
+
+    def get_jack_multiplicator(self):
+        """
+        Get the jack multiplicator for the play
+        """
+        jacks = self.turn.cards.get_jacks()
+        if len(jacks) == 4 or len(jacks) == 0:
+            return 5
+        
+        suit_list = [x[0] for x in sorted(self.settings.suit_dict.items(), key=lambda x: x[1], reverse=True)]
+        multi = 2
+        if self.has_card_with_suit(jacks, suit_list[0]):
+            for suit in suit_list[1:]:
+                if self.has_card_with_suit(jacks, suit):
+                    multi += 1
+                else:
+                    break
+        else:
+            for suit in suit_list[1:]:
+                if not self.has_card_with_suit(jacks, suit):
+                    multi += 1
+                else:
+                    break
+        return multi
+    
+    @staticmethod
+    def has_card_with_suit(cards, suit):
+        for card in cards:
+            if card.suit_str == suit:
+                return True
+        return False
+
+    def start_new_round(self):
+        self.set_card_default_values()
+        self.players.reset()
+        self.give_cards()
+
+    def set_card_default_values(self):
+        Card.value_dict = self.settings.value_dict
+        Card.suit_dict = self.settings.suit_dict
+        Card.order_dict = self.settings.standart_order_dict
+        Card.trumpf = self.get_clubs_string()
+
+    def give_cards(self):
+        cards = Cards(self.settings)
+        cards.create_shuffled_cards()
+        for i, player in enumerate(self.players):
+            player.cards = Cards(self.settings, cards.cards[10*i:10*(i+1)])
+            player.cards.sort_cards()
+
+        self.skat = Cards(self.settings, cards.cards[-2:])
+
+    def get_clubs_string(self):
+        for tup in self.settings.suit_dict.items():
+            if tup[1] == 12:
+                return tup[0]
+        raise Exception("No Clubs found")

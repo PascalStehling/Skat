@@ -1,3 +1,7 @@
+from itertools import product
+import json
+import os
+
 
 class SettingContainer():
     key_list = ["value_dict", "suit_dict", "position_dict", "gamemode_dict", "standart_order_dict",
@@ -6,9 +10,7 @@ class SettingContainer():
                 "gamemode_errormessage", "tablecard_message", "play_errormessage", "winner_message",
                 "point_message", "end_round_message"]
 
-    def __init__(self, setting_dict, **settings):
-        self.check_keys(setting_dict)
-
+    def __init__(self, setting_dict):
         self.value_dict = setting_dict["value_dict"]
         self.suit_dict = setting_dict["suit_dict"]
         self.position_dict = setting_dict["position_dict"]
@@ -32,7 +34,38 @@ class SettingContainer():
         self.point_message = setting_dict["point_message"]
         self.end_round_message = setting_dict["end_round_message"]
 
-    def check_keys(self, setting_dict):
-        for key in self.key_list:
+        self.START_ROUND = 1
+        self.PLAY_ROUND = 2
+
+        self.FORHAND_POSITION = 0
+        self.MIDDLEHAND_POSITION = 1
+        self.BACKHAND_POSITION = 2
+    
+    @staticmethod
+    def _check_keys(setting_dict):
+        for key in SettingContainer.key_list:
             if not key in setting_dict:
-                raise Exception(f"No value for {key} found in language-settings")
+                raise Exception(
+                    f"No value for {key} found in language-settings")
+
+    @staticmethod
+    def create_SettingContainer_from_file(language="en"):
+        set_dict = SettingContainer._load_setting_file(language)
+        set_dict["bid_list"] = SettingContainer._create_bid_list(set_dict["gamemode_dict"])
+        SettingContainer._check_keys(set_dict)
+        return SettingContainer(set_dict)
+
+    @staticmethod
+    def _load_setting_file(language):
+        try:
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "language-settings", "Settings-"+language+".json"), "r", encoding="utf-8") as f:
+                return json.loads(f.read())
+        except FileNotFoundError as e:
+            raise Exception("This language does not exists!")
+    
+    @staticmethod
+    def _create_bid_list(gamemode_dict):
+        point_list = [mode["points"] for mode in gamemode_dict.values() if mode["trumpf"] is not None]
+        bid_list = [x[0]*x[1] for x in product(point_list, range(2, 6))]
+        bid_list.append(23)  # Add Null Value
+        return sorted(set(bid_list))

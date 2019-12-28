@@ -1,11 +1,10 @@
 """
 This is the main File with starts the skat App
 """
-from modules.setup_round import start_new_round
 from modules.Bidding import Bidding
 from modules.Round import Round
-from modules.setup_single_play import setup_single_play
-from modules.create_settings import create_game_objects
+from modules.SettingContainer import SettingContainer
+from modules.Players import Players
 from modules.Card import Card
 
 class StateMachine:
@@ -14,23 +13,17 @@ class StateMachine:
         self.game_round = 1
         self.max_rounds = settings.get("max_rounds", 36)
         self.gamestate = 1
-        self.players, self.settings = create_game_objects(settings)
-        self.bidding = None
-        self.skat = None
-        self.turn = None
+        self.settings = SettingContainer.create_SettingContainer_from_file(settings.get("language"))
+        self.players = Players(self.settings, kwargs=settings)
 
     def run(self):
         while self.game_round <= self.max_rounds:
-            if self.gamestate == 1:
-                self.players, self.skat = start_new_round(self.players, self.settings)
-                self.bidding = Bidding(self.settings, self.players)
-                self.turn, self.gamestate = self.bidding.play_bidding()
-            elif self.gamestate == 3:
-                gamemode, jack_multiplicator, self.skat = setup_single_play(self.turn,self.skat, self.settings)
-                self.round = Round(self.players, self.settings, self.bidding, jack_multiplicator, gamemode)
-                self.round.play_round()
-                self.round.end_round()
-                self.gamestate = 1
+            if self.gamestate == self.settings.START_ROUND:
+                self.round = Round(self.players, self.settings)
+                self.gamestate = self.round.start_bidding()
+            elif self.gamestate == self.settings.PLAY_ROUND:
+                self.round.setup().play_round().end_round()
+                self.gamestate = self.settings.START_ROUND
                 self.game_round += 1
             
 

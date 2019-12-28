@@ -1,93 +1,184 @@
 import sys
 sys.path.append('../')
 
-from modules.bidding import *
+from modules.Bidding import Bidding
+from modules.SettingContainer import SettingContainer
+from modules.Players import Players
+from modules.Player import Player
 import unittest
 
 class Test_bidding(unittest.TestCase):
 
+    def setUp(self):
+        Player.player_count = 0
+        setting = SettingContainer.create_SettingContainer_from_file()
+        self.players = Players(setting)
+        self.bidding = Bidding(setting, self.players)
+
     def test_is_end_bidding(self):
-        self.assertFalse(is_end_bidding([], None))
-        self.assertFalse(is_end_bidding([], 1))
+        self.bidding.passed = []
+        self.bidding.bid_player = self.players.get_player_by_num(1)
+        self.assertFalse(self.bidding.is_bidding_over())
+        
+        self.bidding.bid_player = None
+        self.assertFalse(self.bidding.is_bidding_over())
 
-        self.assertFalse(is_end_bidding([0], None))
-        self.assertFalse(is_end_bidding([0], 1))
+        self.bidding.passed = [self.players.get_player_by_num(0)]
+        self.assertFalse(self.bidding.is_bidding_over())
 
-        self.assertFalse(is_end_bidding([0,1], None))
-        self.assertTrue(is_end_bidding([0,1], 1))
+        self.bidding.bid_player = self.players.get_player_by_num(1)
+        self.assertFalse(self.bidding.is_bidding_over())
 
-        self.assertTrue(is_end_bidding([0,1,2], None))
-        self.assertTrue(is_end_bidding([0,1,2], 1))
+        self.bidding.passed = [self.players.get_player_by_num(0), self.players.get_player_by_num(1)]
+        self.assertTrue(self.bidding.is_bidding_over())
+
+        self.bidding.bid_player = None
+        self.assertFalse(self.bidding.is_bidding_over())
+        
+        self.bidding.passed = [self.players.get_player_by_num(0), self.players.get_player_by_num(1), self.players.get_player_by_num(2)]
+        self.assertTrue(self.bidding.is_bidding_over())
+        
+        self.bidding.bid_player = self.players.get_player_by_num(1)
+        self.assertTrue(self.bidding.is_bidding_over())
 
     def test_end_bidding(self):
-        self.assertTupleEqual(end_bidding(None, 2), (2,1))
-        self.assertTupleEqual(end_bidding(0, 1), (0,3))
-
-    def test_check_end_bidding(self):
-        self.assertTupleEqual(check_end_bidding(1, [0], 2, 1, 2, 0, 1, 2), (1, 2))
-        self.assertTupleEqual(check_end_bidding(1, [0,2], 2, 1, 2, 1, 2, 0), (1, 3))
+        self.bidding.bid_player = None
+        self.assertTupleEqual(self.bidding.end_bidding(), (None, 1))
+        self.bidding.bid_player = self.players.get_player_by_num(0)
+        self.assertTupleEqual(self.bidding.end_bidding(), (self.players.get_player_by_num(0), 2))
 
     def test_turn_if_not_passed_backhand(self):
-        self.assertEqual(turn_if_not_passed_backhand(2, 1, [0]), 2)
-        self.assertEqual(turn_if_not_passed_backhand(2, 1, [2]), 1)
+        self.bidding.passed = []
+        self.bidding._turn_if_not_passed_backhand()
+        self.assertEqual(self.bidding.turn, self.players.middlehand)
+        self.bidding.passed = [self.players.middlehand]
+        self.bidding._turn_if_not_passed_backhand()
+        self.assertEqual(self.bidding.turn, self.players.forhand)
 
     def test_turn_if_not_passed_forhand(self):
-        self.assertEqual(turn_if_not_passed_forhand(2,0, [1]), 2)
-        self.assertEqual(turn_if_not_passed_forhand(2,0, [2]), 0)
+        self.bidding.passed = []
+        self.bidding._turn_if_not_passed_forhand()
+        self.assertEqual(self.bidding.turn, self.players.middlehand)
+        self.bidding.passed = [self.players.middlehand]
+        self.bidding._turn_if_not_passed_forhand()
+        self.assertEqual(self.bidding.turn, self.players.backhand)
 
     def test_turn_if_not_passed_middlehand(self):
-        self.assertEqual(turn_if_not_passed_middlehand(1,0, [2]), 1)
-        self.assertEqual(turn_if_not_passed_middlehand(1,0, [1]), 0)
+        self.bidding.passed = []
+        self.bidding._turn_if_not_passed_middlehand()
+        self.assertEqual(self.bidding.turn, self.players.forhand)
+        self.bidding.passed = [self.players.forhand]
+        self.bidding._turn_if_not_passed_middlehand()
+        self.assertEqual(self.bidding.turn, self.players.backhand)
 
     def test_turn_if_not_passed(self):
-        self.assertEqual(turn_if_not_passed(0, 1, 2, 0, [2]), 0)
-        self.assertEqual(turn_if_not_passed(1, 1, 2, 0, [1]), 0)
-        self.assertEqual(turn_if_not_passed(2, 1, 2, 0, [1]), 2)
-        with self.assertRaises(Exception):
-            turn_if_not_passed(4, 1, 2, 0, [0])
+        num_list = [1,0,1]
+        self.bidding.passed = []
+        for i, num in enumerate(num_list):
+            self.bidding.turn = self.players.get_player_by_num(i)
+            self.bidding._turn_if_not_passed()
+            self.assertEqual(self.bidding.turn, self.players.get_player_by_num(num))
     
     def test_turn_if_passed(self):
-        self.assertEqual(turn_if_passed(1, 2, 0, 1, [0]), 1)
-        self.assertEqual(turn_if_passed(2, 2, 0, 1, [1,0]), 2)
-        self.assertEqual(turn_if_passed(2, 2, 0, 1, [1,2]), 0)
+        self.bidding.turn = self.players.get_player_by_num(0)
+        self.bidding._turn_if_passed()
+        self.assertEqual(self.bidding.turn, self.players.get_player_by_num(2))
+
+        self.bidding.turn = self.players.get_player_by_num(2)
+        self.bidding.passed = [self.players.get_player_by_num(1)]
+        self.bidding._turn_if_passed()
+        self.assertEqual(self.bidding.turn, self.players.get_player_by_num(0))
+
+        self.bidding.turn = self.players.get_player_by_num(2)
+        self.bidding.passed = [self.players.get_player_by_num(0)]
+        self.bidding._turn_if_passed()
+        self.assertEqual(self.bidding.turn, self.players.get_player_by_num(1))
 
     def test_get_new_turn(self):
-        self.assertEqual(get_new_turn(2,1,1,2,0,[]), 1)
-        self.assertEqual(get_new_turn(2,1,1,2,0,[2]), 0)
+        self.bidding.turn = self.players.get_player_by_num(0)
+        self.bidding.get_new_turn()
+        self.assertEqual(self.bidding.turn, self.players.get_player_by_num(1))
+
+        self.bidding.turn = self.players.get_player_by_num(0)
+        self.bidding.passed = [self.players.get_player_by_num(0)]
+        self.bidding.get_new_turn()
+        self.assertEqual(self.bidding.turn, self.players.get_player_by_num(2))
 
     def test_bid_hear(self):
-        self.assertDictEqual(bid_hear({}, 24, 2, [22,23,24,26,28]), {"bid_player":2, "next_bid": 26})
+        self.bidding.turn = self.players.get_player_by_num(0)
         with self.assertRaises(ValueError):
-            bid_hear({}, 28, 2, [22,23,24,26,28])
+            self.bidding.next_bid = 120
+            self.bidding._bid_hear()
+
+        self.bidding.next_bid = 23
+        self.bidding._bid_hear()
+        self.assertEqual(self.bidding.next_bid, 24)
 
     def test_bid_say(self):
-        self.assertDictEqual(bid_say({"bid_player":None, "bid": None}, 24,2), {"bid_player":2, "bid": 24})
+        self.bidding.next_bid = 23
+        self.bidding.turn = self.players.get_player_by_num(1)
+
+        self.bidding._bid_say()
+        self.assertEqual(self.bidding.bid_player, self.players.get_player_by_num(1))
+        self.assertEqual(self.bidding.bid, 23)
+
+    def test_has_forhand_passed(self):
+        self.bidding.passed = [self.players.get_player_by_num(0)]
+        self.assertTrue(self.bidding.has_forhand_passed())
+
+        self.bidding.passed = [self.players.get_player_by_num(1)]
+        self.assertFalse(self.bidding.has_forhand_passed())
+
+        self.bidding.passed = [self.players.get_player_by_num(0), self.players.get_player_by_num(1)]
+        self.assertTrue(self.bidding.has_forhand_passed())
+
+        self.bidding.passed = [self.players.get_player_by_num(1), self.players.get_player_by_num(2)]
+        self.assertFalse(self.bidding.has_forhand_passed())
 
     def test_update_bid_dict_middlehand_player(self):
-        self.assertDictEqual(update_bid_dict_middlehand_player(24,2,[22,23,24,26,28], 1, {"passed": [1], "bid_player": None, "bid": None, "next_bid": None}),
-                                {"passed": [1], "bid_player": 2, "bid": None, "next_bid": 26})
+        self.bidding.turn = self.players.get_player_by_num(1)
+        self.bidding.passed = []
+        self.bidding.next_bid = 23
 
-        self.assertDictEqual(update_bid_dict_middlehand_player(24,2,[22,23,24,26,28], 1, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
-                                {"passed": [], "bid_player": 2, "bid": 24, "next_bid": None})
+        self.bidding._update_bid_dict_middlehand_player()
+        self.assertEqual(self.bidding.bid_player, self.players.get_player_by_num(1))
+        self.assertEqual(self.bidding.bid, 23)
 
-    def test_update_bid_dict_positiv_bid(self):
-        self.assertDictEqual(update_bid_dict_positiv_bid(0, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
-                                {"passed": [], "bid_player": 0, "bid": None, "next_bid": 26})
-        
-        self.assertDictEqual(update_bid_dict_positiv_bid(1, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
-                                {"passed": [], "bid_player": 0, "bid": 24, "next_bid": None})
+        self.bidding.passed = [self.players.get_player_by_num(0)]
+        self.bidding._update_bid_dict_middlehand_player()
+        self.assertEqual(self.bidding.next_bid, 24)
 
-        self.assertDictEqual(update_bid_dict_positiv_bid(2, 24, [23,24,26], 0, 0, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}),
-                                {"passed": [], "bid_player": 0, "bid": 24, "next_bid": None})
+    def test_update_bid_dict_yes_to_bid(self):
+        self.bidding.passed = []
+        self.bidding.turn = self.players.get_player_by_num(0)
+        self.bidding.next_bid = 23
+        self.bidding._update_bid_dict_yes_to_bid()
+        self.assertEqual(self.bidding.next_bid, 24)
 
-    def test_update_bid_dict(self):
-        self.assertDictEqual(update_bid_dict(False, 24, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}, [23,24,26], 0, 0, 0),
-                                {"passed": [0], "bid_player": None, "bid": None, "next_bid": None})
-        self.assertDictEqual(update_bid_dict(True, 24, {"passed": [], "bid_player": None, "bid": None, "next_bid": None}, [23,24,26], 0, 0, 0),
-                                {"passed": [], "bid_player": 0, "bid": None, "next_bid": 26})
+        self.bidding.turn = self.players.get_player_by_num(1)
+        self.bidding.next_bid = 23
+        self.bidding._update_bid_dict_yes_to_bid()
+        self.assertEqual(self.bidding.bid_player, self.players.get_player_by_num(1))
+        self.assertEqual(self.bidding.bid, 23)
 
-                
-    
+        self.bidding.turn = self.players.get_player_by_num(2)
+        self.bidding.next_bid = 23
+        self.bidding._update_bid_dict_yes_to_bid()
+        self.assertEqual(self.bidding.bid_player, self.players.get_player_by_num(2))
+        self.assertEqual(self.bidding.bid, 23)
+
+    def test_process_user_bid(self):
+        self.bidding.turn = self.players.get_player_by_num(0)
+        self.bidding.passed = []
+
+        self.bidding._process_user_bid(False)
+        self.assertListEqual(self.bidding.passed, [self.players.get_player_by_num(0)])
+
+        self.bidding.next_bid = 23
+        self.bidding.passed = []
+        self.bidding._process_user_bid(True)
+        self.assertEqual(self.bidding.next_bid, 24)
+        self.assertEqual(self.bidding.bid_player, self.players.get_player_by_num(0))
 
 if __name__ == "__main__":
     unittest.main()

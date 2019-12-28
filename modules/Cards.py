@@ -72,3 +72,6 @@ class Cards():
     def __repr__(self):
         self.print_cards_ascii()
         return ""
+
+    def get_jacks(self):
+        return [card for card in self.cards if card.card_points == 2]

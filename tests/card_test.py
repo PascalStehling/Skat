@@ -2,7 +2,7 @@ import unittest
 import sys
 
 sys.path.append('../')
-from modules.card import *
+from modules.Card import Card
 
 class Test_card(unittest.TestCase):
 
@@ -10,30 +10,38 @@ class Test_card(unittest.TestCase):
     suit_dict = {"Kr": 12, "P": 11, "H": 10, "Ka": 9}
     order_dict = {'7': 0, '8': 1, '9': 2, '10': 5, 'B': 7, 'D': 3, 'K': 4, 'A': 6}
 
+    Card.value_dict = value_dict
+    Card.suit_dict = suit_dict
+    Card.order_dict = order_dict
     def test_init(self):
         with self.assertRaises(TypeError):
-            Card(7, 'Kr', self.value_dict, self.suit_dict)
+            Card(7, 'Kr')
 
         with self.assertRaises(TypeError):
-            Card('7', 23, self.value_dict, self.suit_dict)
+            Card('7', 23)
 
         with self.assertRaises(TypeError):
-            Card('7', 'Kr', [], self.suit_dict)
+            Card.value_dict = []
+            Card('7', 'Kr')
+
+        Card.value_dict = self.value_dict
 
         with self.assertRaises(TypeError):
-            Card('7', 'Kr', self.value_dict, [])
+            Card.suit_dict = []
+            Card('7', 'Kr')
+        Card.suit_dict = self.suit_dict
         
         with self.assertRaises(ValueError):
-            Card('5', 'Kr', self.value_dict, self.suit_dict)
+            Card('5', 'Kr')
 
         with self.assertRaises(ValueError):
-            Card('7', '23', self.value_dict, self.suit_dict)
+            Card('7', '23')
         
 
     def test_equal_suit_test(self):
-        a = Card("7", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("7", 'H', self.value_dict, self.suit_dict)
-        c = Card("8", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("7", 'Kr')
+        b = Card("7", 'H')
+        c = Card("8", 'Kr')
 
         self.assertTrue(a.equal_suit(c))
         with self.assertRaises(TypeError):
@@ -41,118 +49,124 @@ class Test_card(unittest.TestCase):
         self.assertFalse(a.equal_suit(b))
 
     def test_istrumpf(self):
-        a = Card("7", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("B", 'H', self.value_dict, self.suit_dict)
+        a = Card("7", 'Kr')
+        b = Card("B", 'H')
 
+        Card.trumpf = 1
         with self.assertRaises(TypeError):
-            a.istrumpf(1)
+            a.istrumpf()
         
-        self.assertTrue(a.istrumpf("Kr"))
-        self.assertTrue(b.istrumpf("H"))
-        self.assertTrue(b.istrumpf("Kr"))
-        self.assertFalse(a.istrumpf("H"))
-        self.assertFalse(a.istrumpf(None))
+        Card.trumpf = "Kr"
+        self.assertTrue(a.istrumpf())
+        Card.trumpf = "H"
+        self.assertTrue(b.istrumpf())
+        Card.trumpf = "Kr"
+        self.assertTrue(b.istrumpf())
+        Card.trumpf = "H"
+        self.assertFalse(a.istrumpf())
+        Card.trumpf = None
+        self.assertFalse(a.istrumpf())
 
     def test_has_higher_value(self):
-        a = Card("B", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("B", 'H', self.value_dict, self.suit_dict)
+        a = Card("B", 'Kr')
+        b = Card("B", 'H')
 
         self.assertTrue(a.has_higher_suit_val(b))
         self.assertFalse(b.has_higher_suit_val(a))
 
     def test_ishigher_both_trump_self_is_jack(self):
-        a = Card("B", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("B", 'H', self.value_dict, self.suit_dict)
-        c = Card("D", 'H', self.value_dict, self.suit_dict)
+        a = Card("B", 'Kr')
+        b = Card("B", 'H')
+        c = Card("D", 'H')
 
         self.assertTrue(a._ishigher_both_trump_self_is_jack(c))
         self.assertFalse(b._ishigher_both_trump_self_is_jack(a))
 
     def test_ishigher_both_trump_self_not_jack(self):
-        a = Card("D", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("K", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("D", 'Kr')
+        b = Card("K", 'Kr')
 
-        self.assertFalse(a._ishigher_both_trump_self_not_jack(b, self.order_dict))
-        self.assertTrue(b._ishigher_both_trump_self_not_jack(a, self.order_dict))
+        self.assertFalse(a._ishigher_both_trump_self_not_jack(b))
+        self.assertTrue(b._ishigher_both_trump_self_not_jack(a))
 
     def test_ishigher_both_trumpf(self):
-        a = Card("B", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("K", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("B", 'Kr')
+        b = Card("K", 'Kr')
 
-        self.assertTrue(a._ishigher_both_trumpf(b, self.order_dict))
-        self.assertFalse(b._ishigher_both_trumpf(a, self.order_dict))
+        self.assertTrue(a._ishigher_both_trumpf(b))
+        self.assertFalse(b._ishigher_both_trumpf(a))
 
     def test_ishigher_no_trumpf(self):
-        a = Card("D", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("K", 'H', self.value_dict, self.suit_dict)
+        a = Card("D", 'Kr')
+        b = Card("K", 'H')
 
         self.assertTrue(a._ishigher_no_trumpf(b))
         self.assertFalse(b._ishigher_no_trumpf(a, check_suit_val=True))
         self.assertTrue(a._ishigher_no_trumpf(b, check_suit_val=True))
 
     def test_ishigher_self_is_trumpf(self):
-        a = Card("D", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("K", 'H', self.value_dict, self.suit_dict)
-        c = Card("K", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("D", 'Kr')
+        b = Card("K", 'H')
+        c = Card("K", 'Kr')
 
-        self.assertTrue(a._ishigher_self_is_trumpf(b, False, self.order_dict))
-        self.assertFalse(a._ishigher_self_is_trumpf(c, True, self.order_dict))
+        self.assertTrue(a._ishigher_self_is_trumpf(b))
+        self.assertFalse(a._ishigher_self_is_trumpf(c))
 
     def test_ishigher_self_not_trumpf(self):
-        a = Card("D", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("K", 'H', self.value_dict, self.suit_dict)
-        c = Card("K", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("D", 'Kr')
+        b = Card("K", 'H')
+        c = Card("K", 'Kr')
 
-        self.assertFalse(a._ishigher_self_not_trumpf(b, True, self.order_dict))
-        self.assertTrue(a._ishigher_self_not_trumpf(b, False, self.order_dict))
-        self.assertFalse(a._ishigher_self_not_trumpf(c, False, self.order_dict))
+        Card.trumpf = "H"
+        self.assertFalse(a._ishigher_self_not_trumpf(b))
+        Card.trumpf = "P"
+        self.assertTrue(a._ishigher_self_not_trumpf(b))
+        self.assertFalse(a._ishigher_self_not_trumpf(c))
 
 
     def test_ishigher(self):
-        a = Card("7", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("8", 'Kr', self.value_dict, self.suit_dict)
-        c = Card("8", 'H', self.value_dict, self.suit_dict)
-        d = Card("B", 'H', self.value_dict, self.suit_dict)
-        e = Card("B", 'Kr', self.value_dict, self.suit_dict)
+        a = Card("7", 'Kr')
+        b = Card("8", 'Kr')
+        c = Card("8", 'H')
+        d = Card("B", 'H')
+        e = Card("B", 'Kr')
 
         with self.assertRaises(TypeError):
-            a.ishigher(1, "Kr", self.order_dict)
-        with self.assertRaises(TypeError):
-            a.ishigher(b, 2, self.order_dict)
-        with self.assertRaises(TypeError):
-            a.ishigher(b, "Kr", 2)
+            a.ishigher(1)
 
-        self.assertTrue(b.ishigher(a, "H", self.order_dict)) # 2 Cards not Trumpf
-        self.assertTrue(b.ishigher(c, "P", self.order_dict)) # 2 Cards not Trumpf
-        self.assertFalse(a.ishigher(b, "P", self.order_dict)) # 2 Cards not Trumpf
+        Card.trumpf = "H"
+        self.assertTrue(b.ishigher(a)) # 2 Cards not Trumpf
+        Card.trumpf = "P"
+        self.assertTrue(b.ishigher(c)) # 2 Cards not Trumpf
+        self.assertFalse(a.ishigher(b)) # 2 Cards not Trumpf
 
-        self.assertTrue(b.ishigher(c, "P", self.order_dict, True)) # 2 Cards not Trumpf, suit_val check
-        self.assertFalse(c.ishigher(b, "P", self.order_dict, True)) # 2 Cards not Trumpf, suit_val check
+        self.assertTrue(b.ishigher(c, True)) # 2 Cards not Trumpf, suit_val check
+        self.assertFalse(c.ishigher(b, True)) # 2 Cards not Trumpf, suit_val check
 
-        self.assertTrue(d.ishigher(b, "P", self.order_dict, True)) # Jack and not Trumpf, suit_val check
-        self.assertFalse(b.ishigher(d, "P", self.order_dict, True)) # not Trumpf and Jack, suit_val check
+        self.assertTrue(d.ishigher(b, True)) # Jack and not Trumpf, suit_val check
+        self.assertFalse(b.ishigher(d, True)) # not Trumpf and Jack, suit_val check
 
-        self.assertTrue(d.ishigher(a, "P", self.order_dict))
-        self.assertFalse(a.ishigher(d, "P", self.order_dict))
+        self.assertTrue(d.ishigher(a))
+        self.assertFalse(a.ishigher(d))
 
-        self.assertTrue(d.ishigher(a, "Kr", self.order_dict))
-        self.assertFalse(a.ishigher(d, "Kr", self.order_dict))
+        self.assertTrue(e.ishigher(d))
+        self.assertFalse(d.ishigher(e))
 
-        self.assertTrue(e.ishigher(d, "P", self.order_dict))
-        self.assertFalse(d.ishigher(e, "P", self.order_dict))
+        Card.trumpf = "Kr"
+        self.assertTrue(d.ishigher(a))
+        self.assertFalse(a.ishigher(d))
 
-        self.assertTrue(b.ishigher(a, "Kr", self.order_dict)) # 2 Cards Trumpf
-        self.assertFalse(a.ishigher(b, "Kr", self.order_dict)) # 2 Cards Trumpf
+        self.assertTrue(b.ishigher(a)) # 2 Cards Trumpf
+        self.assertFalse(a.ishigher(b)) # 2 Cards Trumpf
 
-        self.assertTrue(b.ishigher(a, "Kr", self.order_dict)) # 2 Cards Trumpf
+        self.assertTrue(b.ishigher(a)) # 2 Cards Trumpf
 
     def test_has_higher_value(self):
-        a = Card("7", 'Kr', self.value_dict, self.suit_dict)
-        b = Card("8", 'Kr', self.value_dict, self.suit_dict)
-        order_dict = {'7': 0, '8': 1, '9': 2, '10': 5, 'J': 7, 'Q': 3, 'K': 4, 'A': 6}
+        a = Card("7", 'Kr')
+        b = Card("8", 'Kr')
         
-        self.assertFalse(a.has_higher_value(b, order_dict))
-        self.assertTrue(b.has_higher_value(a, order_dict))
+        self.assertFalse(a.has_higher_value(b))
+        self.assertTrue(b.has_higher_value(a))
 
 if __name__ == "__main__":
     unittest.main()

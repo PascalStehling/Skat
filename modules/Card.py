@@ -132,14 +132,13 @@ class Card:
         if not isinstance(other_card, Card):
             raise TypeError("Other Card needs to be of Type Card")
 
-        other_card_trumpf = other_card.istrumpf()
         if self.istrumpf():
-            return self._ishigher_self_is_trumpf(other_card, other_card_trumpf)
+            return self._ishigher_self_is_trumpf(other_card)
         
-        return self._ishigher_self_not_trumpf(other_card, other_card_trumpf, check_suit_val)
+        return self._ishigher_self_not_trumpf(other_card, check_suit_val)
             
 
-    def _ishigher_self_not_trumpf(self, other_card, other_card_trumpf, check_suit_val=False):
+    def _ishigher_self_not_trumpf(self, other_card, check_suit_val=False):
         """Checks if the card is higher than other_card, if the main card (self) is not trumpf
         
         Args:
@@ -150,24 +149,23 @@ class Card:
         Returns:
             bool: True if the main Card (self) is higher, False if other_card is higher
         """
-        if other_card_trumpf:
+        if other_card.istrumpf():
             return False
         if self.suit_val != other_card.suit_val: # If none is Trumpf and they have diffrent suits
             return self._ishigher_no_trumpf(other_card, check_suit_val)
             
         return self.has_higher_value(other_card)
 
-    def _ishigher_self_is_trumpf(self, other_card, other_card_trumpf):
+    def _ishigher_self_is_trumpf(self, other_card):
         """Checks if the card is higher than other_card, if the main card (self) is trumpf
         
         Args:
             other_card (Card): Card to check with
-            other_card_trumpf (bool): if the other card is Trumpf
         
         Returns:
             bool: True if the main Card (self) is higher, False if other_card is higher
         """
-        if not other_card_trumpf:
+        if not other_card.istrumpf():
             return True
         else:
             return self._ishigher_both_trumpf(other_card)
@@ -244,7 +242,6 @@ class Card:
         
         Args:
             other_card (Card): Card to check with
-            order_dict (dict): dictionary with the ranking order of the cards
         
         Returns:
             bool: True if the main card (self) is higher

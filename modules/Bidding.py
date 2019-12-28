@@ -12,7 +12,7 @@ class Bidding():
         self.turn = players.middlehand
 
     def play_bidding(self):
-        while not self.is_end_bidding():
+        while not self.is_bidding_over():
             self.make_bid()
             self.get_new_turn()
         return self.end_bidding()
@@ -23,22 +23,22 @@ class Bidding():
         show_message = self.settings.bidmessage.format(self.turn.name, self.next_bid)
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
         user_bid = get_user_true_false(show_message, error_message, self.turn.cards)
-        self._update_bid_dict(user_bid)
+        self._process_user_bid(user_bid)
 
-    def _update_bid_dict(self, user_bid):
+    def _process_user_bid(self, user_bid):
         r"""Check what the user has bidden and update the bidding Dictionary (bid_dict).
         """
         if not user_bid:
             self.passed.append(self.turn)
         else:
-            self._update_bid_dict_positiv_bid()
+            self._update_bid_dict_yes_to_bid()
 
-    def _update_bid_dict_positiv_bid(self):
+    def _update_bid_dict_yes_to_bid(self):
         """Updates the bid Dict if the user said Yes to the new Bid
         """
-        if self.turn.position == 0: # Forhand can only listen
+        if self.turn.position == self.settings.FORHAND_POSITION: # Forhand can only listen
             self._bid_hear()
-        elif self.turn.position  == 2: # Backhand can only say
+        elif self.turn.position  == self.settings.BACKHAND_POSITION: # Backhand can only say
             self._bid_say()
         else: # Middlehand is playing
             self._update_bid_dict_middlehand_player()
@@ -46,10 +46,13 @@ class Bidding():
     def _update_bid_dict_middlehand_player(self):
         """Updates the bid Dict if the user said Yes to the new Bid and was playing middlehand
         """
-        if [True for player in self.passed if player.position == 0]: # If Forhand has passed, Middlehand is hearing
+        if self.has_forhand_passed(): # If Forhand has passed, Middlehand is hearing
             self._bid_hear()
         else:  # Else middle hand is saying
             self._bid_say()
+
+    def has_forhand_passed(self):
+        return bool([True for player in self.passed if player.position == self.settings.FORHAND_POSITION])
 
     def _bid_say(self):
         """Update the bid_dict when the user needed to say
@@ -76,29 +79,25 @@ class Bidding():
     def _turn_if_passed(self):
         """Get the new turn for the next round of bidding if the player who played now passed.
         """
-        if self.turn.position != 2:
+        if self.turn.position != self.settings.BACKHAND_POSITION:
             # If the middlehand or forhand passes backhand needs to play
             self.turn = self.players.backhand
-        elif not self.players.forhand not in self.passed:
+        elif self.players.forhand not in self.passed:
             # If the Backhand and forhand is still in play, forhand needs to play
             self.turn = self.players.forhand
-        elif not self.players.middlehand not in self.passed:
+        else: # self.players.middlehand not in self.passed:
             # IF Backhand passed and middlehand still in play, middlehand needs to play
-            self.turn = self.players.backhand
-
+            self.turn = self.players.middlehand
 
     def _turn_if_not_passed(self):
         """Get the new turn for the next round of bidding if the player who played now said yes.
         """
-        if self.turn.position == 1:
+        if self.turn.position == self.settings.MIDDLEHAND_POSITION:
             self._turn_if_not_passed_middlehand()
-        elif self.turn.position == 0:
+        elif self.turn.position ==  self.settings.FORHAND_POSITION:
             self._turn_if_not_passed_forhand()
-        elif self.turn.position == 2 :
+        else:# self.turn.position ==  self.settings.BACKHAND_POSITION
             self._turn_if_not_passed_backhand()
-        else:
-            raise Exception("Somthing wrong happend in turn_if_not_passed")
-
     def _turn_if_not_passed_middlehand(self):
         """Get the new turn for the next round of bidding if the player who played now said yes and was playing at the middlehand position (1).
         """
@@ -136,14 +135,14 @@ class Bidding():
             tuple: Tuple with the the player who has the next turn and the new gamstate (turn, gamestate)
         """
         if self.bid_player is not None:
-            return self.bid_player, 3
+            return self.bid_player, self.settings.PLAY_ROUND
         else:
             # Ramsch not implemented, just new cards are given.
             # TODO Ramsch
             print("Everyone passed, cards get dealt again")
-            return None, 1
+            return None, self.settings.START_ROUND
 
-    def is_end_bidding(self):
+    def is_bidding_over(self):
         """Checks if the bidding finished
         
         Returns:

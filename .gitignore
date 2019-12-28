@@ -51,3 +51,6 @@ modules/__pycache__/Player.cpython-37.pyc
 modules/__pycache__/Players.cpython-37.pyc
 modules/__pycache__/Round.cpython-37.pyc
 modules/__pycache__/SettingContainer.cpython-37.pyc
+tests/__pycache__/player_test.cpython-37.pyc
+tests/__pycache__/Players_test.cpython-37.pyc
+tests/__pycache__/settingContainer_test.cpython-37.pyc
