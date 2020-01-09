@@ -32,18 +32,20 @@ class Round():
     def end_round(self):
         """The main function to end the round   
         """
-        
-        single_player_card_points = self.calc_card_points()
+        self.bidding.bid_player.cards += self.skat
+        single_player_card_points = self.calculate_single_player_points()
         score = self.calculate_score(single_player_card_points)
         self.bidding.bid_player.score += score
-
         print(self.settings.end_round_message.format(self.bidding.bid_player, single_player_card_points, score))
-        for p in self.players:
-            print(self.settings.point_message.format(p.name, p.score))
+        self.print_player_scores()
 
         self.players.set_players_on_next_position()
 
         return self
+
+    def print_player_scores(self):
+        for p in self.players:
+            print(self.settings.point_message.format(p.name, p.score))
 
     def calculate_score(self, single_player_card_points):
         """Calculate the score points of the single_player
@@ -85,14 +87,9 @@ class Round():
         
         return 0
 
-    def calc_card_points(self):
-        """Calculate the points from a list of Cards
-
-        Returns:
-            int: number of points the Player got
-        """
+    def calculate_single_player_points(self):
         points = 0
-        for card in self.turn.cards:
+        for card in self.bidding.bid_player.cards:
             points += card.card_points
         return points
 
@@ -124,14 +121,14 @@ class Round():
 
     def setup(self):
         self.turn = self.bidding.bid_player
-        if self.check_play_skat():
+        if self.check_take_skat():
             self.take_skat()
         self.set_gamemode()
         self.jack_multiplicator = self.get_jack_multiplicator()
         self.turn = self.players.forhand
         return self
     
-    def check_play_skat(self):
+    def check_take_skat(self):
         show_message = self.settings.skatmessage.format(self.turn.name)
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
         return get_user_true_false(show_message, error_message, self.turn.cards)
@@ -170,24 +167,36 @@ class Round():
         """
         Get the jack multiplicator for the play
         """
-        jacks = self.turn.cards.get_jacks()
-        if len(jacks) == 4 or len(jacks) == 0:
+        jack_cards = self.turn.cards.get_jacks()
+        if len(jack_cards) == 4 or len(jack_cards) == 0:
             return 5
-        
-        suit_list = [x[0] for x in sorted(self.settings.suit_dict.items(), key=lambda x: x[1], reverse=True)]
+
         multi = 2
-        if self.has_card_with_suit(jacks, suit_list[0]):
-            for suit in suit_list[1:]:
-                if self.has_card_with_suit(jacks, suit):
-                    multi += 1
-                else:
-                    break
+        if self.is_club_jack_in_cards(jack_cards):
+            multi += self._count_cards_with_jacks(jack_cards)
         else:
-            for suit in suit_list[1:]:
-                if not self.has_card_with_suit(jacks, suit):
-                    multi += 1
-                else:
-                    break
+            multi += self._count_cards_without_jacks(jack_cards)
+        return multi
+
+    def is_club_jack_in_cards(self, cards):
+        return self.has_card_with_suit(cards, self.settings.sorted_suit_list[0])
+
+    def _count_cards_without_jacks(self, cards):
+        multi = 0
+        for suit in self.settings.suit_list[1:]:
+            if not self.has_card_with_suit(cards, suit):
+                multi += 1
+            else:
+                break
+        return multi
+
+    def _count_cards_with_jacks(self, cards):
+        multi = 0
+        for suit in self.settings.suit_list[1:]:
+            if self.has_card_with_suit(cards, suit):
+                multi += 1
+            else:
+                break
         return multi
     
     @staticmethod

@@ -40,6 +40,11 @@ class SettingContainer():
         self.FORHAND_POSITION = 0
         self.MIDDLEHAND_POSITION = 1
         self.BACKHAND_POSITION = 2
+
+        self.sorted_suit_list = self.get_sorted_suit_list()
+
+    def get_sorted_suit_list(self):
+        return [x[0] for x in sorted(self.suit_dict.items(), key=lambda x: x[1], reverse=True)]
     
     @staticmethod
     def _check_keys(setting_dict):
