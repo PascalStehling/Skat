@@ -3,7 +3,7 @@ from modules.Cards import Cards
 from modules.Bidding import Bidding
 from modules.tools import get_user_true_false, user_select_card
 from modules.Stich import Stich
-from copy import deepcopy
+
 
 class Round():
 
@@ -25,7 +25,8 @@ class Round():
 
     def play_round(self):
         while len(self.turn.cards) != 0:
-            self.turn = Stich(self.players, self.turn, self.settings).play_stich().assign_stich_to_winner().get_winner()
+            self.turn = Stich(self.players, self.turn, self.settings).play_stich(
+            ).assign_stich_to_winner().get_winner()
             print(self.settings.winner_message.format(self.turn.name))
         return self
 
@@ -36,7 +37,8 @@ class Round():
         single_player_card_points = self.calculate_single_player_points()
         score = self.calculate_score(single_player_card_points)
         self.bidding.bid_player.score += score
-        print(self.settings.end_round_message.format(self.bidding.bid_player, single_player_card_points, score))
+        print(self.settings.end_round_message.format(
+            self.bidding.bid_player, single_player_card_points, score))
         self.print_player_scores()
 
         self.players.set_players_on_next_position()
@@ -49,7 +51,7 @@ class Round():
 
     def calculate_score(self, single_player_card_points):
         """Calculate the score points of the single_player
-        
+
         Returns:
             int: the score points the player achieved
         """
@@ -84,7 +86,7 @@ class Round():
             return 2
         if card_points > 90:
             return 1
-        
+
         return 0
 
     def calculate_single_player_points(self):
@@ -106,7 +108,6 @@ class Round():
             return False
 
         return not self.has_over_bidded()
-        
 
     def has_over_bidded(self):
         """Checks is the Player has overbidden
@@ -127,7 +128,7 @@ class Round():
         self.jack_multiplicator = self.get_jack_multiplicator()
         self.turn = self.players.forhand
         return self
-    
+
     def check_take_skat(self):
         show_message = self.settings.skatmessage.format(self.turn.name)
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
@@ -142,14 +143,15 @@ class Round():
         error_message = self.settings.card_errormessage.format(self.turn.name)
 
         for _ in range(2):
-            self.turn.cards, skat_card = user_select_card(show_message, error_message, self.turn.cards)
+            self.turn.cards, skat_card = user_select_card(
+                show_message, error_message, self.turn.cards)
             self.skat.add_card(skat_card)
 
     def set_gamemode(self):
         self.gamemode = self.get_play_type()
         Card.order_dict = self.settings.order_dicts[self.gamemode["order_dict"]]
         Card.trumpf = self.gamemode["trumpf"]
-        
+
     def get_play_type(self):
         self.turn.cards.print_cards_ascii()
         print(self.settings.gamemode_message.format(self.turn.name))
@@ -198,7 +200,7 @@ class Round():
             else:
                 break
         return multi
-    
+
     @staticmethod
     def has_card_with_suit(cards, suit):
         for card in cards:

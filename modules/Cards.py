@@ -21,7 +21,9 @@ class Cards():
         """ 
         Creates 32 cards and returns them shuffled
         """
-        card_nums = product(self.settings.value_dict.keys(), self.settings.suit_dict.keys()) # cartesian Product to get all possible card values
+        # cartesian Product to get all possible card values
+        card_nums = product(self.settings.value_dict.keys(),
+                            self.settings.suit_dict.keys())
         self.cards = [Card(card[0], card[1]) for card in card_nums]
         shuffle(self.cards)
 
@@ -37,7 +39,7 @@ class Cards():
                 k += 1
             i += 1
 
-    def print_cards_ascii(self, card_delimiter=":"):    
+    def print_cards_ascii(self, card_delimiter=":"):
         for i in range(len(self.cards[0].get_ascii_card())):
             pr_str = ""
             for c in self.cards:

@@ -45,7 +45,7 @@ class SettingContainer():
 
     def get_sorted_suit_list(self):
         return [x[0] for x in sorted(self.suit_dict.items(), key=lambda x: x[1], reverse=True)]
-    
+
     @staticmethod
     def _check_keys(setting_dict):
         for key in SettingContainer.key_list:
@@ -56,7 +56,8 @@ class SettingContainer():
     @staticmethod
     def create_SettingContainer_from_file(language="en"):
         set_dict = SettingContainer._load_setting_file(language)
-        set_dict["bid_list"] = SettingContainer._create_bid_list(set_dict["gamemode_dict"])
+        set_dict["bid_list"] = SettingContainer._create_bid_list(
+            set_dict["gamemode_dict"])
         SettingContainer._check_keys(set_dict)
         return SettingContainer(set_dict)
 
@@ -65,12 +66,13 @@ class SettingContainer():
         try:
             with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "language-settings", "Settings-"+language+".json"), "r", encoding="utf-8") as f:
                 return json.loads(f.read())
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             raise Exception("This language does not exists!")
-    
+
     @staticmethod
     def _create_bid_list(gamemode_dict):
-        point_list = [mode["points"] for mode in gamemode_dict.values() if mode["trumpf"] is not None]
+        point_list = [mode["points"]
+                      for mode in gamemode_dict.values() if mode["trumpf"] is not None]
         bid_list = [x[0]*x[1] for x in product(point_list, range(2, 6))]
         bid_list.append(23)  # Add Null Value
         return sorted(set(bid_list))

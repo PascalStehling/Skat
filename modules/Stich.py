@@ -3,6 +3,7 @@ from modules.Card import EmptyCard
 from copy import deepcopy
 from modules.Cards import Cards
 
+
 class Stich():
 
     def __init__(self, players, turn, settings):
@@ -34,10 +35,13 @@ class Stich():
 
     def user_play_card(self):
         card_message = self.settings.cardmessage.format(self.turn.name)
-        card_errormessage = self.settings.card_errormessage.format(self.turn.name)
-        play_errormessage = self.settings.play_errormessage.format(self.turn.name)
+        card_errormessage = self.settings.card_errormessage.format(
+            self.turn.name)
+        play_errormessage = self.settings.play_errormessage.format(
+            self.turn.name)
 
-        self.turn.cards, played_card = user_select_card(card_message, card_errormessage, self.turn.cards)
+        self.turn.cards, played_card = user_select_card(
+            card_message, card_errormessage, self.turn.cards)
 
         if not self.is_valid_card(played_card):
             self.turn.cards.add_card(played_card)
@@ -50,7 +54,7 @@ class Stich():
     def is_valid_card(self, played_card):
         """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card. 
         If this isnt the case it checks if any of the user card has the same suit or trumpf as the first played card. If this is true the its not a valid card.
-        
+
         Returns:
             bool: True if the play was valid, else False
         """
@@ -65,10 +69,10 @@ class Stich():
 
     def same_suit_in_cards(self, check_card):
         """Checks if there is an card with the same suit or trumpf in an list of cards.
-        
+
         Args:
             check_card (Card): Card to check for in the list
-        
+
         Returns:
             bool: True if there if a card in the list has the same suit or both are trumpf in user_cards, else False
         """
@@ -95,13 +99,13 @@ class Stich():
         for card in self.cards_on_table[1:]:
             if not winner.ishigher(card):
                 winner = card
-        
+
         return self.cards_on_table.index(winner)
 
     def get_winner(self):
         """Gets the cards that were Played and returns the number of the Player who won
         """
-        return self.players.get_player_by_num((self.turn.num+1+self.get_winning_card_index())%3)
+        return self.players.get_player_by_num((self.turn.num+1+self.get_winning_card_index()) % 3)
 
     def assign_stich_to_winner(self):
         self.get_winner().won_cards += self.cards_on_table

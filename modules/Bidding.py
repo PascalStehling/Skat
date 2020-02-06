@@ -1,5 +1,6 @@
 from modules.tools import get_user_true_false
 
+
 class Bidding():
 
     def __init__(self, settings, players):
@@ -20,9 +21,11 @@ class Bidding():
     def make_bid(self):
         """Main Function for bidding. Ask Player if he wants to bid, checks if bidding Phase ends and select the new turn
         """
-        show_message = self.settings.bidmessage.format(self.turn.name, self.next_bid)
+        show_message = self.settings.bidmessage.format(
+            self.turn.name, self.next_bid)
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
-        user_bid = get_user_true_false(show_message, error_message, self.turn.cards)
+        user_bid = get_user_true_false(
+            show_message, error_message, self.turn.cards)
         self._process_user_bid(user_bid)
 
     def _process_user_bid(self, user_bid):
@@ -36,17 +39,17 @@ class Bidding():
     def _update_bid_dict_yes_to_bid(self):
         """Updates the bid Dict if the user said Yes to the new Bid
         """
-        if self.turn.position == self.settings.FORHAND_POSITION: # Forhand can only listen
+        if self.turn.position == self.settings.FORHAND_POSITION:  # Forhand can only listen
             self._bid_hear()
-        elif self.turn.position  == self.settings.BACKHAND_POSITION: # Backhand can only say
+        elif self.turn.position == self.settings.BACKHAND_POSITION:  # Backhand can only say
             self._bid_say()
-        else: # Middlehand is playing
+        else:  # Middlehand is playing
             self._update_bid_dict_middlehand_player()
 
     def _update_bid_dict_middlehand_player(self):
         """Updates the bid Dict if the user said Yes to the new Bid and was playing middlehand
         """
-        if self.has_forhand_passed(): # If Forhand has passed, Middlehand is hearing
+        if self.has_forhand_passed():  # If Forhand has passed, Middlehand is hearing
             self._bid_hear()
         else:  # Else middle hand is saying
             self._bid_say()
@@ -64,16 +67,17 @@ class Bidding():
         """Update the bid_dict when the user needed to hear
         """
         if self.settings.bid_list[-1] == self.next_bid:
-            raise ValueError("Cant bid any higher") 
+            raise ValueError("Cant bid any higher")
         self.bid_player = self.turn
-        self.next_bid = self.settings.bid_list[self.settings.bid_list.index(self.next_bid)+1]
+        self.next_bid = self.settings.bid_list[self.settings.bid_list.index(
+            self.next_bid)+1]
 
     def get_new_turn(self):
         """Get the new turn for the next round of bidding
         """
-        if self.turn in self.passed: # Player has passed
+        if self.turn in self.passed:  # Player has passed
             self._turn_if_passed()
-        else: # Player has not passed
+        else:  # Player has not passed
             self._turn_if_not_passed()
 
     def _turn_if_passed(self):
@@ -85,7 +89,7 @@ class Bidding():
         elif self.players.forhand not in self.passed:
             # If the Backhand and forhand is still in play, forhand needs to play
             self.turn = self.players.forhand
-        else: # self.players.middlehand not in self.passed:
+        else:  # self.players.middlehand not in self.passed:
             # IF Backhand passed and middlehand still in play, middlehand needs to play
             self.turn = self.players.middlehand
 
@@ -94,10 +98,11 @@ class Bidding():
         """
         if self.turn.position == self.settings.MIDDLEHAND_POSITION:
             self._turn_if_not_passed_middlehand()
-        elif self.turn.position ==  self.settings.FORHAND_POSITION:
+        elif self.turn.position == self.settings.FORHAND_POSITION:
             self._turn_if_not_passed_forhand()
-        else:# self.turn.position ==  self.settings.BACKHAND_POSITION
+        else:  # self.turn.position ==  self.settings.BACKHAND_POSITION
             self._turn_if_not_passed_backhand()
+
     def _turn_if_not_passed_middlehand(self):
         """Get the new turn for the next round of bidding if the player who played now said yes and was playing at the middlehand position (1).
         """
@@ -144,7 +149,7 @@ class Bidding():
 
     def is_bidding_over(self):
         """Checks if the bidding finished
-        
+
         Returns:
             bool: True if the bidding is finished, else False
         """
