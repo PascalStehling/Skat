@@ -183,7 +183,7 @@ class Round():
 
     def _count_cards_without_jacks(self, cards):
         multi = 0
-        for suit in self.settings.suit_list[1:]:
+        for suit in self.settings.sorted_suit_list[1:]:
             if not self.has_card_with_suit(cards, suit):
                 multi += 1
             else:
@@ -192,7 +192,7 @@ class Round():
 
     def _count_cards_with_jacks(self, cards):
         multi = 0
-        for suit in self.settings.suit_list[1:]:
+        for suit in self.settings.sorted_suit_list[1:]:
             if self.has_card_with_suit(cards, suit):
                 multi += 1
             else:
