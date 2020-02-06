@@ -1,5 +1,58 @@
 py_binary(
-    name = "firstTest",
+    name = "Skat",
     srcs = ["main.py"],
-    main = "main.py"
+    main = "main.py",
+    deps = [":Round", ":SettingContainer", ":Players"]
+)
+
+py_library(
+    name = "Round",
+    srcs = ["modules/Round.py"],
+    deps = [":Card", ":Cards", ":Bidding", ":tools", ":Stich"]
+)
+
+py_library(
+    name = "Players",
+    srcs = ["modules/Players.py"],
+    deps = [":Player", ":Cards"]
+)
+
+py_library(
+    name = "Player",
+    srcs = ["modules/Player.py"]
+)
+
+py_library(
+    name = "Stich",
+    srcs = ["modules/Stich.py"],
+    deps = [":tools", ":Card", ":Cards"]
+)
+
+py_library(
+    name = "Cards",
+    srcs = ["modules/Cards.py"],
+    deps = [":Card"]
+)
+
+py_library(
+    name = "Bidding",
+    srcs = ["modules/Bidding.py"],
+    deps = [":tools"]
+)
+
+py_library(
+    name = "tools",
+    srcs = ["modules/tools.py"],
+    deps = [":Card"]
+)
+
+py_library(
+    name = "Card",
+    srcs = ["modules/Card.py"]
+)
+
+py_library(
+    name = "SettingContainer",
+    srcs = ["modules/SettingContainer.py"],
+    data = ["modules/language-settings/Settings-de.json", "modules/language-settings/Settings-en.json"]
 )

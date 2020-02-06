@@ -54,3 +54,17 @@ modules/__pycache__/SettingContainer.cpython-37.pyc
 tests/__pycache__/player_test.cpython-37.pyc
 tests/__pycache__/Players_test.cpython-37.pyc
 tests/__pycache__/settingContainer_test.cpython-37.pyc
+bazel-bin/Skat.exe
+bazel-bin/Skat.exe.runfiles_manifest
+bazel-bin/Skat.temp
+bazel-bin/Skat.zip
+bazel-bin/Skat.zip-0.params
+bazel-bin/Skat.exe.runfiles/MANIFEST
+bazel-out/x64_windows-fastbuild/bin/Skat.exe
+bazel-out/x64_windows-fastbuild/bin/Skat.exe.runfiles_manifest
+bazel-out/x64_windows-fastbuild/bin/Skat.temp
+bazel-out/x64_windows-fastbuild/bin/Skat.zip
+bazel-out/x64_windows-fastbuild/bin/Skat.zip-0.params
+bazel-out/x64_windows-fastbuild/bin/Skat.exe.runfiles/MANIFEST
+bazel-out/_tmp/actions/stderr-4
+bazel-out/_tmp/actions/stdout-4
