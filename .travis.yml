@@ -18,8 +18,6 @@ addons:
       secure: "IOz4lonspWHocfUhExotBNhbUtpacNMWqMmtPed2C/uzdNIPAvcu8oBBbfPSPIsKlq48f8nLs/VD2YgEYn4XjcD7+vhX7f0eDWSH+zd+tZ+t57rmsc88bM2ZgcSNnyNjMWwTpGTEb5KslSDUVtJJSMXnmrpVSeERFk8yuDGIW6+5AlwW7o3vdNos1ZZ16qo1VDY622OthzVXU8th58vKU+Svd4uVR8B+UZ2T4Qar0i3rq/rvGjQOWswFf3fcdWD84CLE+h4UPzhBn9j9lPYLgnWQFL63BAbTSZ+1CUyBdfhNcQIi8xmPI+Ea8keUHbBxyIELJHwZ24S4HgDVrccYcyQ0A1cYJB7QXm7OZh2Pp+ArDOvbEYqppC+RSc19NevgJrILuvAjYGdqIr4PeuyBPTfgskrHFwcA5C2HGXowkwbc4jbllDfZ08xE5eB3wqEDCzuHjAO0DypPFLK2Xtf1563s8KMgeGzducLQfokSLjhW7Alc4+OuCSBbHg9v7BahJyZ1m9r4CAq9zB0z4liZurndnTROAQaJ8ejARpACOKjWgcCD/bV7S0PltOYvf2NkeQIORYrZrhcbuvaBKs18uxllK29aN7nertjrBow4PvMY50tbr1QnQNGc7/RNCh2HxI3vBBDYWR0TkEX8jitjdxEs82PX6R00UOm12NOV+ag="
 
 script:
-  - python tests.py
-  - coverage run tests.py
-  - coverage xml
+  - doit run_test
   - sonar-scanner
   - python-codacy-coverage -r coverage.xml

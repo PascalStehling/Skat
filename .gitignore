@@ -88,3 +88,10 @@ bazel-testlogs/tests/test.cache_status
 bazel-testlogs/tests/test.log
 bazel-testlogs/tests/test.xml
 bazel-testlogs/tests/test.xml.log
+.coverage
+.doit.db.bak
+.doit.db.dat
+.doit.db.dir
+coverage.xml
+__pycache__/dodo.cpython-37.pyc
+__pycache__/test.cpython-37.pyc
