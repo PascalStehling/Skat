@@ -1,10 +1,15 @@
+# pylint: disable=line-too-long,
+"""This File Contains the Stich Class
+"""
+from copy import deepcopy
 from modules.tools import user_select_card
 from modules.Card import EmptyCard
-from copy import deepcopy
 from modules.Cards import Cards
 
 
 class Stich():
+    """The Stich CLass contains all functions which are neccessary to play a single Stich
+    """
 
     def __init__(self, players, turn, settings):
         self.settings = settings
@@ -13,6 +18,11 @@ class Stich():
         self.cards_on_table = Cards(settings)
 
     def play_stich(self):
+        """Play a single Stich
+
+        Returns:
+            Stich: returns itself
+        """
         for _ in range(3):
             self.print_card_table()
             self.play_card()
@@ -22,18 +32,24 @@ class Stich():
         return self
 
     def play_card(self):
+        """Plays a card
+        """
         if not self.turn.auto_play:
             self.user_play_card()
         else:
             self.auto_play_card()
 
     def auto_play_card(self):
+        """Function for automatic playing cards with an AI
+        """
         for card in self.turn.cards:
             if self.is_valid_card(card):
                 self.turn.cards.remove(card)
                 self.cards_on_table.add_card(card)
 
     def user_play_card(self):
+        """Playing a card as a user
+        """
         card_message = self.settings.cardmessage.format(self.turn.name)
         card_errormessage = self.settings.card_errormessage.format(
             self.turn.name)
@@ -52,7 +68,7 @@ class Stich():
             self.cards_on_table.add_card(played_card)
 
     def is_valid_card(self, played_card):
-        """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card. 
+        """Checks if the Card that was played is valid. It checks if the played card has the same suit or trumpf as the first played card.
         If this isnt the case it checks if any of the user card has the same suit or trumpf as the first played card. If this is true the its not a valid card.
 
         Returns:
@@ -90,7 +106,7 @@ class Stich():
         cards_on_table.print_cards_ascii()
 
     def get_winning_card_index(self):
-        """Checks which is the winning card, from all Cards that were played       
+        """Checks which is the winning card, from all Cards that were played
         Returns:
             int: the number of that card that won
         """
@@ -108,5 +124,10 @@ class Stich():
         return self.players.get_player_by_num((self.turn.num+1+self.get_winning_card_index()) % 3)
 
     def assign_stich_to_winner(self):
+        """assign the Cards of the Stich to the winner
+
+        Returns:
+            Stich: retunrs itself
+        """
         self.get_winner().won_cards += self.cards_on_table
         return self

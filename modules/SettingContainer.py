@@ -1,9 +1,14 @@
+# pylint: disable=line-too-long, invalid-name
+"""This File contains the SettingContainer Class
+"""
 from itertools import product
 import json
 import os
 
 
 class SettingContainer():
+    """This Class contains all Settings which are relevant for the Game.
+    """
     key_list = ["value_dict", "suit_dict", "position_dict", "gamemode_dict", "standart_order_dict",
                 "standart_order_dict", "null_order_dict", "bid_list", "bidmessage", "skatmessage",
                 "yesno_errormessage", "cardmessage", "card_errormessage", "gamemode_message",
@@ -44,10 +49,23 @@ class SettingContainer():
         self.sorted_suit_list = self.get_sorted_suit_list()
 
     def get_sorted_suit_list(self):
+        """returns a sorted list of all suits
+
+        Returns:
+            List: the List of string with the suits
+        """
         return [x[0] for x in sorted(self.suit_dict.items(), key=lambda x: x[1], reverse=True)]
 
     @staticmethod
     def _check_keys(setting_dict):
+        """check if alle neccessary can be found in the setting dict
+
+        Args:
+            setting_dict (dict): The Dictionary with all settings
+
+        Raises:
+            Exception: The Key which is missing
+        """
         for key in SettingContainer.key_list:
             if not key in setting_dict:
                 raise Exception(
@@ -55,6 +73,14 @@ class SettingContainer():
 
     @staticmethod
     def create_SettingContainer_from_file(language="en"):
+        """creates a SettingContainer Object from a setting.json file
+
+        Args:
+            language (str, optional): the Language of the game. Defaults to "en".
+
+        Returns:
+            SettingContainer: returns a SettingContainer Object
+        """
         set_dict = SettingContainer._load_setting_file(language)
         set_dict["bid_list"] = SettingContainer._create_bid_list(
             set_dict["gamemode_dict"])

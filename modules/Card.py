@@ -1,5 +1,8 @@
+#pylint: disable=line-too-long
+"""This File Contains the Card Class. Each Card Object is a single Card which can be Played
+"""
 class Card:
-    """Creates a card object. This has a suit as string, as Unicode character and the value of the suit. 
+    """Creates a card object. This has a suit as string, as Unicode character and the value of the suit.
     It also includes the value of the card (7-10, J, Q, K ,A) and the points of the card value.
 
     Returns:
@@ -70,10 +73,7 @@ class Card:
         if not isinstance(other_card, Card):
             raise TypeError("The other Object need to be of Type Card")
 
-        if self.value == other_card.value and self.suit_val == other_card.suit_val:
-            return True
-        else:
-            return False
+        return self.value == other_card.value and self.suit_val == other_card.suit_val
 
     def equal_suit(self, other_card):
         """Checks if the Card has the same suit as another Card
@@ -90,10 +90,7 @@ class Card:
         if not isinstance(other_card, Card):
             raise TypeError("The other Object need to be of Type Card")
 
-        if self.suit_val == other_card.suit_val:
-            return True
-        else:
-            return False
+        return self.suit_val == other_card.suit_val
 
     def istrumpf(self):
         """Checks if the Card is Trumpf
@@ -167,8 +164,7 @@ class Card:
         """
         if not other_card.istrumpf():
             return True
-        else:
-            return self._ishigher_both_trumpf(other_card)
+        return self._ishigher_both_trumpf(other_card)
 
     def _ishigher_no_trumpf(self, other_card, check_suit_val=False):
         """Checks if the card is higher than other_card, if both cards are not trumpf
@@ -182,8 +178,8 @@ class Card:
         """
         if check_suit_val:
             return self.has_higher_suit_val(other_card)
-        else:
-            return True
+
+        return True
 
     def _ishigher_both_trumpf(self, other_card):
         """Checks if the card is higher than other_card, if both cards are trumpf
@@ -196,8 +192,8 @@ class Card:
         """
         if self.card_points == 2:  # If self is Jack
             return self._ishigher_both_trump_self_is_jack(other_card)
-        else:  # self is no Jack
-            return self._ishigher_both_trump_self_not_jack(other_card)
+        # self is no Jack
+        return self._ishigher_both_trump_self_not_jack(other_card)
 
     def _ishigher_both_trump_self_not_jack(self, other_card):
         """Checks if the card is higher than other_card, if both cards are trumpf and the main card (self) is not a Jack
@@ -210,8 +206,8 @@ class Card:
         """
         if other_card.card_points == 2:  # other_card is Jack
             return False
-        else:  # No Card is Jack, higher Value wins
-            return self.has_higher_value(other_card)
+        # No Card is Jack, higher Value wins
+        return self.has_higher_value(other_card)
 
     def _ishigher_both_trump_self_is_jack(self, other_card):
         """Checks if the card is higher than other_card, if both cards are trumpf and the main card (self) is a Jack
@@ -250,7 +246,7 @@ class Card:
         return Card.order_dict[self.value] > Card.order_dict[other_card.value]
 
     def same_suit_or_trumpf(self, other_card):
-        """Check if 2 Cards have the same Suit or both are trumpf.        
+        """Check if 2 Cards have the same Suit or both are trumpf.
         Returns:
             boolean: True If the 2 Cards have the same suit or are both trumpf, else False
         """

@@ -1,7 +1,11 @@
-
+"""This File Contains the Player Class which has all Informations about a single Player
+"""
 class Player():
+    """This Class contains all Infomations about a Player
+    """
 
     player_count = 0
+
     def __init__(self, player_name, **settings):
         settings = settings.get("settings", settings)
         if not isinstance(player_name, str):
@@ -25,4 +29,9 @@ class Player():
         return f"{self.num}: {self.name}"
 
     def has_cards(self):
+        """Checks if the Player has Cards
+
+        Returns:
+            bool: True if the Player has Cards, else False
+        """
         return bool(self.cards)

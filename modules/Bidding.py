@@ -1,7 +1,14 @@
+#pylint: disable=line-too-long
+"""
+This File Contains the Bidding Class. Its neccessary to play the Bidding Phase
+"""
 from modules.tools import get_user_true_false
 
 
 class Bidding():
+    """
+    The Bidding Class contains all Functions relevant for Bidding.
+    """
 
     def __init__(self, settings, players):
         self.bid = None
@@ -13,6 +20,11 @@ class Bidding():
         self.turn = players.middlehand
 
     def play_bidding(self):
+        """This function is the main Function of this Class. With this the Bidding Phase can be Played
+
+        Returns:
+            tuple: The Player who won Bidding or None if all passed and the new Gamestate
+        """
         while not self.is_bidding_over():
             self.make_bid()
             self.get_new_turn()
@@ -29,7 +41,10 @@ class Bidding():
         self._process_user_bid(user_bid)
 
     def _process_user_bid(self, user_bid):
-        r"""Check what the user has bidden and update the bidding Dictionary (bid_dict).
+        """Check what the user has bidden and update the bidding Dictionary (bid_dict).
+
+        Args:
+            user_bid (bool): If the user passed (False) or said yes (True)
         """
         if not user_bid:
             self.passed.append(self.turn)
@@ -55,6 +70,11 @@ class Bidding():
             self._bid_say()
 
     def has_forhand_passed(self):
+        """Checks if the Forhandplayer has allready passed
+
+        Returns:
+            bool: True if the forhand Player has passed, else False
+        """
         return bool([True for player in self.passed if player.position == self.settings.FORHAND_POSITION])
 
     def _bid_say(self):
@@ -141,11 +161,11 @@ class Bidding():
         """
         if self.bid_player is not None:
             return self.bid_player, self.settings.PLAY_ROUND
-        else:
-            # Ramsch not implemented, just new cards are given.
-            # TODO Ramsch
-            print("Everyone passed, cards get dealt again")
-            return None, self.settings.START_ROUND
+
+        # Ramsch not implemented, just new cards are given.
+        # TODO Ramsch
+        print("Everyone passed, cards get dealt again")
+        return None, self.settings.START_ROUND
 
     def is_bidding_over(self):
         """Checks if the bidding finished

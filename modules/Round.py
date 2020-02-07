@@ -1,3 +1,6 @@
+#pylint: disable=line-too-long
+"""The File with the Round Class
+"""
 from modules.Card import Card
 from modules.Cards import Cards
 from modules.Bidding import Bidding
@@ -6,6 +9,8 @@ from modules.Stich import Stich
 
 
 class Round():
+    """The Round Class has all Functions for Playing and Evaluating a Played Round
+    """
 
     def __init__(self, players, settingContainer):
         self.turn = None
@@ -19,48 +24,65 @@ class Round():
         self.start_new_round()
 
     def start_bidding(self):
+        """Start and play the bidding phase
+
+        Returns:
+            int: the new gamstate after the bidding Phase
+        """
         self.bidding = Bidding(self.settings, self.players)
         self.turn, gamestate = self.bidding.play_bidding()
         return gamestate
 
     def play_round(self):
+        """Play a round
+
+        Returns:
+            Rround: return its own object
+        """
         while len(self.turn.cards) != 0:
-            self.turn = Stich(self.players, self.turn, self.settings).play_stich(
-            ).assign_stich_to_winner().get_winner()
+            self.turn = Stich(self.players, self.turn, self.settings
+                              ).play_stich(
+                              ).assign_stich_to_winner(
+                              ).get_winner()
             print(self.settings.winner_message.format(self.turn.name))
         return self
 
     def end_round(self):
-        """The main function to end the round   
+        """Calculates all Points and ends the played round
+
+        Returns:
+            Round: returns itself
         """
         self.bidding.bid_player.cards += self.skat
         single_player_card_points = self.calculate_single_player_points()
-        score = self.calculate_score(single_player_card_points)
+        score = self._calculate_score(single_player_card_points)
         self.bidding.bid_player.score += score
         print(self.settings.end_round_message.format(
             self.bidding.bid_player, single_player_card_points, score))
-        self.print_player_scores()
+        self._print_player_scores()
 
         self.players.set_players_on_next_position()
 
         return self
 
-    def print_player_scores(self):
+    def _print_player_scores(self):
+        """Prints the Scores of the Players
+        """
         for p in self.players:
             print(self.settings.point_message.format(p.name, p.score))
 
-    def calculate_score(self, single_player_card_points):
+    def _calculate_score(self, single_player_card_points):
         """Calculate the score points of the single_player
 
         Returns:
             int: the score points the player achieved
         """
         if self.has_won_round(single_player_card_points):
-            return self.calc_score_points_won(single_player_card_points)
-        else:
-            return self.calc_score_points_lost(single_player_card_points)
+            return self._calc_score_points_won(single_player_card_points)
 
-    def calc_score_points_won(self, single_player_card_points):
+        return self.calc_score_points_lost(single_player_card_points)
+
+    def _calc_score_points_won(self, single_player_card_points):
         """Get the Score points if the player won
         Returns:
             int: the score points the player achieved
@@ -90,6 +112,11 @@ class Round():
         return 0
 
     def calculate_single_player_points(self):
+        """Claculates the Points for the single Player
+
+        Returns:
+            int: the Points the single Player achieved
+        """
         points = 0
         for card in self.bidding.bid_player.cards:
             points += card.card_points
@@ -117,10 +144,15 @@ class Round():
         """
         if Card.trumpf is not None:
             return (self.gamemode["points"]*self.jack_multiplicator) < self.bidding.bid
-        else:
-            return self.gamemode["points"] < self.bidding.bid
+
+        return self.gamemode["points"] < self.bidding.bid
 
     def setup(self):
+        """Starts the Setup, in which the single Player can take the Skat and choose the gamemode
+
+        Returns:
+            Round: returns itself
+        """
         self.turn = self.bidding.bid_player
         if self.check_take_skat():
             self.take_skat()
@@ -130,11 +162,18 @@ class Round():
         return self
 
     def check_take_skat(self):
+        """Asks if the Single Player wants to take the Skat
+
+        Returns:
+            bool: True if he wats to take the Skat, else Flase
+        """
         show_message = self.settings.skatmessage.format(self.turn.name)
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
         return get_user_true_false(show_message, error_message, self.turn.cards)
 
     def take_skat(self):
+        """Take the Skat and let the single Player decide, which one he wants to put away
+        """
         self.turn.cards += self.skat
         self.turn.cards.sort_cards()
         self.skat.empty_cards()
@@ -148,11 +187,18 @@ class Round():
             self.skat.add_card(skat_card)
 
     def set_gamemode(self):
+        """Ask the SIngle Player which play Types he wants to chose and sets it
+        """
         self.gamemode = self.get_play_type()
         Card.order_dict = self.settings.order_dicts[self.gamemode["order_dict"]]
         Card.trumpf = self.gamemode["trumpf"]
 
     def get_play_type(self):
+        """Get the Play Type from the single Player
+
+        Returns:
+            int: The Gamemode the Single Player Chooses
+        """
         self.turn.cards.print_cards_ascii()
         print(self.settings.gamemode_message.format(self.turn.name))
         for key in self.settings.gamemode_dict:
@@ -161,13 +207,15 @@ class Round():
         inp = input()
         if inp.isdigit() and inp in self.settings.gamemode_dict:
             return self.settings.gamemode_dict[inp]
-        else:
-            print(self.settings.gamemode_errormessage.format(self.turn.name))
-            return get_play_type()
+
+        print(self.settings.gamemode_errormessage.format(self.turn.name))
+        return self.get_play_type()
 
     def get_jack_multiplicator(self):
-        """
-        Get the jack multiplicator for the play
+        """Get the jack multiplicator for the play
+
+        Returns:
+            int: the Multiplier
         """
         jack_cards = self.turn.cards.get_jacks()
         if len(jack_cards) == 4 or len(jack_cards) == 0:
@@ -181,9 +229,25 @@ class Round():
         return multi
 
     def is_club_jack_in_cards(self, cards):
+        """Checks if the Club Jack is in the Cards object
+
+        Args:
+            cards (Cards): A Cards Object
+
+        Returns:
+            bool: True if the club Jack is in Cards, else False
+        """
         return self.has_card_with_suit(cards, self.settings.sorted_suit_list[0])
 
     def _count_cards_without_jacks(self, cards):
+        """Get a Multiplier, if the Club Jack is not in Cards
+
+        Args:
+            cards (Cards): a Cards Object
+
+        Returns:
+            int: the Number of not appearing Jacks
+        """
         multi = 0
         for suit in self.settings.sorted_suit_list[1:]:
             if not self.has_card_with_suit(cards, suit):
@@ -193,6 +257,14 @@ class Round():
         return multi
 
     def _count_cards_with_jacks(self, cards):
+        """Get a Multiplier, if the Club Jack is not in Cards
+
+        Args:
+            cards (Cards): a Cards Object
+
+        Returns:
+            int: the Number of appearing Jacks
+        """
         multi = 0
         for suit in self.settings.sorted_suit_list[1:]:
             if self.has_card_with_suit(cards, suit):
@@ -203,23 +275,38 @@ class Round():
 
     @staticmethod
     def has_card_with_suit(cards, suit):
+        """Checks if the Cards object has atleast one Card with the given suit
+
+        Args:
+            cards (Cards): the Cards in which the suit will be searched
+            suit (str): the Suit which is searched
+
+        Returns:
+            bool: True if the suit was found, else False
+        """
         for card in cards:
             if card.suit_str == suit:
                 return True
         return False
 
     def start_new_round(self):
+        """Starts a new round
+        """
         self.set_card_default_values()
         self.players.reset()
         self.give_cards()
 
     def set_card_default_values(self):
+        """sets the static Values of Card to its default
+        """
         Card.value_dict = self.settings.value_dict
         Card.suit_dict = self.settings.suit_dict
         Card.order_dict = self.settings.standart_order_dict
         Card.trumpf = self.get_clubs_string()
 
     def give_cards(self):
+        """give Cards to every Player and put 2 into the Skat
+        """
         cards = Cards(self.settings)
         cards.create_shuffled_cards()
         for i, player in enumerate(self.players):
@@ -229,6 +316,14 @@ class Round():
         self.skat = Cards(self.settings, cards.cards[-2:])
 
     def get_clubs_string(self):
+        """Get the suit name of Clubs (because of Multi language)
+
+        Raises:
+            Exception: If there are no Clubs
+
+        Returns:
+            str: the name of Clubs in the game
+        """
         for tup in self.settings.suit_dict.items():
             if tup[1] == 12:
                 return tup[0]
