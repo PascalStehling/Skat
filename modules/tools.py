@@ -1,34 +1,14 @@
 """
 Here are functions witch are needed in diffrent states of this programm
 """
-from modules.card import Card
+from modules.Card import Card
 
-def print_multiple_cards(cards, card_delimiter=":"):
-    if not isinstance(cards, list):
-        raise TypeError("cards need to be of type list")
-    elif not all(isinstance(c, Card) for c in cards):
-        raise TypeError("All elements need to be of Type Card")
-    
-    for i in range(len(cards[0].get_ascii_card())):
-        pr_str = ""
-        for c in cards:
-            pr_str += c.get_ascii_card()[i]+card_delimiter
-        print(pr_str[:-1])
 
-def get_player_at_position(player_dict, position):
-    """
-    Returns the number of the player who is Playing forehand
-    """
-    for player_num in player_dict:
-        if  player_dict[player_num]["position"] == position:
-            return player_num
-    raise Exception("No Player at this position")
-
-def get_user_true_false(show_message, error_message, user_cards):
+def get_user_true_false(show_message, error_message, cards):
     """
     Get True or False if user wants to take the bid
     """
-    print_multiple_cards(user_cards)
+    cards.print_cards_ascii()
     print("\n", show_message)
     inp = input()
 
@@ -36,56 +16,48 @@ def get_user_true_false(show_message, error_message, user_cards):
         return True
     if inp.lower() == "no" or inp.lower() == "n":
         return False
-    
-    print(error_message)
-    return get_user_true_false(show_message, error_message, user_cards)
 
-def get_user_card(show_message, error_message, user_cards, value_dict, suit_dict):
+    print(error_message)
+    return get_user_true_false(show_message, error_message, cards)
+
+
+def get_user_card(show_message, error_message, user_cards):
     """
     Get a Card from a Userinput
     """
-    print_multiple_cards(user_cards)
+    user_cards.print_cards_ascii()
     print("\n", show_message)
     inp = input()
 
     if isinstance(inp, str):
         inp = inp.split()
-    
+
     if isinstance(inp, list) and len(inp) == 2:
         try:
-            return Card(inp[0], inp[1], value_dict, suit_dict)
+            return Card(inp[1], inp[0])
         except (TypeError, ValueError):
             pass
-    
+
     print(error_message)
-    return get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
-                
-def remove_user_card(user_cards, card_to_remove):
-    del user_cards[user_cards.index(card_to_remove)]
-    return user_cards
-            
-def user_select_card(show_message, error_message, user_cards, value_dict, suit_dict):
-    card = get_user_card(show_message, error_message, user_cards, value_dict, suit_dict)
+    return get_user_card(show_message, error_message, user_cards)
+
+
+def user_select_card(show_message, error_message, user_cards):
+    """Letthe User select a Card from ts Cards
+
+    Args:
+        show_message (Str): Message whitch will be shown befor selecting
+        error_message (str): Message that will be shown if an error occures
+        user_cards (Cards): the Cards of the user
+
+    Returns:
+        Tuple: returns the new User Cards without the selected card and the selected card
+    """
+    card = get_user_card(show_message, error_message, user_cards)
 
     if card in user_cards:
-        return remove_user_card(user_cards, card)
-    else:
-        print(error_message)
-        return user_select_card(show_message, error_message, user_cards, value_dict, suit_dict)
+        user_cards.remove(card)
+        return user_cards, card
 
-def sort_cards(cards, order_dict, trumpf):
-    if not isinstance(cards, list):
-        raise TypeError("Cards need to be of Type List")
-    if not all(isinstance(card, Card) for card in cards):
-        raise TypeError("All Elements in Cards need to be of the same Type")
-    i = 0
-    while i < len(cards)-1:
-        k = 0
-        while k < len(cards)-i-1:
-            if not cards[k].ishigher(cards[k+1], trumpf, order_dict, True):
-                tmp = cards[k]
-                cards[k] = cards[k+1]
-                cards[k+1] = tmp
-            k += 1
-        i += 1
-    return cards
+    print(error_message)
+    return user_select_card(show_message, error_message, user_cards)

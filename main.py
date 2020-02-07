@@ -1,25 +1,32 @@
 """
 This is the main File with starts the skat App
 """
-from modules.setup_round import setup_round
-from modules.bidding import make_bid
-from modules.setup_single_play import setup_single_play
-from modules.create_settings import create_game_dict
-from modules.play_round import play_card_user
-from modules.end_round import end_round
+from modules.Round import Round
+from modules.SettingContainer import SettingContainer
+from modules.Players import Players
+
 
 class StateMachine:
 
-    def __init__(self, player_names=None, max_rounds=36, language='en'):
-        self.game_dict = create_game_dict(player_names, max_rounds, language)
-        self.fun_dict = {1: setup_round, 2:make_bid, 3:setup_single_play, 4:play_card_user, 5:end_round}
+    def __init__(self, **settings):
+        self.game_round = 1
+        self.max_rounds = settings.get("max_rounds", 36)
+        self.gamestate = 1
+        self.settings = SettingContainer.create_SettingContainer_from_file(
+            settings.get("language"))
+        self.players = Players(self.settings, kwargs=settings)
 
     def run(self):
-        while self.game_dict["game_round"] <= self.game_dict["max_round"]:
-            state_fun = self.fun_dict[self.game_dict["gamestate"]]
-            self.game_dict = state_fun(self.game_dict)
-            
+        while self.game_round <= self.max_rounds:
+            if self.gamestate == self.settings.START_ROUND:
+                self.round = Round(self.players, self.settings)
+                self.gamestate = self.round.start_bidding()
+            elif self.gamestate == self.settings.PLAY_ROUND:
+                self.round.setup().play_round().end_round()
+                self.gamestate = self.settings.START_ROUND
+                self.game_round += 1
+
 
 if __name__ == "__main__":
-    s = StateMachine(language='de', max_rounds=2)
+    s = StateMachine(language='de', max_rounds=2, auto_play_cards=True)
     s.run()
