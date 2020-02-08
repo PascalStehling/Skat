@@ -7,6 +7,8 @@ from modules.Players import Players
 
 
 class StateMachine:
+    """This is the State Machine to run Skat
+    """
 
     def __init__(self, **settings):
         self.game_round = 1
@@ -17,6 +19,8 @@ class StateMachine:
         self.players = Players(self.settings, kwargs=settings)
 
     def run(self):
+        """the Main function for Playing
+        """
         while self.game_round <= self.max_rounds:
             if self.gamestate == self.settings.START_ROUND:
                 self.round = Round(self.players, self.settings)

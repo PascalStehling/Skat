@@ -124,16 +124,16 @@ class Test_bidding(unittest.TestCase):
 
     def test_has_forhand_passed(self):
         self.bidding.passed = [self.players.get_player_by_num(0)]
-        self.assertTrue(self.bidding.has_forhand_passed())
+        self.assertTrue(self.bidding._has_forhand_passed())
 
         self.bidding.passed = [self.players.get_player_by_num(1)]
-        self.assertFalse(self.bidding.has_forhand_passed())
+        self.assertFalse(self.bidding._has_forhand_passed())
 
         self.bidding.passed = [self.players.get_player_by_num(0), self.players.get_player_by_num(1)]
-        self.assertTrue(self.bidding.has_forhand_passed())
+        self.assertTrue(self.bidding._has_forhand_passed())
 
         self.bidding.passed = [self.players.get_player_by_num(1), self.players.get_player_by_num(2)]
-        self.assertFalse(self.bidding.has_forhand_passed())
+        self.assertFalse(self.bidding._has_forhand_passed())
 
     def test_update_bid_dict_middlehand_player(self):
         self.bidding.turn = self.players.get_player_by_num(1)

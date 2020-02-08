@@ -64,12 +64,12 @@ class Bidding():
     def _update_bid_dict_middlehand_player(self):
         """Updates the bid Dict if the user said Yes to the new Bid and was playing middlehand
         """
-        if self.has_forhand_passed():  # If Forhand has passed, Middlehand is hearing
+        if self._has_forhand_passed():  # If Forhand has passed, Middlehand is hearing
             self._bid_hear()
         else:  # Else middle hand is saying
             self._bid_say()
 
-    def has_forhand_passed(self):
+    def _has_forhand_passed(self):
         """Checks if the Forhandplayer has allready passed
 
         Returns:

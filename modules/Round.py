@@ -54,7 +54,7 @@ class Round():
             Round: returns itself
         """
         self.bidding.bid_player.cards += self.skat
-        single_player_card_points = self.calculate_single_player_points()
+        single_player_card_points = self._calculate_single_player_points()
         score = self._calculate_score(single_player_card_points)
         self.bidding.bid_player.score += score
         print(self.settings.end_round_message.format(
@@ -77,28 +77,28 @@ class Round():
         Returns:
             int: the score points the player achieved
         """
-        if self.has_won_round(single_player_card_points):
+        if self._has_won_round(single_player_card_points):
             return self._calc_score_points_won(single_player_card_points)
 
-        return self.calc_score_points_lost(single_player_card_points)
+        return self._calc_score_points_lost(single_player_card_points)
 
     def _calc_score_points_won(self, single_player_card_points):
         """Get the Score points if the player won
         Returns:
             int: the score points the player achieved
         """
-        return (self.get_win_level(single_player_card_points)+self.jack_multiplicator)*self.gamemode["points"]
+        return (self._get_win_level(single_player_card_points)+self.jack_multiplicator)*self.gamemode["points"]
 
-    def calc_score_points_lost(self, single_player_card_points):
+    def _calc_score_points_lost(self, single_player_card_points):
         """Get the Score points if the player Lost
 
         Returns:
             int: the score points the player achieved
         """
-        return (self.get_win_level(120-single_player_card_points)+self.jack_multiplicator)*self.gamemode["points"]*-2
+        return (self._get_win_level(120-single_player_card_points)+self.jack_multiplicator)*self.gamemode["points"]*-2
 
     @staticmethod
-    def get_win_level(card_points):
+    def _get_win_level(card_points):
         """Get the win states the Player has.
 
         Returns:
@@ -111,7 +111,7 @@ class Round():
 
         return 0
 
-    def calculate_single_player_points(self):
+    def _calculate_single_player_points(self):
         """Claculates the Points for the single Player
 
         Returns:
@@ -122,7 +122,7 @@ class Round():
             points += card.card_points
         return points
 
-    def has_won_round(self, card_points):
+    def _has_won_round(self, card_points):
         """Checks if the Player has won this round. If he has over 90 he always wins, under 60 allways loose and between 60 and 90 it depends if he overbidded
 
         Returns:
@@ -134,9 +134,9 @@ class Round():
         if card_points <= 60:
             return False
 
-        return not self.has_over_bidded()
+        return not self._has_over_bidded()
 
-    def has_over_bidded(self):
+    def _has_over_bidded(self):
         """Checks is the Player has overbidden
 
         Returns:
@@ -154,14 +154,14 @@ class Round():
             Round: returns itself
         """
         self.turn = self.bidding.bid_player
-        if self.check_take_skat():
-            self.take_skat()
+        if self._check_take_skat():
+            self._take_skat()
         self.set_gamemode()
-        self.jack_multiplicator = self.get_jack_multiplicator()
+        self.jack_multiplicator = self._get_jack_multiplicator()
         self.turn = self.players.forhand
         return self
 
-    def check_take_skat(self):
+    def _check_take_skat(self):
         """Asks if the Single Player wants to take the Skat
 
         Returns:
@@ -171,7 +171,7 @@ class Round():
         error_message = self.settings.yesno_errormessage.format(self.turn.name)
         return get_user_true_false(show_message, error_message, self.turn.cards)
 
-    def take_skat(self):
+    def _take_skat(self):
         """Take the Skat and let the single Player decide, which one he wants to put away
         """
         self.turn.cards += self.skat
@@ -189,11 +189,11 @@ class Round():
     def set_gamemode(self):
         """Ask the SIngle Player which play Types he wants to chose and sets it
         """
-        self.gamemode = self.get_play_type()
+        self.gamemode = self._get_play_type()
         Card.order_dict = self.settings.order_dicts[self.gamemode["order_dict"]]
         Card.trumpf = self.gamemode["trumpf"]
 
-    def get_play_type(self):
+    def _get_play_type(self):
         """Get the Play Type from the single Player
 
         Returns:
@@ -209,9 +209,9 @@ class Round():
             return self.settings.gamemode_dict[inp]
 
         print(self.settings.gamemode_errormessage.format(self.turn.name))
-        return self.get_play_type()
+        return self._get_play_type()
 
-    def get_jack_multiplicator(self):
+    def _get_jack_multiplicator(self):
         """Get the jack multiplicator for the play
 
         Returns:
@@ -222,13 +222,13 @@ class Round():
             return 5
 
         multi = 2
-        if self.is_club_jack_in_cards(jack_cards):
+        if self._is_club_jack_in_cards(jack_cards):
             multi += self._count_cards_with_jacks(jack_cards)
         else:
             multi += self._count_cards_without_jacks(jack_cards)
         return multi
 
-    def is_club_jack_in_cards(self, cards):
+    def _is_club_jack_in_cards(self, cards):
         """Checks if the Club Jack is in the Cards object
 
         Args:
@@ -237,7 +237,7 @@ class Round():
         Returns:
             bool: True if the club Jack is in Cards, else False
         """
-        return self.has_card_with_suit(cards, self.settings.sorted_suit_list[0])
+        return self._has_card_with_suit(cards, self.settings.sorted_suit_list[0])
 
     def _count_cards_without_jacks(self, cards):
         """Get a Multiplier, if the Club Jack is not in Cards
@@ -250,7 +250,7 @@ class Round():
         """
         multi = 0
         for suit in self.settings.sorted_suit_list[1:]:
-            if not self.has_card_with_suit(cards, suit):
+            if not self._has_card_with_suit(cards, suit):
                 multi += 1
             else:
                 break
@@ -267,14 +267,14 @@ class Round():
         """
         multi = 0
         for suit in self.settings.sorted_suit_list[1:]:
-            if self.has_card_with_suit(cards, suit):
+            if self._has_card_with_suit(cards, suit):
                 multi += 1
             else:
                 break
         return multi
 
     @staticmethod
-    def has_card_with_suit(cards, suit):
+    def _has_card_with_suit(cards, suit):
         """Checks if the Cards object has atleast one Card with the given suit
 
         Args:
@@ -302,7 +302,7 @@ class Round():
         Card.value_dict = self.settings.value_dict
         Card.suit_dict = self.settings.suit_dict
         Card.order_dict = self.settings.standart_order_dict
-        Card.trumpf = self.get_clubs_string()
+        Card.trumpf = self._get_clubs_string()
 
     def give_cards(self):
         """give Cards to every Player and put 2 into the Skat
@@ -315,7 +315,7 @@ class Round():
 
         self.skat = Cards(self.settings, cards.cards[-2:])
 
-    def get_clubs_string(self):
+    def _get_clubs_string(self):
         """Get the suit name of Clubs (because of Multi language)
 
         Raises:
