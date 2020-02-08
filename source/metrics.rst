@@ -8,6 +8,7 @@ The dashboard can be found at https://sonarcloud.io/dashboard?id=PascalStehling_
 
 * *Duplications*: Percentage of all rows, how many of them are duplicates
 * *Coverage*: percentage of how many lines of code are covered by tests.
+
 Other metrics are also created by **SonarQube**, such as *security*, *reliability* and *maintainability*. 
 
 As second tool **Codacy** was used. This is also an online solution that can be easily linked to github accounts. 

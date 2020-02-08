@@ -8,6 +8,7 @@ Welcome to SWE-Skat's documentation!
 
     functions
     metrics
+    uml
 
 This is my small Pet project for Softwwarengeneering. I tried to build a small Skat game which can be
 played in the command line.
