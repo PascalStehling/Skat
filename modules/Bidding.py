@@ -109,7 +109,7 @@ class Bidding():
         elif self.players.forhand not in self.passed:
             # If the Backhand and forhand is still in play, forhand needs to play
             self.turn = self.players.forhand
-        else:  # self.players.middlehand not in self.passed:
+        else:
             # IF Backhand passed and middlehand still in play, middlehand needs to play
             self.turn = self.players.middlehand
 

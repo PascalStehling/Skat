@@ -16,5 +16,8 @@
 
 # Skat
 
-This is my little Skat Project, it can be build with bazel and is connectetd to Travis-CI for Continous Integration. It uses SOnarCloud and Codacy to Check the Code.
+This is my little Petproject in which I programmed the card game Skat. The program itself is usable, but does not contain all game elements. So it is for example not yet possible to make a zero game. The goal of this project was not to program a perfect Skat, but to try out many different tools and paradigms around programming.
 
+The game is written in pure Python and does not need any other libraries to run it. It can be started inside the root folder with the command python main.py.
+
+More detailed information about the game and different paradigms/tools (points 1-9) can be found in the documentation. This is located in the build folder. There is a PDF (in the folder pdf) or as interactive web application in the folder html. The web application can be started by launching the index.html in your web browser. The web application should prefer the PDF, because it is clearer and displays the images better and larger.

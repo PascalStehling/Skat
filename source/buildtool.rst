@@ -3,7 +3,9 @@ Build Management
 
 The main build management tool used was `Bazel`_. 
 With this tool it is possible to build a Skat.exe and execute the tests. 
-To do this, the command *bazel build Skat* can be executed in the root folder. 
+In order to use Bazel, a BUILD.bazel file must be written, which contains all the necessary information about the individual files and the relationships between them. 
+This file can be found in the root folder of this project.
+To build the .exe the command *bazel build Skat* can be executed in the root folder. 
 This will create a Skat.exe in the bazel-bin folder. 
 To run the tests, the command *bazel run test* can be used. 
 For more information on installing `Bazel`_, please visit their website.

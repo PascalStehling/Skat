@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code API List" href="functions.html" /> 
+    <link rel="next" title="1. Build Management" href="buildtool.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,14 +81,16 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="functions.html">Code API List</a></li>
-<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uml.html">UML Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="buildtool.html">Build Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="unittest.html">Unittests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="continous.html">Continous Delivery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ide.html">IDE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dsl.html">Domain Specific Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buildtool.html">1. Build Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cleancode.html">2. Clean Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continous.html">3. Continous Delivery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dsl.html">4. Domain Specific Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">5. Functional Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">6. Code API List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ide.html">7. IDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">8. Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uml.html">9. UML Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittest.html">10. Unittests</a></li>
 </ul>
 
             
@@ -155,10 +157,42 @@
             
   <div class="section" id="welcome-to-swe-skat-s-documentation">
 <h1>Welcome to SWE-Skat’s documentation!<a class="headerlink" href="#welcome-to-swe-skat-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This is my little Petproject in which I programmed the card game Skat.
+The program itself is usable, but does not contain all game elements.
+So it is for example not yet possible to make a zero game.
+The goal of this project was not to program a perfect Skat, but to try out many different tools and paradigms around programming.</p>
+<p>The game is written in pure Python and does not need any other libraries to run it.
+It can be started inside the root folder with the command python main.py.</p>
+<p>In the next chapters you will find all points concerning the individual paradigms/tools.</p>
 <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buildtool.html">1. Build Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cleancode.html">2. Clean Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continous.html">3. Continous Delivery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dsl.html">4. Domain Specific Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">5. Functional Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">6. Code API List</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Bidding">6.1. Bidding Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Card">6.2. Card Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Cards">6.3. Cards Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Player">6.4. Player Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Players">6.5. Players Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Round">6.6. Round Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.SettingContainer">6.7. SettingContainer Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.Stich">6.8. Stich Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#module-modules.tools">6.9. Tools Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ide.html">7. IDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">8. Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uml.html">9. UML Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittest.html">10. Unittests</a></li>
+</ul>
 </div>
-<p>This is my small Pet project for Softwwarengeneering. I tried to build a small Skat game which can be
-played in the command line.</p>
+<p>All in all I found this project very useful, because I could try out many different things around programming.
+I found a lot of problems that I always made myself and new ways to improve the code.
+If I had to do this project again I would probably do the whole project in a test-driven approach.</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -177,7 +211,7 @@ played in the command line.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="functions.html" class="btn btn-neutral float-right" title="Code API List" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="buildtool.html" class="btn btn-neutral float-right" title="1. Build Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
