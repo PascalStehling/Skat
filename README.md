@@ -16,7 +16,7 @@
 
 # Skat
 
-This is my little Petproject in which I programmed the card game Skat. The program itself is usable, but does not contain all game elements. So it is for example not yet possible to make a zero game. The goal of this project was not to program a perfect Skat, but to try out many different tools and paradigms around programming.
+This is my little Petproject in which I programmed the card game Skat. The program itself is usable, but does not contain all game elements. So it is for example not yet possible to make a zero game. There are also still bugs in the game. It is also possible that many of them are still unknown to me, because I never did an integration test. The goal of this project was not to program a perfect Skat, but to try out many different tools and paradigms around programming.
 
 The game is written in pure Python and does not need any other libraries to run it. It can be started inside the root folder with the command python main.py.
 
