@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. UML Diagrams &mdash; SWE-Skat  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="10. Unittests" href="unittest.html" />
+    <link rel="prev" title="8. Metrics" href="metrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SWE-Skat
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildtool.html">1. Build Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cleancode.html">2. Clean Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continous.html">3. Continous Delivery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dsl.html">4. Domain Specific Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">5. Functional Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">6. Code API List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ide.html">7. IDE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">8. Metrics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. UML Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unittest.html">10. Unittests</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SWE-Skat</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>9. UML Diagrams</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/uml.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uml-diagrams">
+<h1>9. UML Diagrams<a class="headerlink" href="#uml-diagrams" title="Permalink to this headline">¶</a></h1>
+<p>To better understand the code and the basic concept, 3 UML diagrams were created.</p>
+<p>The first is an activity diagram, which shows the basic flow of a skat game.</p>
+<a class="reference internal image-reference" href="_images/Aktivitätsdiagram.png"><img alt="_images/Aktivitätsdiagram.png" class="align-center" src="_images/Aktivitätsdiagram.png" style="width: 300px;" /></a>
+<p>The second one is a package diagram and shows which files call each other and are connected.</p>
+<a class="reference internal image-reference" href="_images/packages_Skat.png"><img alt="_images/packages_Skat.png" class="align-center" src="_images/packages_Skat.png" style="width: 500px;" /></a>
+<p>The third diagram is a class diagram that shows the general structure of the classes and also some connections between them.</p>
+<a class="reference internal image-reference" href="_images/classes_Skat.png"><img alt="_images/classes_Skat.png" class="align-center" src="_images/classes_Skat.png" style="width: 600px;" /></a>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="unittest.html" class="btn btn-neutral float-right" title="10. Unittests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metrics.html" class="btn btn-neutral float-left" title="8. Metrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Pascal Stehling
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
