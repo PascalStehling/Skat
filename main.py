@@ -32,5 +32,5 @@ class StateMachine:
 
 
 if __name__ == "__main__":
-    s = StateMachine(language='de', max_rounds=2, auto_play_cards=True)
+    s = StateMachine(language='de', max_rounds=2, auto_play_cards=False)
     s.run()

@@ -14,3 +14,13 @@ def task_bazel_build():
     return {
         'actions': ["bazel build //:Skat"]
     }
+
+def task_create_html():
+    return {
+        'actions': ["make html"]
+    }
+
+def task_create_pdf():
+    return {
+        'actions': ["make pdf"]
+    }

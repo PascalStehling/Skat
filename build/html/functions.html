@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code API List &mdash; SWE-Skat  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Metrics" href="metrics.html" />
+    <link rel="prev" title="Welcome to SWE-Skat’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SWE-Skat
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code API List</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Bidding">Bidding Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Card">Card Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Cards">Cards Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Player">Player Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Players">Players Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Round">Round Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.SettingContainer">SettingContainer Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.Stich">Stich Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.tools">Tools Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SWE-Skat</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Code API List</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/functions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="code-api-list">
+<h1>Code API List<a class="headerlink" href="#code-api-list" title="Permalink to this headline">¶</a></h1>
+<p>Here can you find all API-References for the Classes which were used in this Project.</p>
+<div class="section" id="module-modules.Bidding">
+<span id="bidding-functions"></span><span id="bidding"></span><h2>Bidding Functions<a class="headerlink" href="#module-modules.Bidding" title="Permalink to this headline">¶</a></h2>
+<p>This File Contains the Bidding Class. Its neccessary to play the Bidding Phase</p>
+<dl class="class">
+<dt id="modules.Bidding.Bidding">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Bidding.</code><code class="sig-name descname">Bidding</code><span class="sig-paren">(</span><em class="sig-param">settings</em>, <em class="sig-param">players</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Bidding Class contains all Functions relevant for Bidding.</p>
+<dl class="method">
+<dt id="modules.Bidding.Bidding.end_bidding">
+<code class="sig-name descname">end_bidding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding.end_bidding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ends the bidding Phase, if there is an bid Player, he won the bidding, else it starts new with new cards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple with the the player who has the next turn and the new gamstate (turn, gamestate)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Bidding.Bidding.get_new_turn">
+<code class="sig-name descname">get_new_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding.get_new_turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the new turn for the next round of bidding</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Bidding.Bidding.is_bidding_over">
+<code class="sig-name descname">is_bidding_over</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding.is_bidding_over" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the bidding finished</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the bidding is finished, else False</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Bidding.Bidding.make_bid">
+<code class="sig-name descname">make_bid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding.make_bid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main Function for bidding. Ask Player if he wants to bid, checks if bidding Phase ends and select the new turn</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Bidding.Bidding.play_bidding">
+<code class="sig-name descname">play_bidding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Bidding.Bidding.play_bidding" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is the main Function of this Class. With this the Bidding Phase can be Played</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The Player who won Bidding or None if all passed and the new Gamestate</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Card">
+<span id="card-functions"></span><span id="card"></span><h2>Card Functions<a class="headerlink" href="#module-modules.Card" title="Permalink to this headline">¶</a></h2>
+<p>This File Contains the Card Class. Each Card Object is a single Card which can be Played</p>
+<dl class="class">
+<dt id="modules.Card.Card">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Card.</code><code class="sig-name descname">Card</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">suit</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a card object. This has a suit as string, as Unicode character and the value of the suit.
+It also includes the value of the card (7-10, J, Q, K ,A) and the points of the card value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Card Object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>card</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="modules.Card.Card.equal_suit">
+<code class="sig-name descname">equal_suit</code><span class="sig-paren">(</span><em class="sig-param">other_card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.equal_suit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the Card has the same suit as another Card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other_card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – Card to check if equal suit</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if other_card is not of Type Card</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the Cards have the same suit</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.get_ascii_card">
+<code class="sig-name descname">get_ascii_card</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.get_ascii_card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Card as Ascii Art, where each element of the list is one line of the picture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list with the elements of the Ascii Art Card</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.get_card_tuple">
+<code class="sig-name descname">get_card_tuple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.get_card_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the suit value and the card value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tuple with suit value and card value</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.has_higher_suit_val">
+<code class="sig-name descname">has_higher_suit_val</code><span class="sig-paren">(</span><em class="sig-param">other_card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.has_higher_suit_val" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the card is higher than other_card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other_card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – Card to check with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the main Card (self) is higher, False if other_card is higher</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.has_higher_value">
+<code class="sig-name descname">has_higher_value</code><span class="sig-paren">(</span><em class="sig-param">other_card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.has_higher_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the main card (self) has an higher value than other_card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other_card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – Card to check with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the main card (self) is higher</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.ishigher">
+<code class="sig-name descname">ishigher</code><span class="sig-paren">(</span><em class="sig-param">other_card</em>, <em class="sig-param">check_suit_val=False</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.ishigher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the card is higher than other_card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other_card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – Card to check with</p></li>
+<li><p><strong>trumpf</strong> (<em>str</em>) – Trumpf which is played at the moment</p></li>
+<li><p><strong>order_dict</strong> (<em>dict</em>) – dictionary with the ranking order of the cards</p></li>
+<li><p><strong>check_suit_val</strong> (<em>bool</em><em>, </em><em>optional</em>) – If the higher suit wins, if no card is Trumpf and there are not equal suit. If False the main card (self) is winning. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if other Card is not of Type Card</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the main Card (self) is higher, False if other_card is higher</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.istrumpf">
+<code class="sig-name descname">istrumpf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.istrumpf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the Card is Trumpf</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>trumpf</strong> (<em>str</em>) – the trumpf which is played at the moment</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if trumpf not None or not string</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if card is trumpf</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.print">
+<code class="sig-name descname">print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the Ascii Art Card</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Card.Card.same_suit_or_trumpf">
+<code class="sig-name descname">same_suit_or_trumpf</code><span class="sig-paren">(</span><em class="sig-param">other_card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Card.Card.same_suit_or_trumpf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if 2 Cards have the same Suit or both are trumpf.
+:returns: True If the 2 Cards have the same suit or are both trumpf, else False
+:rtype: boolean</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="modules.Card.EmptyCard">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Card.</code><code class="sig-name descname">EmptyCard</code><a class="headerlink" href="#modules.Card.EmptyCard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an Empty card, with no text</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Cards">
+<span id="cards-functions"></span><span id="cards"></span><h2>Cards Functions<a class="headerlink" href="#module-modules.Cards" title="Permalink to this headline">¶</a></h2>
+<p>This File contains the Cards object. This is a container CLass for Multible Card Objects</p>
+<dl class="class">
+<dt id="modules.Cards.Cards">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Cards.</code><code class="sig-name descname">Cards</code><span class="sig-paren">(</span><em class="sig-param">settingContainer</em>, <em class="sig-param">cards=None</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Cards object, which is a container for multible Card objects. It has functions to manipulate multible Card objects.</p>
+<dl class="method">
+<dt id="modules.Cards.Cards.add_card">
+<code class="sig-name descname">add_card</code><span class="sig-paren">(</span><em class="sig-param">card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.add_card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new Card to the Cards object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – The Card that should be added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.add_card_and_sort">
+<code class="sig-name descname">add_card_and_sort</code><span class="sig-paren">(</span><em class="sig-param">card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.add_card_and_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new Card to the List and sort the List afterwards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – The new Card the should be Added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.create_shuffled_cards">
+<code class="sig-name descname">create_shuffled_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.create_shuffled_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates 32 cards and returns them shuffled</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.empty_cards">
+<code class="sig-name descname">empty_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.empty_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all Cards from the Cards Object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.get_jacks">
+<code class="sig-name descname">get_jacks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.get_jacks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Jacks from the Cards Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A List with all Jack Card objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">card</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reeturns the Index of the Card in the list of all Cards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>card</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – The Card, where the Index should be found</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The index of the Card in the Cards Object list of all Cards</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.print_cards_ascii">
+<code class="sig-name descname">print_cards_ascii</code><span class="sig-paren">(</span><em class="sig-param">card_delimiter=':'</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.print_cards_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints all Card objects as Ascii-Art in the Terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>card_delimiter</strong> (<em>str</em><em>, </em><em>optional</em>) – The Symbols which are used between 2 Cards. Defaults to “:”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">card_to_remove</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a Card from the List</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>card_to_remove</strong> (<a class="reference internal" href="#modules.Card.Card" title="modules.Card.Card"><em>Card</em></a>) – The Card the should be removed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Cards.Cards.sort_cards">
+<code class="sig-name descname">sort_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Cards.Cards.sort_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts all Card objects with a simple Bubble sort. There can only be 12 Cards at your Hand,
+so Performance isnt that important</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Player">
+<span id="player-functions"></span><span id="player"></span><h2>Player Functions<a class="headerlink" href="#module-modules.Player" title="Permalink to this headline">¶</a></h2>
+<p>This File Contains the Player Class which has all Informations about a single Player</p>
+<dl class="class">
+<dt id="modules.Player.Player">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Player.</code><code class="sig-name descname">Player</code><span class="sig-paren">(</span><em class="sig-param">player_name</em>, <em class="sig-param">**settings</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Player.Player" title="Permalink to this definition">¶</a></dt>
+<dd><p>This Class contains all Infomations about a Player</p>
+<dl class="method">
+<dt id="modules.Player.Player.has_cards">
+<code class="sig-name descname">has_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Player.Player.has_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the Player has Cards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the Player has Cards, else False</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Players">
+<span id="players-functions"></span><span id="players"></span><h2>Players Functions<a class="headerlink" href="#module-modules.Players" title="Permalink to this headline">¶</a></h2>
+<p>This File contains the Player CLass. which is a container for Player objects</p>
+<dl class="class">
+<dt id="modules.Players.Players">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Players.</code><code class="sig-name descname">Players</code><span class="sig-paren">(</span><em class="sig-param">settingContainer</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Player Class is an container for multible Player Objects</p>
+<dl class="method">
+<dt id="modules.Players.Players.get_next_player">
+<code class="sig-name descname">get_next_player</code><span class="sig-paren">(</span><em class="sig-param">player</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players.get_next_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next Player in the List, if the list is at the End, it starts from the beginning</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>player</strong> (<a class="reference internal" href="#modules.Player.Player" title="modules.Player.Player"><em>Player</em></a>) – The Player at the moment</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the Player, after the Player which was given as input</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#modules.Player.Player" title="modules.Player.Player">Player</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Players.Players.get_player_by_num">
+<code class="sig-name descname">get_player_by_num</code><span class="sig-paren">(</span><em class="sig-param">num</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players.get_player_by_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a Player by its num which was assigned when creating a Player object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>Int</em>) – The num of the Player</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>Exception</strong> – If a Player with this num doesen’t exist</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The Player with the corresponding num</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#modules.Player.Player" title="modules.Player.Player">Player</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Players.Players.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the Player for a new Round.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Players.Players.set_players_on_next_position">
+<code class="sig-name descname">set_players_on_next_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players.set_players_on_next_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the positions of all Players. Forhand –&gt; Middlehand, Middlehand –&gt; Backhand, Backhand –&gt; Forhand</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Players.Players.sort_cards">
+<code class="sig-name descname">sort_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Players.Players.sort_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort all Cards of all Players</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Round">
+<span id="round-functions"></span><span id="round"></span><h2>Round Functions<a class="headerlink" href="#module-modules.Round" title="Permalink to this headline">¶</a></h2>
+<p>The File with the Round Class</p>
+<dl class="class">
+<dt id="modules.Round.Round">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Round.</code><code class="sig-name descname">Round</code><span class="sig-paren">(</span><em class="sig-param">players</em>, <em class="sig-param">settingContainer</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Round Class has all Functions for Playing and Evaluating a Played Round</p>
+<dl class="method">
+<dt id="modules.Round.Round.end_round">
+<code class="sig-name descname">end_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.end_round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates all Points and ends the played round</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns itself</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#modules.Round.Round" title="modules.Round.Round">Round</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.give_cards">
+<code class="sig-name descname">give_cards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.give_cards" title="Permalink to this definition">¶</a></dt>
+<dd><p>give Cards to every Player and put 2 into the Skat</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.play_round">
+<code class="sig-name descname">play_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.play_round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Play a round</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>return its own object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Rround</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.set_card_default_values">
+<code class="sig-name descname">set_card_default_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.set_card_default_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the static Values of Card to its default</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.set_gamemode">
+<code class="sig-name descname">set_gamemode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.set_gamemode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the SIngle Player which play Types he wants to chose and sets it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.setup">
+<code class="sig-name descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the Setup, in which the single Player can take the Skat and choose the gamemode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns itself</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#modules.Round.Round" title="modules.Round.Round">Round</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.start_bidding">
+<code class="sig-name descname">start_bidding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.start_bidding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start and play the bidding phase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the new gamstate after the bidding Phase</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Round.Round.start_new_round">
+<code class="sig-name descname">start_new_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Round.Round.start_new_round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts a new round</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.SettingContainer">
+<span id="settingcontainer-functions"></span><span id="settings"></span><h2>SettingContainer Functions<a class="headerlink" href="#module-modules.SettingContainer" title="Permalink to this headline">¶</a></h2>
+<p>This File contains the SettingContainer Class</p>
+<dl class="class">
+<dt id="modules.SettingContainer.SettingContainer">
+<em class="property">class </em><code class="sig-prename descclassname">modules.SettingContainer.</code><code class="sig-name descname">SettingContainer</code><span class="sig-paren">(</span><em class="sig-param">setting_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.SettingContainer.SettingContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This Class contains all Settings which are relevant for the Game.</p>
+<dl class="method">
+<dt id="modules.SettingContainer.SettingContainer.create_SettingContainer_from_file">
+<em class="property">static </em><code class="sig-name descname">create_SettingContainer_from_file</code><span class="sig-paren">(</span><em class="sig-param">language='en'</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.SettingContainer.SettingContainer.create_SettingContainer_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a SettingContainer Object from a setting.json file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>language</strong> (<em>str</em><em>, </em><em>optional</em>) – the Language of the game. Defaults to “en”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns a SettingContainer Object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#modules.SettingContainer.SettingContainer" title="modules.SettingContainer.SettingContainer">SettingContainer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.SettingContainer.SettingContainer.get_sorted_suit_list">
+<code class="sig-name descname">get_sorted_suit_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.SettingContainer.SettingContainer.get_sorted_suit_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a sorted list of all suits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the List of string with the suits</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.Stich">
+<span id="stich-functions"></span><span id="stich"></span><h2>Stich Functions<a class="headerlink" href="#module-modules.Stich" title="Permalink to this headline">¶</a></h2>
+<p>This File Contains the Stich Class</p>
+<dl class="class">
+<dt id="modules.Stich.Stich">
+<em class="property">class </em><code class="sig-prename descclassname">modules.Stich.</code><code class="sig-name descname">Stich</code><span class="sig-paren">(</span><em class="sig-param">players</em>, <em class="sig-param">turn</em>, <em class="sig-param">settings</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.Stich.Stich" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Stich CLass contains all functions which are neccessary to play a single Stich</p>
+<dl class="method">
+<dt id="modules.Stich.Stich.assign_stich_to_winner">
+<code class="sig-name descname">assign_stich_to_winner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Stich.Stich.assign_stich_to_winner" title="Permalink to this definition">¶</a></dt>
+<dd><p>assign the Cards of the Stich to the winner</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>retunrs itself</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#modules.Stich.Stich" title="modules.Stich.Stich">Stich</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Stich.Stich.get_winner">
+<code class="sig-name descname">get_winner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Stich.Stich.get_winner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the cards that were Played and returns the number of the Player who won</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Stich.Stich.play_stich">
+<code class="sig-name descname">play_stich</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Stich.Stich.play_stich" title="Permalink to this definition">¶</a></dt>
+<dd><p>Play a single Stich</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns itself</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#modules.Stich.Stich" title="modules.Stich.Stich">Stich</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.Stich.Stich.print_card_table">
+<code class="sig-name descname">print_card_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modules.Stich.Stich.print_card_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the Cards that were Played plus empty cards to show how many need to be played</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.tools">
+<span id="tools-functions"></span><span id="tools"></span><h2>Tools Functions<a class="headerlink" href="#module-modules.tools" title="Permalink to this headline">¶</a></h2>
+<p>Here are functions witch are needed in diffrent states of this programm</p>
+<dl class="function">
+<dt id="modules.tools.get_user_card">
+<code class="sig-prename descclassname">modules.tools.</code><code class="sig-name descname">get_user_card</code><span class="sig-paren">(</span><em class="sig-param">show_message</em>, <em class="sig-param">error_message</em>, <em class="sig-param">user_cards</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.tools.get_user_card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a Card from a Userinput</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="modules.tools.get_user_true_false">
+<code class="sig-prename descclassname">modules.tools.</code><code class="sig-name descname">get_user_true_false</code><span class="sig-paren">(</span><em class="sig-param">show_message</em>, <em class="sig-param">error_message</em>, <em class="sig-param">cards</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.tools.get_user_true_false" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get True or False if user wants to take the bid</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="modules.tools.user_select_card">
+<code class="sig-prename descclassname">modules.tools.</code><code class="sig-name descname">user_select_card</code><span class="sig-paren">(</span><em class="sig-param">show_message</em>, <em class="sig-param">error_message</em>, <em class="sig-param">user_cards</em><span class="sig-paren">)</span><a class="headerlink" href="#modules.tools.user_select_card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Letthe User select a Card from ts Cards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_message</strong> (<em>Str</em>) – Message whitch will be shown befor selecting</p></li>
+<li><p><strong>error_message</strong> (<em>str</em>) – Message that will be shown if an error occures</p></li>
+<li><p><strong>user_cards</strong> (<a class="reference internal" href="#modules.Cards.Cards" title="modules.Cards.Cards"><em>Cards</em></a>) – the Cards of the user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns the new User Cards without the selected card and the selected card</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metrics.html" class="btn btn-neutral float-right" title="Metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to SWE-Skat’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Pascal Stehling
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
