@@ -20,4 +20,4 @@ This is my little Petproject in which I programmed the card game Skat. The progr
 
 The game is written in pure Python and does not need any other libraries to run it. It can be started inside the root folder with the command python main.py.
 
-More detailed information about the game and different paradigms/tools (points 1-9) can be found in the documentation. This is located in the build folder. There is a PDF (in the folder pdf) or as interactive web application in the folder html. The web application can be started by launching the index.html in your web browser. The web application should prefer the PDF, because it is clearer and displays the images better and larger.
+More detailed information about the game and different paradigms/tools (points 1-9) can be found in the documentation. This is located in the build folder. There is a PDF (in the folder pdf) an an interactive web application in the folder html. The web application can be started by launching the index.html in your web browser. It is better to use the Web App instead of the PDF, as it is easier to understand and the images are displayed better and larger.
